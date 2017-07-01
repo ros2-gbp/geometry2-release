@@ -1,4 +1,4 @@
-From 22d2f2c0cce6d2d2df4be6616045cecfa37951e0 Mon Sep 17 00:00:00 2001
+From 2c9cd1a9dbae5e10e61d4e941f8bd0b5285f4631 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Steven!=20Ragnar=C3=B6k?= <steven@nuclearsandwich.com>
 Date: Fri, 30 Jun 2017 17:38:57 -0400
 Subject: [PATCH] Add multiarch dirs to dh_shlibdeps.
