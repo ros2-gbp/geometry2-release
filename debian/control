@@ -1,0 +1,12 @@
+Source: ros-r2b2-tf2-geometry-msgs
+Section: misc
+Priority: extra
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), ros-r2b2-ament-cmake-auto, ros-r2b2-ament-cmake-gtest, ros-r2b2-geometry-msgs, ros-r2b2-orocos-kdl, ros-r2b2-tf2, ros-r2b2-tf2-ros, ros-r2b2-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_ros
+Standards-Version: 3.9.2
+
+Package: ros-r2b2-tf2-geometry-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-r2b2-geometry-msgs, ros-r2b2-orocos-kdl, ros-r2b2-tf2, ros-r2b2-tf2-ros, ros-r2b2-ros-workspace
+Description: tf2_geometry_msgs
