@@ -1,0 +1,12 @@
+Source: ros-r2b3-tf2-eigen
+Section: misc
+Priority: extra
+Maintainer: Koji Terada <terakoji@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, ros-r2b3-ament-cmake, ros-r2b3-ament-cmake-gtest, ros-r2b3-geometry-msgs, ros-r2b3-tf2, ros-r2b3-tf2-ros, ros-r2b3-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-r2b3-tf2-eigen
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-r2b3-geometry-msgs, ros-r2b3-tf2, ros-r2b3-tf2-ros, ros-r2b3-ros-workspace
+Description: tf2_eigen
