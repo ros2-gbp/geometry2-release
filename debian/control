@@ -1,0 +1,12 @@
+Source: ros-ardent-tf2-msgs
+Section: misc
+Priority: extra
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), ros-ardent-ament-cmake, ros-ardent-builtin-interfaces, ros-ardent-geometry-msgs, ros-ardent-rosidl-default-generators, ros-ardent-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_msgs
+Standards-Version: 3.9.2
+
+Package: ros-ardent-tf2-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-ardent-builtin-interfaces, ros-ardent-geometry-msgs, ros-ardent-rosidl-default-runtime, ros-ardent-ros-workspace
+Description: tf2_msgs
