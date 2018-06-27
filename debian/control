@@ -1,0 +1,12 @@
+Source: ros-bouncy-tf2-geometry-msgs
+Section: misc
+Priority: extra
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), ros-bouncy-ament-cmake-auto, ros-bouncy-ament-cmake-gtest, ros-bouncy-geometry-msgs, ros-bouncy-orocos-kdl, ros-bouncy-tf2, ros-bouncy-tf2-ros, ros-bouncy-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_ros
+Standards-Version: 3.9.2
+
+Package: ros-bouncy-tf2-geometry-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-bouncy-geometry-msgs, ros-bouncy-orocos-kdl, ros-bouncy-tf2, ros-bouncy-tf2-ros, ros-bouncy-ros-workspace
+Description: tf2_geometry_msgs
