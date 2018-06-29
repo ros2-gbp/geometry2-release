@@ -1,1 +1,1 @@
-{"parent": "debian/bouncy/tf2_geometry_msgs", "trim": "", "base": "daae74f", "previous": "3e69445", "trimbase": ""}
+{"previous": "925dd0e", "parent": "debian/bouncy/tf2_geometry_msgs", "trimbase": "", "base": "3627605", "trim": ""}
