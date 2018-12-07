@@ -2,6 +2,9 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.10.1 (2018-12-06)
+-------------------
+
 0.10.0 (2018-11-22)
 -------------------
 * Use ros2 time (`#67 <https://github.com/ros2/geometry2/issues/67>`_)
