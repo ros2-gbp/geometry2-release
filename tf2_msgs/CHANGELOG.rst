@@ -2,6 +2,11 @@
 Changelog for package tf2_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.11.1 (2019-05-09)
+-------------------
+* Tf2_msgs including actions (`#109 <https://github.com/ros2/geometry2/issues/109>`_)
+* Contributors: Alejandro Hernández Cordero
+
 0.11.0 (2019-04-14)
 -------------------
 
