@@ -46,33 +46,36 @@ using namespace tf2_ros;
 #define ROS_WARN printf
 
 TransformListener::TransformListener(tf2::BufferCore & buffer, bool spin_thread)
-: buffer_(buffer),
-  optional_default_node_(rclcpp::Node::make_shared("transform_listener_impl"))
+: optional_default_node_(rclcpp::Node::make_shared("transform_listener_impl")),
+  buffer_(buffer)
 {
   init(optional_default_node_, spin_thread);
 }
 
 TransformListener::~TransformListener()
 {
-  using_dedicated_thread_ = false;
-  if (dedicated_listener_thread_) {
-    dedicated_listener_thread_->join();
-    delete dedicated_listener_thread_;
-  }
+  stop_thread_ = true;
 }
 
 void TransformListener::initThread(
   rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface)
 {
-  using_dedicated_thread_ = true;
+  stop_thread_ = false;
   // This lambda is required because `std::thread` cannot infer the correct
   // rclcpp::spin, since there are more than one versions of it (overloaded).
   // see: http://stackoverflow.com/a/27389714/671658
   // I (wjwwood) chose to use the lamda rather than the static cast solution.
-  auto run_func = [](rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface) {
-      return rclcpp::spin(node_base_interface);
+  auto run_func = [&](rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface) {
+      while (!stop_thread_ && rclcpp::ok()) {rclcpp::spin_some(node_base_interface);}
     };
-  dedicated_listener_thread_ = new std::thread(run_func, node_base_interface);
+  dedicated_listener_thread_ = thread_ptr(
+    new std::thread(run_func, node_base_interface),
+    [](std::thread * t) {
+      t->join();
+      delete t;
+      // TODO(tfoote) reenable callback queue processing
+      // tf_message_callback_queue_.callAvailable(ros::WallDuration(0.01));
+    });
   // Tell the buffer we have a dedicated thread to enable timeouts
   buffer_.setUsingDedicatedThread(true);
 }
