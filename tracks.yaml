@@ -85,7 +85,7 @@ tracks:
       -i :{release_inc} --os-name debian --os-not-required
     - git-bloom-generate -y rosrpm --prefix release/:{ros_distro} :{ros_distro} -i
       :{release_inc}
-    devel_branch: ros2
+    devel_branch: dashing
     last_version: 0.11.3
     name: geometry2
     patches: null
