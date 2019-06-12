@@ -1,0 +1,12 @@
+Source: ros-dashing-tf2-kdl
+Section: misc
+Priority: extra
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, ros-dashing-ament-cmake, ros-dashing-ament-cmake-gtest, ros-dashing-builtin-interfaces, ros-dashing-geometry-msgs, ros-dashing-orocos-kdl, ros-dashing-rclcpp, ros-dashing-tf2, ros-dashing-tf2-msgs, ros-dashing-tf2-ros, ros-dashing-ros-workspace
+Homepage: http://ros.org/wiki/tf2
+Standards-Version: 3.9.2
+
+Package: ros-dashing-tf2-kdl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-dashing-builtin-interfaces, ros-dashing-geometry-msgs, ros-dashing-orocos-kdl, ros-dashing-tf2, ros-dashing-tf2-ros, ros-dashing-ros-workspace
+Description: KDL binding for tf2
