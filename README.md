@@ -1,3 +1,41 @@
+## geometry2 (dashing) - 0.11.4-1
+
+The packages in the `geometry2` repository were released into the `dashing` distro by running `/usr/bin/bloom-release --rosdistro dashing --track dashing --override-release-repository-push-url git@github.com:ros2-gbp/geometry2-release.git geometry2` on `Wed, 31 Jul 2019 23:25:38 -0000`
+
+These packages were released:
+- `tf2`
+- `tf2_eigen`
+- `tf2_geometry_msgs`
+- `tf2_kdl`
+- `tf2_msgs`
+- `tf2_ros`
+- `tf2_sensor_msgs`
+
+These packages were explicitly ignored:
+- `geometry2`
+- `geometry_experimental`
+- `test_tf2`
+- `tf2_bullet`
+- `tf2_py`
+- `tf2_tools`
+
+Version of package(s) in repository `geometry2`:
+
+- upstream repository: https://github.com/ros2/geometry2.git
+- release repository: https://github.com/ros2-gbp/geometry2-release.git
+- rosdistro version: `0.11.3-2`
+- old version: `0.11.3-2`
+- new version: `0.11.4-1`
+
+Versions of tools used:
+
+- bloom version: `0.8.0`
+- catkin_pkg version: `0.4.12`
+- rosdep version: `0.15.2`
+- rosdistro version: `0.7.4`
+- vcstools version: `0.1.40`
+
+
 ## geometry2 (dashing) - 0.11.3-2
 
 The packages in the `geometry2` repository were released into the `dashing` distro by running `/usr/bin/bloom-release --rosdistro dashing --track dashing geometry2` on `Wed, 12 Jun 2019 21:24:00 -0000`
