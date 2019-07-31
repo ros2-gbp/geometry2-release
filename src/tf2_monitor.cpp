@@ -39,12 +39,6 @@
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-//TODO(tfoote replace these terrible macros)
-#define ROS_ERROR printf
-#define ROS_FATAL printf
-#define ROS_WARN printf
-#define ROS_INFO printf
-
 class TFMonitor
 {
 public:
@@ -148,7 +142,7 @@ public:
         buffer_._chainAsVector(frameb_, tf2::TimePointZero, framea_, tf2::TimePointZero, frameb_, chain_);
       }
       catch(tf2::TransformException& ex){
-        ROS_WARN("Transform Exception %s", ex.what());
+        RCLCPP_WARN(node->get_logger(), "Transform Exception %s", ex.what());
         return;
       } 
 
@@ -270,7 +264,7 @@ public:
 int main(int argc, char ** argv)
 {
   //Initialize ROS
-  rclcpp::init(argc, argv);
+  std::vector<std::string> args = rclcpp::init_and_remove_ros_arguments(argc, argv);
   
   //TODO(tfoote) make anonymous 
   rclcpp::Node::SharedPtr nh = rclcpp::Node::make_shared("tf2_monitor_main");
@@ -278,14 +272,14 @@ int main(int argc, char ** argv)
 
   std::string framea, frameb;
   bool using_specific_chain = true;
-  if (argc == 3){
-    framea = argv[1];
-    frameb = argv[2];
+  if (args.size() == 3){
+    framea = args[1];
+    frameb = args[2];
   }
-  else if (argc == 1)
+  else if (args.size() == 1)
     using_specific_chain = false;
   else{
-    ROS_INFO("TF_Monitor: usage: tf2_monitor framea frameb");
+    RCLCPP_INFO(nh->get_logger(), "TF_Monitor: usage: tf2_monitor framea frameb");
     return -1;
   }
   
@@ -296,7 +290,7 @@ int main(int argc, char ** argv)
   // {
   //   if (++iterations > 10)
   //   {
-  //     ROS_INFO("tf2_monitor waiting for time to be published");
+  //     RCLCPP_INFO(nh->get_logger(), "tf2_monitor waiting for time to be published");
   //     iterations = 0;
   //   }
   //   ros::WallDuration(0.1).sleep();
