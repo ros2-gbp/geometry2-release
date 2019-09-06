@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>tf2_eigen</name>
-  <version>0.11.4</version>
+  <version>0.11.5</version>
   <description>tf2_eigen</description>
   <author>Koji Terada</author>
   <maintainer email="tfoote@osrfoundation.org">Tully Foote</maintainer>
   <license>BSD</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>eigen3_cmake_module</buildtool_depend>
+
+  <buildtool_export_depend>eigen3_cmake_module</buildtool_export_depend>
 
   <build_depend>eigen</build_depend>
 
