@@ -1,0 +1,12 @@
+Source: ros-eloquent-tf2-msgs
+Section: misc
+Priority: extra
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), ros-eloquent-action-msgs, ros-eloquent-ament-cmake, ros-eloquent-builtin-interfaces, ros-eloquent-geometry-msgs, ros-eloquent-rosidl-default-generators, ros-eloquent-ros-workspace, ros-eloquent-rmw-connext-cpp, ros-eloquent-rmw-fastrtps-cpp, ros-eloquent-rmw-implementation, ros-eloquent-rmw-opensplice-cpp, ros-eloquent-rosidl-typesupport-connext-c, ros-eloquent-rosidl-typesupport-connext-cpp, ros-eloquent-rosidl-typesupport-opensplice-c, ros-eloquent-rosidl-typesupport-opensplice-cpp
+Homepage: http://www.ros.org/wiki/tf2_msgs
+Standards-Version: 3.9.2
+
+Package: ros-eloquent-tf2-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-eloquent-action-msgs, ros-eloquent-builtin-interfaces, ros-eloquent-geometry-msgs, ros-eloquent-rosidl-default-runtime, ros-eloquent-ros-workspace
+Description: tf2_msgs
