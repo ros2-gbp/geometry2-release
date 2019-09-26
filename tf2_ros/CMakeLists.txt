@@ -14,53 +14,50 @@ if(NOT ANDROID)
 endif()
 
 find_package(ament_cmake REQUIRED)
-# TODO(tfoote) uncomment when reenabling server client interfaces
-# find_package(actionlib REQUIRED)
-# find_package(actionlib_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_msgs REQUIRED)
 
-include_directories(include
-  ${geometry_msgs_INCLUDE_DIRS}
-  ${message_filters_INCLUDE_DIRS}
-  ${rclcpp_INCLUDE_DIRS}
-  ${tf2_INCLUDE_DIRS}
-  ${tf2_msgs_INCLUDE_DIRS}
-  )
+include_directories(include)
+ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR src/${PROJECT_NAME})
 
 # tf2_ros library
 add_library(${PROJECT_NAME} SHARED
   src/buffer.cpp
+  src/create_timer_ros.cpp
   src/transform_listener.cpp
-  # src/buffer_client.cpp
-  # src/buffer_server.cpp
+  src/buffer_client.cpp
+  src/buffer_server.cpp
   src/transform_broadcaster.cpp
   src/static_transform_broadcaster.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}
-  ${geometry_msgs_LIBRARIES}
-  ${message_filters_LIBRARIES}
-  ${rclcpp_LIBRARIES}
-  ${tf2_LIBRARIES}
-  ${tf2_msgs_LIBRARIES}
-  )
+ament_target_dependencies(${PROJECT_NAME}
+  "geometry_msgs"
+  "message_filters"
+  "rclcpp"
+  "rclcpp_action"
+  "tf2"
+  "tf2_msgs"
+)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE "TF2_ROS_BUILDING_DLL")
 
-# TODO(tfoote) port server client interfaces
-# # buffer_server executable
-# add_executable(buffer_server src/buffer_server_main.cpp)
-# add_dependencies(${PROJECT_NAME}_buffer_server tf2_msgs_gencpp)
-# target_link_libraries(${PROJECT_NAME}_buffer_server
-#   ${PROJECT_NAME}
-#   ${catkin_LIBRARIES}
-#   ${Boost_LIBRARIES}
-# )
-
+# buffer_server executable
+add_executable(buffer_server src/buffer_server_main.cpp)
+target_link_libraries(buffer_server
+  ${PROJECT_NAME}
+)
+ament_target_dependencies(buffer_server
+  "geometry_msgs"
+  "rclcpp"
+  "rclcpp_action"
+  "tf2"
+  "tf2_msgs"
+)
 
 # static_transform_publisher
 add_executable(static_transform_publisher
@@ -68,33 +65,33 @@ add_executable(static_transform_publisher
 )
 target_link_libraries(static_transform_publisher
   ${PROJECT_NAME}
-  ${geometry_msgs_LIBRARIES}
-  ${rclcpp_LIBRARIES}
-  ${tf2_LIBRARIES}
-  ${tf2_msgs_LIBRARIES}
-  )
+)
+ament_target_dependencies(static_transform_publisher
+  "geometry_msgs"
+  "rclcpp"
+  "tf2_msgs"
+)
 
 add_executable(tf2_echo
   src/tf2_echo.cpp
 )
 target_link_libraries(tf2_echo
   ${PROJECT_NAME}
-  ${geometry_msgs_LIBRARIES}
-  ${rclcpp_LIBRARIES}
-  ${tf2_LIBRARIES}
-  ${tf2_msgs_LIBRARIES}
-  )
+)
+ament_target_dependencies(tf2_echo
+  "rclcpp"
+)
 
-  add_executable(tf2_monitor
-    src/tf2_monitor.cpp
-  )
-  target_link_libraries(tf2_monitor
-    ${PROJECT_NAME}
-    ${geometry_msgs_LIBRARIES}
-    ${rclcpp_LIBRARIES}
-    ${tf2_LIBRARIES}
-    ${tf2_msgs_LIBRARIES}
-    )
+add_executable(tf2_monitor
+  src/tf2_monitor.cpp
+)
+target_link_libraries(tf2_monitor
+  ${PROJECT_NAME}
+)
+ament_target_dependencies(tf2_monitor
+  "rclcpp"
+  "tf2_msgs"
+)
 
 # Install rules
 install(TARGETS
@@ -106,7 +103,7 @@ install(TARGETS
 
 # install executables
 install(TARGETS
-  # buffer_server
+  buffer_server
   static_transform_publisher
   tf2_echo
   tf2_monitor
@@ -123,6 +120,12 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   ament_add_gtest(test_buffer test/test_buffer.cpp)
   target_link_libraries(test_buffer ${PROJECT_NAME})
+
+  ament_add_gtest(test_buffer_server test/test_buffer_server.cpp)
+  target_link_libraries(test_buffer_server ${PROJECT_NAME})
+
+  ament_add_gtest(test_buffer_client test/test_buffer_client.cpp)
+  target_link_libraries(test_buffer_client ${PROJECT_NAME})
 
   # Adds a tf2_ros message_filter unittest that uses
   # multiple target frames and a non-zero time tolerance
@@ -143,7 +146,6 @@ if (false)
 # new requirements for testing
 find_package(catkin REQUIRED COMPONENTS
   actionlib
-  actionlib_msgs
   geometry_msgs
   message_filters
   roscpp
@@ -179,6 +181,21 @@ add_rostest(test/transform_listener_unittest.launch)
 add_rostest(test/transform_listener_time_reset_test.launch)
 
 endif()
+
+  # Python test
+  # Provides PYTHON_EXECUTABLE_DEBUG
+  find_package(python_cmake_module REQUIRED)
+  find_package(PythonExtra REQUIRED)
+
+  set(_PYTHON_EXECUTABLE "${PYTHON_EXECUTABLE}")
+  if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(PYTHON_EXECUTABLE "${PYTHON_EXECUTABLE_DEBUG}")
+  endif()
+
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(tf2_ros_py_test test/py_test)
+
+  set(PYTHON_EXECUTABLE "${_PYTHON_EXECUTABLE}")
 endif()
 
 ament_export_include_directories(include)

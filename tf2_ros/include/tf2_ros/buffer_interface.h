@@ -34,7 +34,6 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <tf2_ros/visibility_control.h>
-#include <tf2/buffer_core.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2/exceptions.h>
 #include <geometry_msgs/msg/transform_stamped.hpp>
@@ -43,6 +42,9 @@
 
 namespace tf2_ros
 {
+  using TransformStampedFuture = std::shared_future<geometry_msgs::msg::TransformStamped>;
+  using TransformReadyCallback = std::function<void(const TransformStampedFuture&)>;
+
   inline builtin_interfaces::msg::Time toMsg(const tf2::TimePoint & t)
   {
     std::chrono::nanoseconds ns = \
@@ -62,6 +64,25 @@ namespace tf2_ros
     return tf2::TimePoint(std::chrono::duration_cast<tf2::Duration>(ns));
   }
 
+  inline builtin_interfaces::msg::Duration toMsg(const tf2::Duration & t)
+  {
+    std::chrono::nanoseconds ns = \
+      std::chrono::duration_cast<std::chrono::nanoseconds>(t);
+    std::chrono::seconds s = \
+      std::chrono::duration_cast<std::chrono::seconds>(t);
+    builtin_interfaces::msg::Duration duration_msg;
+    duration_msg.sec = (int32_t)s.count();
+    duration_msg.nanosec = (uint32_t)(ns.count() % 1000000000ull);
+    return duration_msg;
+  }
+
+  inline tf2::Duration fromMsg(const builtin_interfaces::msg::Duration & duration_msg)
+  {
+    int64_t d = duration_msg.sec * 1000000000ull + duration_msg.nanosec;
+    std::chrono::nanoseconds ns(d);
+    return tf2::Duration(std::chrono::duration_cast<tf2::Duration>(ns));
+  }
+
   inline double timeToSec(const builtin_interfaces::msg::Time & time_msg)
   {
     auto ns = std::chrono::duration<double, std::nano>(time_msg.nanosec);
@@ -69,13 +90,12 @@ namespace tf2_ros
     return (s + std::chrono::duration_cast<std::chrono::duration<double>>(ns)).count();
   }
 
-/** \brief Abstract interface for wrapping tf2::BufferCore in a ROS-based API.
+/** \brief Abstract interface for wrapping tf2::BufferCoreInterface in a ROS-based API.
  * Implementations include tf2_ros::Buffer and tf2_ros::BufferClient.
  */
 class BufferInterface
 {
 public:
-
   /** \brief Get the transform between two frames by frame ID.
    * \param target_frame The frame to which data should be transformed
    * \param source_frame The frame where the data originated
@@ -287,6 +307,9 @@ public:
     return out;
   }
 
+  virtual ~BufferInterface()
+  {
+  }
  }; // class
 
 
