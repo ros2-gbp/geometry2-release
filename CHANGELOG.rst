@@ -2,6 +2,9 @@
 Changelog for package tf2_eigen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.12.1 (2019-10-23)
+-------------------
+
 0.12.0 (2019-09-26)
 -------------------
 * Adds toMsg & fromMsg for Eigen Vector3
