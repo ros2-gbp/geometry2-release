@@ -2,6 +2,11 @@
 Changelog for package tf2_sensor_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.12.1 (2019-10-23)
+-------------------
+* Use smart pointers for global buffer variables in tests
+* Contributors: Josh Langsfeld
+
 0.12.0 (2019-09-26)
 -------------------
 * Use eigen3_cmake_module (`#144 <https://github.com/ros2/geometry2/issues/144>`_)
