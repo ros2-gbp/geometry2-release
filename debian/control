@@ -1,0 +1,12 @@
+Source: ros-eloquent-tf2-geometry-msgs
+Section: misc
+Priority: extra
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), ros-eloquent-ament-cmake-auto, ros-eloquent-ament-cmake-gtest, ros-eloquent-geometry-msgs, ros-eloquent-orocos-kdl, ros-eloquent-tf2, ros-eloquent-tf2-ros, ros-eloquent-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_ros
+Standards-Version: 3.9.2
+
+Package: ros-eloquent-tf2-geometry-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-eloquent-geometry-msgs, ros-eloquent-orocos-kdl, ros-eloquent-tf2, ros-eloquent-tf2-ros, ros-eloquent-ros-workspace
+Description: tf2_geometry_msgs
