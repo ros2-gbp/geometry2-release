@@ -46,27 +46,22 @@ using namespace tf2_ros;
 #define ROS_WARN printf
 
 TransformListener::TransformListener(tf2::BufferCore & buffer, bool spin_thread)
-: buffer_(buffer)
+: optional_default_node_(rclcpp::Node::make_shared("transform_listener_impl")),
+  buffer_(buffer)
 {
-  // create a unique name for the node
-  std::stringstream sstream;
-  sstream << "transform_listener_impl_" << std::hex << reinterpret_cast<size_t>(this);
-  rclcpp::NodeOptions options;
-  // but specify its name in .arguments to override any __node passed on the command line
-  options.arguments({"--ros-args", "-r", "__node:=" + std::string(sstream.str())});
-  options.start_parameter_event_publisher(false);
-  options.start_parameter_services(false);
-  optional_default_node_ = rclcpp::Node::make_shared("_", options);
-  init(optional_default_node_, spin_thread, DynamicListenerQoS(), StaticListenerQoS());
+  init(optional_default_node_, spin_thread);
 }
 
 TransformListener::~TransformListener()
 {
+  stop_thread_ = true;
 }
 
 void TransformListener::initThread(
   rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface)
 {
+  stop_thread_ = false; // unused
+
   auto executor = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
 
   // This lambda is required because `std::thread` cannot infer the correct

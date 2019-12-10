@@ -39,7 +39,6 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "tf2_ros/buffer.h"
-#include "tf2_ros/qos.hpp"
 #include "tf2_ros/visibility_control.h"
 
 namespace tf2_ros
@@ -59,13 +58,12 @@ public:
     tf2::BufferCore & buffer,
     NodeT && node,
     bool spin_thread = true,
-    const rclcpp::QoS & qos = DynamicListenerQoS(),
-    const rclcpp::QoS & static_qos = StaticListenerQoS(),
+    const rclcpp::QoS & qos = rclcpp::QoS(100),
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
       rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
   : buffer_(buffer)
   {
-    init(node, spin_thread, qos, static_qos, options);
+    init(node, spin_thread, qos, options);
   }
 
   TF2_ROS_PUBLIC
@@ -76,8 +74,7 @@ private:
   void init(
     NodeT && node,
     bool spin_thread,
-    const rclcpp::QoS & qos,
-    const rclcpp::QoS & static_qos,
+    const rclcpp::QoS & qos = rclcpp::QoS(100),
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
       rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
   {
@@ -94,7 +91,7 @@ private:
     message_subscription_tf_static_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
       node,
       "/tf_static",
-      static_qos,
+      qos,
       std::move(static_cb),
       options);
 
@@ -119,6 +116,7 @@ private:
   rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr message_subscription_tf_;
   rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr message_subscription_tf_static_;
   tf2::BufferCore & buffer_;
+  std::atomic<bool> stop_thread_{false};
   tf2::TimePoint last_update_;
 };
 }  // namespace tf2_ros

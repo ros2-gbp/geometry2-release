@@ -36,7 +36,7 @@
 #include <gtest/gtest.h>
 #include <tf2/convert.h>
 
-std::unique_ptr<tf2_ros::Buffer> tf_buffer = nullptr;
+tf2_ros::Buffer* tf_buffer;
 static const double EPS = 1e-3;
 
 TEST(TfBullet, Transform)
@@ -85,22 +85,20 @@ int main(int argc, char **argv){
   ros::init(argc, argv, "test");
   ros::NodeHandle n;
 
-  tf_buffer = std::make_unique<tf2_ros::Buffer>();
+  tf_buffer = new tf2_ros::Buffer();
 
   // populate buffer
   geometry_msgs::TransformStamped t;
   t.transform.translation.x = 10;
   t.transform.translation.y = 20;
   t.transform.translation.z = 30;
-  t.transform.rotation.w = 0;
   t.transform.rotation.x = 1;
-  t.transform.rotation.y = 0;
-  t.transform.rotation.z = 0;
   t.header.stamp = builtin_interfaces::msg::Time(2.0);
   t.header.frame_id = "A";
   t.child_frame_id = "B";
   tf_buffer->setTransform(t, "test");
 
   int ret = RUN_ALL_TESTS();
+  delete tf_buffer;
   return ret;
 }

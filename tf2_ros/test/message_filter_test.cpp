@@ -35,7 +35,6 @@
 #include <message_filters/simple_filter.h>
 #include <message_filters/message_traits.h>
 #include <tf2_ros/buffer.h>
-#include <tf2_ros/create_timer_ros.h>
 #include <tf2_ros/message_filter.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2_ros/transform_listener.h>
@@ -47,86 +46,15 @@ void filter_callback(const geometry_msgs::msg::PointStamped & msg)
   filter_callback_fired++;
 }
 
-TEST(tf2_ros_message_filter, construction_and_destruction)
-{
-
-  auto node = rclcpp::Node::make_shared("test_message_filter_node");
-  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
-  tf2_ros::Buffer buffer(clock);
-
-  // Node constructor with defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(buffer, "map", 10, node);
-  }
-
-  // Node constructor no defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(
-      buffer, "map", 10, node, std::chrono::milliseconds(100));
-  }
-
-  // Node interface constructor with defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(
-      buffer, "map", 10, node->get_node_logging_interface(), node->get_node_clock_interface());
-  }
-
-  // Node interface constructor no defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(
-      buffer,
-      "map",
-      10,
-      node->get_node_logging_interface(),
-      node->get_node_clock_interface(),
-      std::chrono::seconds(42));
-  }
-
-  message_filters::Subscriber<geometry_msgs::msg::PointStamped> sub;
-  // Filter + node constructor with defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(sub, buffer, "map", 10, node);
-  }
-
-  // Filter + node constructor no defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(
-      sub, buffer, "map", 10, node, std::chrono::hours(1));
-  }
-
-  // Filter + node interface constructor with defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(
-      sub, buffer, "map", 10, node->get_node_logging_interface(), node->get_node_clock_interface());
-  }
-
-  // Filter + node interface constructor no defaults
-  {
-    tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(
-      sub,
-      buffer,
-      "map",
-      10,
-      node->get_node_logging_interface(),
-      node->get_node_clock_interface(),
-      std::chrono::microseconds(0));
-  }
-}
-
 TEST(tf2_ros_message_filter, multiple_frames_and_time_tolerance)
 {
   auto node = rclcpp::Node::make_shared("tf2_ros_message_filter");
-
-  auto create_timer_interface = std::make_shared<tf2_ros::CreateTimerROS>(
-    node->get_node_base_interface(),
-    node->get_node_timers_interface());
 
   message_filters::Subscriber<geometry_msgs::msg::PointStamped> sub;
   sub.subscribe(node, "point");
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer buffer(clock);
-  buffer.setCreateTimerInterface(create_timer_interface);
   tf2_ros::TransformListener tfl(buffer);
   tf2_ros::MessageFilter<geometry_msgs::msg::PointStamped> filter(buffer, "map", 10, node);
   filter.connectInput(sub);
@@ -190,40 +118,6 @@ TEST(tf2_ros_message_filter, multiple_frames_and_time_tolerance)
 
   rclcpp::shutdown();
   ASSERT_TRUE(filter_callback_fired);
-}
-
-TEST(tf2_ros_message_filter, failure_reason_string_conversion)
-{
-  // Sanity test defined messages
-  EXPECT_EQ(
-    "Unknown",
-    tf2_ros::get_filter_failure_reason_string(tf2_ros::filter_failure_reasons::Unknown)
-  );
-  EXPECT_EQ(
-    "OutTheBack",
-    tf2_ros::get_filter_failure_reason_string(tf2_ros::filter_failure_reasons::OutTheBack)
-  );
-  EXPECT_EQ(
-    "EmptyFrameID",
-    tf2_ros::get_filter_failure_reason_string(tf2_ros::filter_failure_reasons::EmptyFrameID)
-  );
-
-  // Make sure all values have been given a string
-  for (size_t i=0; i < tf2_ros::filter_failure_reasons::FilterFailureReasonCount; i++) {
-    EXPECT_NE(
-      "Invalid Failure Reason",
-      tf2_ros::get_filter_failure_reason_string(
-        tf2_ros::filter_failure_reasons::FilterFailureReason(i))
-    );
-  }
-
-  // Test that value outside the defined range has been given a string and that count was
-  // maintained at the end
-  EXPECT_EQ(
-    "Invalid Failure Reason",
-    tf2_ros::get_filter_failure_reason_string(
-      tf2_ros::filter_failure_reasons::FilterFailureReasonCount)
-  );
 }
 
 int main(int argc, char ** argv)

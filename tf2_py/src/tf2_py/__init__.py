@@ -1,3 +1,4 @@
+#! /usr/bin/python
 #***********************************************************
 #* Software License Agreement (BSD License)
 #*
@@ -33,4 +34,4 @@
 #* 
 #* Author: Eitan Marder-Eppstein
 #***********************************************************
-from tf2_py._tf2_py import *
+from _tf2 import *

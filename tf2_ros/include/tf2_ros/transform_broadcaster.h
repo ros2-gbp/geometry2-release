@@ -36,7 +36,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
-#include "tf2_ros/qos.hpp"
 #include "tf2_ros/visibility_control.h"
 
 namespace tf2_ros
@@ -52,7 +51,7 @@ public:
   template<class NodeT, class AllocatorT = std::allocator<void>>
   TransformBroadcaster(
     NodeT && node,
-    const rclcpp::QoS & qos = DynamicBroadcasterQoS(),
+    const rclcpp::QoS & qos = rclcpp::QoS(100),
     const rclcpp::PublisherOptionsWithAllocator<AllocatorT> & options =
       rclcpp::PublisherOptionsWithAllocator<AllocatorT>())
   {

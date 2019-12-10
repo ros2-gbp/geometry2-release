@@ -2,58 +2,21 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.4 (2019-11-19)
+0.11.6 (2019-12-10)
 -------------------
 
-0.12.3 (2019-11-18)
+0.11.5 (2019-09-06)
 -------------------
-* Remove unused setup.py files (`#190 <https://github.com/ros2/geometry2/issues/190>`_)
-* Print out the name of the signalFailure reason instead of just its enum value (`#186 <https://github.com/ros2/geometry2/issues/186>`_)
-* Contributors: Emerson Knapp, Vasilii Artemev
+* Add missing export build dependencies (`#135 <https://github.com/ros2/geometry2/issues/135>`_) (`#152 <https://github.com/ros2/geometry2/issues/152>`_)
+* Contributors: Jacob Perron
 
-0.12.2 (2019-11-18)
+0.11.4 (2019-07-31)
 -------------------
-* Fix tf2_monitor subscriptions QoS settings. (`#196 <https://github.com/ros2/geometry2/issues/196>`_)
-* Contributors: Michel Hidalgo
-
-0.12.1 (2019-10-23)
--------------------
-* Add convenience methods using rclcpp time types (`#180 <https://github.com/ros2/geometry2/issues/180>`_)
-* Don't assume quaternions init to all zeros
-* Make BufferClient destructor virtual
-* Contributors: Josh Langsfeld, Shane Loretz, Thomas Moulard
-
-0.12.0 (2019-09-26)
--------------------
-* Simulate work in the acceptedCallback.
-* Make Windows Debug to run the correct python executable.
-* Make BufferInterface destructor virtual.
-* Remove unnecessary and blacklisted actionlib_msgs dependency.
-* More test fixes for tf2_ros python.
-* class Clock is in clock not timer.
-* tf2_ros is not built for Python (`#99 <https://github.com/ros2/geometry2/issues/99>`_)
-* Migrate buffer action server to ROS 2
-* Add conversion functions for durations
-* Make /tf_static use transient_local durability (`#160 <https://github.com/ros2/geometry2/issues/160>`_)
-* Force explicit --ros-args in NodeOptions::arguments(). (`#162 <https://github.com/ros2/geometry2/issues/162>`_)
-* Use of -r/--remap flags where appropriate. (`#159 <https://github.com/ros2/geometry2/issues/159>`_)
-* Include tf2 headers in message_filter.h (`#157 <https://github.com/ros2/geometry2/issues/157>`_)
-* Use ament_target_dependencies to ensure correct dependency order (`#156 <https://github.com/ros2/geometry2/issues/156>`_)
-* Make sure that TransformListener's node gets a unique name (`#129 <https://github.com/ros2/geometry2/issues/129>`_)
-* Fix compiler warning (`#148 <https://github.com/ros2/geometry2/issues/148>`_)
-* Do not timeout when waiting for transforms (`#146 <https://github.com/ros2/geometry2/issues/146>`_)
-* Fix race between timeout and transform ready callback (`#143 <https://github.com/ros2/geometry2/issues/143>`_)
-* Fix high CPU - Use executor to spin and stop node in tf_listener thread (`#119 <https://github.com/ros2/geometry2/issues/119>`_)
-* Catch polymorphic exceptions by reference (`#138 <https://github.com/ros2/geometry2/issues/138>`_)
-* Add missing export build dependencies (`#135 <https://github.com/ros2/geometry2/issues/135>`_)
-* avoid delete-non-virtual-dtor warning (`#134 <https://github.com/ros2/geometry2/issues/134>`_)
-* Template tf2_ros::MessageFilter on the buffer type
-* Add pure virtual interface tf2_ros::AsyncBufferInterface
-* Add pure virtual interface tf2_ros::CreateTimerInterface
-* Allow tf2_monitor to be run with ROS command line args (`#122 <https://github.com/ros2/geometry2/issues/122>`_)
-* Drop misleading ROS\_* logging macros from tf2_monitor (`#123 <https://github.com/ros2/geometry2/issues/123>`_)
-* Fix the MessageFilter init order. (`#120 <https://github.com/ros2/geometry2/issues/120>`_)
-* Contributors: Chris Lalancette, Dan Rose, Jacob Perron, Karsten Knese, Michel Hidalgo, Scott K Logan, Shane Loretz, Vinnam Kim, bpwilcox, evshary
+* Allow tf2_monitor to be run with ROS command line args (`#140 <https://github.com/ros2/geometry2/issues/140>`_)
+* Drop misleading ROS logging macros from tf2_monitor (`#139 <https://github.com/ros2/geometry2/issues/139>`_)
+* Reduce CPU usage with an ABI compatible fix (`#133 <https://github.com/ros2/geometry2/issues/133>`_)
+* Fix the MessageFilter init order(`#137 <https://github.com/ros2/geometry2/issues/137>`_)
+* Contributors: Chris Lalancette, Dan Rose, Scott K Logan
 
 0.11.3 (2019-05-24)
 -------------------
@@ -151,7 +114,7 @@ Changelog for package tf2_ros
 
 0.5.10 (2015-04-21)
 -------------------
-* switch to use a shared lock with upgrade instead of only a unique lock. For `#91 <https://github.com/ros/geometry_experimental/issues/91>`__
+* switch to use a shared lock with upgrade instead of only a unique lock. For `#91 <https://github.com/ros/geometry_experimental/issues/91>`_
 * Update message_filter.h
 * filters: fix unsupported old messages with frame_id starting with '/'
 * Enabled tf2 documentation
@@ -236,7 +199,7 @@ Changelog for package tf2_ros
 ------------------
 * patching python implementation for `#24 <https://github.com/ros/geometry_experimental/issues/24>`_ as well
 * Stop waiting if time jumps backwards.  fixes `#24 <https://github.com/ros/geometry_experimental/issues/24>`_
-* patch to work around uninitiaized time. `#30 <https://github.com/ros/geometry/issues/30>`_
+* patch to work around uninitiaized time. `#30 https://github.com/ros/geometry/issues/30`_
 * Removing unnecessary CATKIN_DEPENDS  `#18 <https://github.com/ros/geometry_experimental/issues/18>`_
 
 0.4.5 (2013-07-11)

@@ -49,7 +49,6 @@
 #include <memory>
 
 #include <tf2/exceptions.h>
-#include <tf2/buffer_core_interface.h>
 #include <tf2/visibility_control.h>
 
 namespace tf2
@@ -89,7 +88,7 @@ static constexpr Duration BUFFER_CORE_DEFAULT_CACHE_TIME = std::chrono::seconds(
  *
  * All function calls which pass frame ids can potentially throw the exception tf::LookupException
  */
-class BufferCore : public BufferCoreInterface
+class BufferCore
 {
 public:
   /************* Constants ***********************/
@@ -109,7 +108,7 @@ public:
 
   /** \brief Clear all data */
   TF2_PUBLIC
-  void clear() override;
+  void clear();
 
   /** \brief Add transform information to the tf data structure
    * \param transform The transform to store
@@ -134,7 +133,7 @@ public:
   TF2_PUBLIC
   geometry_msgs::msg::TransformStamped 
     lookupTransform(const std::string& target_frame, const std::string& source_frame,
-		    const TimePoint& time) const override;
+		    const TimePoint& time) const;
 
   /** \brief Get the transform between two frames by frame ID assuming fixed frame.
    * \param target_frame The frame to which data should be transformed
@@ -152,7 +151,7 @@ public:
   geometry_msgs::msg::TransformStamped
     lookupTransform(const std::string& target_frame, const TimePoint& target_time,
 		    const std::string& source_frame, const TimePoint& source_time,
-		    const std::string& fixed_frame) const override;
+		    const std::string& fixed_frame) const;
 
   /** \brief Lookup the twist of the tracking_frame with respect to the observation frame in the reference_frame using the reference point
    * \param tracking_frame The frame to track
@@ -206,7 +205,7 @@ public:
    */
   TF2_PUBLIC
   bool canTransform(const std::string& target_frame, const std::string& source_frame,
-                    const TimePoint& time, std::string* error_msg = NULL) const override;
+                    const TimePoint& time, std::string* error_msg = NULL) const;
   
   /** \brief Test if a transform is possible
    * \param target_frame The frame into which to transform
@@ -220,12 +219,7 @@ public:
   TF2_PUBLIC
   bool canTransform(const std::string& target_frame, const TimePoint& target_time,
                     const std::string& source_frame, const TimePoint& source_time,
-                    const std::string& fixed_frame, std::string* error_msg = NULL) const override;
-
-  /** \brief Get all frames that exist in the system.
-   */
-  TF2_PUBLIC
-  std::vector<std::string> getAllFrameNames() const override;
+                    const std::string& fixed_frame, std::string* error_msg = NULL) const;
 
   /** \brief A way to see what frames have been cached in yaml format
    * Useful for debugging tools
@@ -243,7 +237,7 @@ public:
    */
   TF2_PUBLIC
   std::string allFramesAsString() const;
-
+  
   using TransformableCallback = std::function<void(TransformableRequestHandle request_handle, const std::string& target_frame, const std::string& source_frame,
                                                    TimePoint time, TransformableResult result)>;
 
@@ -408,32 +402,11 @@ private:
 
   TimeCacheInterfacePtr allocateFrame(CompactFrameID cfid, bool is_static);
 
-  /** \brief Validate a frame ID format and look up its CompactFrameID.
-    *   For invalid cases, produce an message.
-    * \param function_name_arg string to print out in the message,
-    *   the current function and argument name being validated
-    * \param frame_id name of the tf frame to validate
-    * \param[out] error_msg if non-NULL, fill with produced error messaging.
-    *   Otherwise messages are logged as warning.
-    * \return The CompactFrameID of the frame or 0 if not found.
-    */
-  CompactFrameID validateFrameId(
-    const char* function_name_arg,
-    const std::string& frame_id,
-    std::string* error_msg) const;
 
-  /** \brief Validate a frame ID format and look it up its compact ID.
-    *   Raise an exception for invalid cases.
-    * \param function_name_arg string to print out in the exception,
-    *   the current function and argument name being validated
-    * \param frame_id name of the tf frame to validate
-    * \return The CompactFrameID of the existing frame.
-    * \raises InvalidArgumentException if the frame_id string has an invalid format
-    * \raises LookupException if frame_id did not exist
-    */
+  bool warnFrameId(const char* function_name_arg, const std::string& frame_id) const;
   CompactFrameID validateFrameId(const char* function_name_arg, const std::string& frame_id) const;
 
-  /// String to number for frame lookup. Returns 0 if the frame was not found.
+  /// String to number for frame lookup with dynamic allocation of new frames
   CompactFrameID lookupFrameNumber(const std::string& frameid_str) const;
 
   /// String to number for frame lookup with dynamic allocation of new frames
@@ -457,10 +430,8 @@ private:
   tf2::TF2Error walkToTopParent(F& f, TimePoint time, CompactFrameID target_id, CompactFrameID source_id, std::string* error_string, std::vector<CompactFrameID> *frame_chain) const;
 
   void testTransformableRequests();
-  // Thread safe transform check, acquire lock and call canTransformNoLock.
   bool canTransformInternal(CompactFrameID target_id, CompactFrameID source_id,
                     const TimePoint& time, std::string* error_msg) const;
-  // Actual implementation to walk the transform tree and find out if a transform exists.
   bool canTransformNoLock(CompactFrameID target_id, CompactFrameID source_id,
                       const TimePoint& time, std::string* error_msg) const;
 

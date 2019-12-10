@@ -2,27 +2,17 @@
 Changelog for package tf2_sensor_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.4 (2019-11-19)
+0.11.6 (2019-12-10)
 -------------------
 
-0.12.3 (2019-11-18)
+0.11.5 (2019-09-06)
 -------------------
-* Remove unused setup.py files (`#190 <https://github.com/ros2/geometry2/issues/190>`_)
-* Contributors: Vasilii Artemev
-
-0.12.2 (2019-11-18)
--------------------
-
-0.12.1 (2019-10-23)
--------------------
-* Use smart pointers for global buffer variables in tests
-* Contributors: Josh Langsfeld
-
-0.12.0 (2019-09-26)
--------------------
-* Use eigen3_cmake_module (`#144 <https://github.com/ros2/geometry2/issues/144>`_)
-* Added missing header (for tf2::fromMsg) (`#126 <https://github.com/ros2/geometry2/issues/126>`_)
+* Use eigen3_cmake_module (`#144 <https://github.com/ros2/geometry2/issues/144>`_) (`#153 <https://github.com/ros2/geometry2/issues/153>`_)
+* Added missing header (for tf2::fromMsg) (`#126 <https://github.com/ros2/geometry2/issues/126>`_) (`#147 <https://github.com/ros2/geometry2/issues/147>`_)
 * Contributors: Esteve Fernandez, Shane Loretz
+
+0.11.4 (2019-07-31)
+-------------------
 
 0.11.3 (2019-05-24)
 -------------------

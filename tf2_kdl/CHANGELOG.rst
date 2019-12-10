@@ -2,28 +2,16 @@
 Changelog for package tf2_kdl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.4 (2019-11-19)
+0.11.6 (2019-12-10)
 -------------------
 
-0.12.3 (2019-11-18)
+0.11.5 (2019-09-06)
 -------------------
-* Remove unused setup.py files (`#190 <https://github.com/ros2/geometry2/issues/190>`_)
-* Contributors: Vasilii Artemev
+* Use eigen3_cmake_module (`#144 <https://github.com/ros2/geometry2/issues/144>`_) (`#153 <https://github.com/ros2/geometry2/issues/153>`_)
+* Contributors: Shane Loretz
 
-0.12.2 (2019-11-18)
+0.11.4 (2019-07-31)
 -------------------
-
-0.12.1 (2019-10-23)
--------------------
-* Restore conversion via message traits (`#167 <https://github.com/ros2/geometry2/issues/167>`_)
-* Don't assume quaternions init to all zeros
-* Contributors: Josh Langsfeld, Michael Carroll
-
-0.12.0 (2019-09-26)
--------------------
-* Adds additional conversions for tf2, KDL, Eigen
-* Use eigen3_cmake_module (`#144 <https://github.com/ros2/geometry2/issues/144>`_)
-* Contributors: Ian McMahon, Shane Loretz
 
 0.11.3 (2019-05-24)
 -------------------

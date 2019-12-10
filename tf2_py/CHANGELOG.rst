@@ -2,28 +2,6 @@
 Changelog for package tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.4 (2019-11-19)
--------------------
-
-0.12.3 (2019-11-18)
--------------------
-
-0.12.2 (2019-11-18)
--------------------
-
-0.12.1 (2019-10-23)
--------------------
-* Quiet the cast-function-type warning on GCC 8.
-* Contributors: Chris Lalancette
-
-0.12.0 (2019-09-26)
--------------------
-* Properly keep references to Python objects.
-* Don't use borrowString in time or duration conversions.
-* Minor fix to use CMake variable.
-* tf2_ros is not built for Python (`#99 <https://github.com/ros2/geometry2/issues/99>`_)
-* Contributors: Chris Lalancette, Vinnam Kim
-
 0.5.15 (2017-01-24)
 -------------------
 

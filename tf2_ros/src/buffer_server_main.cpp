@@ -34,25 +34,39 @@
 *
 * Author: Wim Meeussen
 *********************************************************************/
-#include <tf2_ros/buffer.h>
 #include <tf2_ros/buffer_server.h>
 #include <tf2_ros/transform_listener.h>
-#include <rclcpp/rclcpp.hpp>
+#include <ros/ros.h>
+
+
+class MyClass
+{
+public:
+  MyClass() {}
+  MyClass(double d) {}
+};
+
+class BlankClass
+{
+public:
+  BlankClass() {}
+};
 
 int main(int argc, char** argv)
 {
-  rclcpp::init(argc, argv);
-  auto node = std::make_shared<rclcpp::Node>("tf_buffer");
-  double buffer_size = node->declare_parameter("buffer_size", 120.0);
+  ros::init(argc, argv, "tf_buffer");
+  ros::NodeHandle nh;  
 
-  tf2_ros::Buffer buffer(node->get_clock(), tf2::durationFromSec(buffer_size));
-  tf2_ros::TransformListener listener(buffer);
-  tf2_ros::BufferServer buffer_server(buffer, node, "tf2_buffer_server");
+  double buffer_size;
+  nh.param("buffer_size", buffer_size, 120.0);
 
-  rclcpp::executors::SingleThreadedExecutor executor;
-  executor.add_node(node);
-  executor.spin();
+  // WIM: this works fine:
+  tf2_ros::Buffer buffer_core(tf2::durationFromSec(buffer_size+0)); // WTF??
+  tf2_ros::TransformListener listener(buffer_core);
+  tf2_ros::BufferServer buffer_server(buffer_core, "tf2_buffer_server", false);
+  buffer_server.start();
+  // But you should probably read this instead:
+  // http://www.informit.com/guides/content.aspx?g=cplusplus&seqNum=439
 
-  rclcpp::shutdown();
-  return 0;
+  ros::spin();
 }
