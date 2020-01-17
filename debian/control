@@ -1,0 +1,13 @@
+Source: ros-eloquent-tf2-sensor-msgs
+Section: misc
+Priority: optional
+Maintainer: Vincent Rabaud <vincent.rabaud@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, ros-eloquent-ament-cmake-auto, ros-eloquent-ament-cmake-gtest, ros-eloquent-eigen3-cmake-module, ros-eloquent-sensor-msgs, ros-eloquent-tf2, ros-eloquent-tf2-ros, ros-eloquent-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_ros
+Standards-Version: 3.9.2
+
+Package: ros-eloquent-tf2-sensor-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-eloquent-eigen3-cmake-module, ros-eloquent-sensor-msgs, ros-eloquent-tf2, ros-eloquent-tf2-ros, ros-eloquent-ros-workspace
+Description: Small lib to transform sensor_msgs with tf.
+ Most notably, PointCloud2
