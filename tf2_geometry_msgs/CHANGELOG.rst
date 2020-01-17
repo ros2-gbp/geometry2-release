@@ -2,13 +2,25 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.11.6 (2019-12-10)
+0.12.4 (2019-11-19)
 -------------------
 
-0.11.5 (2019-09-06)
+0.12.3 (2019-11-18)
+-------------------
+* Remove unused setup.py files (`#190 <https://github.com/ros2/geometry2/issues/190>`_)
+* Contributors: Vasilii Artemev
+
+0.12.2 (2019-11-18)
 -------------------
 
-0.11.4 (2019-07-31)
+0.12.1 (2019-10-23)
+-------------------
+* Remove template specialization for toMsg functions (`#179 <https://github.com/ros2/geometry2/issues/179>`_)
+* Use smart pointers for global buffer variables in tests
+* Don't assume quaternions init to all zeros
+* Contributors: Jacob Perron, Josh Langsfeld
+
+0.12.0 (2019-09-26)
 -------------------
 
 0.11.3 (2019-05-24)

@@ -2,16 +2,31 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.11.6 (2019-12-10)
--------------------
-* Fix up -Wcast-qual warning (`#193 <https://github.com/ros2/geometry2/issues/193>`_)
-* Contributors: Yu, Yan
-
-0.11.5 (2019-09-06)
+0.12.4 (2019-11-19)
 -------------------
 
-0.11.4 (2019-07-31)
+0.12.3 (2019-11-18)
 -------------------
+* Provide more available error messaging for nonexistent and invalid frames in canTransform (`#187 <https://github.com/ros2/geometry2/issues/187>`_)
+* Contributors: Emerson Knapp
+
+0.12.2 (2019-11-18)
+-------------------
+* Fix up -Wcast-qual warning (`#193 <https://github.com/ros2/geometry2/issues/193>`_) (`#197 <https://github.com/ros2/geometry2/issues/197>`_)
+* Contributors: Chris Lalancette
+
+0.12.1 (2019-10-23)
+-------------------
+* Overwrite TimeCacheInterface type with a current input (`#151 <https://github.com/ros2/geometry2/issues/151>`_)
+* [tf2] Use ament_target_dependencies where possible
+* Restore conversion via message traits (`#167 <https://github.com/ros2/geometry2/issues/167>`_)
+* Contributors: Jacob Perron, Michael Carroll, Vinnam Kim
+
+0.12.0 (2019-09-26)
+-------------------
+* Add pure virtual interface tf2::BufferCoreInterface
+* Guard against invalid iterator (`#127 <https://github.com/ros2/geometry2/issues/127>`_)
+* Contributors: Jacob Perron
 
 0.11.3 (2019-05-24)
 -------------------
@@ -315,7 +330,7 @@ Changelog for package tf2
 * new dox mainpage
 * update tf2 manifest
 * commenting out twist
-* Changed cache_time to cache_time_ to follow C++ style guide, also initialized it to actually get things to work
+* Changed cache_time to cache_time to follow C++ style guide, also initialized it to actually get things to work
 * no more rand in cache tests
 * Changing tf2_py.cpp to use underscores instead of camelCase
 * removing all old converter functions from transform_datatypes.h
