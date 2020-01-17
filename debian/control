@@ -1,0 +1,13 @@
+Source: ros-eloquent-tf2
+Section: misc
+Priority: optional
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), libconsole-bridge-dev, ros-eloquent-ament-cmake, ros-eloquent-ament-cmake-gtest, ros-eloquent-console-bridge-vendor, ros-eloquent-geometry-msgs, ros-eloquent-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2
+Standards-Version: 3.9.2
+
+Package: ros-eloquent-tf2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libconsole-bridge-dev, ros-eloquent-console-bridge-vendor, ros-eloquent-geometry-msgs, ros-eloquent-ros-workspace
+Description: tf2 is the second generation of the transform library, which lets the user keep track of multiple coordinate frames over time.
+ tf2 maintains the relationship between coordinate frames in a tree structure buffered in time, and lets the user transform points, vectors, etc between any two coordinate frames at any desired point in time.
