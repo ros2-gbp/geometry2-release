@@ -1,3 +1,42 @@
+## geometry2 (eloquent) - 0.12.5-1
+
+The packages in the `geometry2` repository were released into the `eloquent` distro by running `/usr/bin/bloom-release --rosdistro eloquent geometry2 -e` on `Fri, 17 Jan 2020 21:33:27 -0000`
+
+These packages were released:
+- `examples_tf2_py`
+- `geometry2`
+- `tf2`
+- `tf2_eigen`
+- `tf2_geometry_msgs`
+- `tf2_kdl`
+- `tf2_msgs`
+- `tf2_py`
+- `tf2_ros`
+- `tf2_sensor_msgs`
+
+These packages were explicitly ignored:
+- `geometry_experimental`
+- `test_tf2`
+- `tf2_bullet`
+- `tf2_tools`
+
+Version of package(s) in repository `geometry2`:
+
+- upstream repository: https://github.com/ros2/geometry2.git
+- release repository: https://github.com/ros2-gbp/geometry2-release.git
+- rosdistro version: `0.12.4-1`
+- old version: `0.12.4-2`
+- new version: `0.12.5-1`
+
+Versions of tools used:
+
+- bloom version: `0.9.0`
+- catkin_pkg version: `0.4.15`
+- rosdep version: `0.18.0`
+- rosdistro version: `0.8.0`
+- vcstools version: `0.1.42`
+
+
 ## geometry2 (eloquent) - 0.12.4-2
 
 The packages in the `geometry2` repository were released into the `eloquent` distro by running `/usr/bin/bloom-release --rosdistro eloquent geometry2` on `Fri, 17 Jan 2020 21:06:50 -0000`
