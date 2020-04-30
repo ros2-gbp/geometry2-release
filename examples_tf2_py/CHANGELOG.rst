@@ -2,8 +2,10 @@
 Changelog for package examples_tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.5 (2020-01-17)
+0.13.0 (2020-04-30)
 -------------------
+* more verbose test_flake8 error messages (same as `ros2/launch_ros#135 <https://github.com/ros2/launch_ros/issues/135>`_)
+* Contributors: Dirk Thomas
 
 0.12.4 (2019-11-19)
 -------------------

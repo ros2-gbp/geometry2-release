@@ -20,6 +20,7 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_msgs REQUIRED)
+find_package(rclcpp_components REQUIRED)
 
 include_directories(include)
 ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR src/${PROJECT_NAME})
@@ -65,12 +66,26 @@ add_executable(static_transform_publisher
 )
 target_link_libraries(static_transform_publisher
   ${PROJECT_NAME}
+  static_transform_broadcaster_node
 )
 ament_target_dependencies(static_transform_publisher
   "geometry_msgs"
   "rclcpp"
   "tf2_msgs"
 )
+
+add_library(static_transform_broadcaster_node SHARED
+  src/static_transform_broadcaster_node.cpp
+)
+target_compile_definitions(static_transform_broadcaster_node PRIVATE "STATIC_TRANSFORM_BROADCASTER_BUILDING_DLL")
+target_link_libraries(static_transform_broadcaster_node ${PROJECT_NAME})
+ament_target_dependencies(static_transform_broadcaster_node
+  "geometry_msgs"
+  "rclcpp"
+  "tf2_msgs"
+  "rclcpp_components"
+)
+rclcpp_components_register_nodes(static_transform_broadcaster_node "tf2_ros::StaticTransformBroadcasterNode")
 
 add_executable(tf2_echo
   src/tf2_echo.cpp
@@ -96,6 +111,13 @@ ament_target_dependencies(tf2_monitor
 # Install rules
 install(TARGETS
   ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS
+  static_transform_broadcaster_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -140,47 +162,18 @@ if(BUILD_TESTING)
 
   ament_add_gtest(${PROJECT_NAME}_test_transform_broadcaster test/test_transform_broadcaster.cpp)
   target_link_libraries(${PROJECT_NAME}_test_transform_broadcaster ${PROJECT_NAME})
-# TODO(tfoote) port tests to use ROS2 instead of ROS1 api.
-if (false)
 
-# new requirements for testing
-find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  geometry_msgs
-  message_filters
-  roscpp
-  rosgraph
-  rospy
-  rostest
-  tf2
-  tf2_msgs
-  ${TF2_PY}
-)
+  ament_add_gtest(${PROJECT_NAME}_test_time_reset test/time_reset_test.cpp)
+  ament_target_dependencies(${PROJECT_NAME}_test_time_reset
+    rclcpp
+  )
+  target_link_libraries(${PROJECT_NAME}_test_time_reset ${PROJECT_NAME})
 
-# tf2_ros_test_listener
-add_executable(${PROJECT_NAME}_test_listener EXCLUDE_FROM_ALL test/listener_unittest.cpp)
-add_dependencies(${PROJECT_NAME}_test_listener tf2_msgs_gencpp)
-add_executable(${PROJECT_NAME}_test_time_reset EXCLUDE_FROM_ALL test/time_reset_test.cpp)
-add_dependencies(${PROJECT_NAME}_test_time_reset tf2_msgs_gencpp)
-target_link_libraries(${PROJECT_NAME}_test_listener
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-  ${GTEST_LIBRARIES}
-)
-
-target_link_libraries(${PROJECT_NAME}_test_time_reset
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-  ${GTEST_LIBRARIES}
-)
-
-add_dependencies(tests ${PROJECT_NAME}_test_listener)
-add_dependencies(tests ${PROJECT_NAME}_test_time_reset)
-
-add_rostest(test/transform_listener_unittest.launch)
-add_rostest(test/transform_listener_time_reset_test.launch)
-
-endif()
+  ament_add_gtest(${PROJECT_NAME}_test_listener test/listener_unittest.cpp)
+  ament_target_dependencies(${PROJECT_NAME}_test_listener
+    rclcpp
+  )
+  target_link_libraries(${PROJECT_NAME}_test_listener ${PROJECT_NAME})
 
   # Python test
   # Provides PYTHON_EXECUTABLE_DEBUG
@@ -199,7 +192,7 @@ endif()
 endif()
 
 ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})
+ament_export_libraries(${PROJECT_NAME} static_transform_broadcaster_node)
 ament_export_dependencies(message_filters)
 ament_export_dependencies(rclcpp)
 ament_export_dependencies(tf2_msgs)

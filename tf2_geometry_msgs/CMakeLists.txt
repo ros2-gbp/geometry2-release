@@ -18,29 +18,26 @@ set(required_dependencies
 )
 ament_auto_find_build_dependencies(REQUIRED ${required_dependencies})
 
-include_directories(include
-   ${orocos_kdl_INCLUDE_DIRS}
-   ${tf2_INCLUDE_DIRS}
-   ${tf2_ros_INCLUDE_DIRS}
-   ${geometry_msgs_INCLUDE_DIRS}
-)
+ament_python_install_package(${PROJECT_NAME}
+     PACKAGE_DIR src/${PROJECT_NAME})
 
-link_directories(${orocos_kdl_LIBRARY_DIRS})
-
-
-# TODO(dhood): enable python support once ported to ROS 2
-# catkin_python_setup()
+# TODO (ahcorde) Port python once https://github.com/ros2/orocos_kinematics_dynamics/pull/4 is merged
+# install(PROGRAMS scripts/test.py
+#    DESTINATION lib/${PROJECT_NAME}
+# )
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
+  find_package(rclcpp REQUIRED)
   ament_add_gtest(test_tf2_geometry_msgs test/test_tf2_geometry_msgs.cpp)
   if(TARGET test_tf2_geometry_msgs)
-    target_link_libraries(test_tf2_geometry_msgs
-      ${geometry_msgs_LIBRARIES}
-      ${orocos_kdl_LIBRARIES}
-      ${tf2_LIBRARIES}
-      ${tf2_ros_LIBRARIES}
-      ${GTEST_LIBRARIES}
+    target_include_directories(test_tf2_geometry_msgs PUBLIC include)
+    ament_target_dependencies(test_tf2_geometry_msgs
+      "geometry_msgs"
+      "orocos_kdl"
+      "rclcpp"
+      "tf2"
+      "tf2_ros"
     )
   endif()
 endif()

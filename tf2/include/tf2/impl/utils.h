@@ -86,6 +86,7 @@ template<typename T>
 inline
 void getEulerYPR(const tf2::Quaternion& q, double &yaw, double &pitch, double &roll)
 {
+  const double pi_2 = 1.57079632679489661923;
   double sqw;
   double sqx;
   double sqy;
@@ -99,11 +100,11 @@ void getEulerYPR(const tf2::Quaternion& q, double &yaw, double &pitch, double &r
   // Cases derived from https://orbitalstation.wordpress.com/tag/quaternion/
   double sarg = -2 * (q.x()*q.z() - q.w()*q.y()) / (sqx + sqy + sqz + sqw); /* normalization added from urdfom_headers */
   if (sarg <= -0.99999) {
-    pitch = -0.5*M_PI;
+    pitch = -0.5*pi_2;
     roll  = 0;
     yaw   = -2 * atan2(q.y(), q.x());
   } else if (sarg >= 0.99999) {
-    pitch = 0.5*M_PI;
+    pitch = 0.5*pi_2;
     roll  = 0;
     yaw   = 2 * atan2(q.y(), q.x());
   } else {
@@ -111,7 +112,7 @@ void getEulerYPR(const tf2::Quaternion& q, double &yaw, double &pitch, double &r
     roll  = atan2(2 * (q.y()*q.z() + q.w()*q.x()), sqw - sqx - sqy + sqz);
     yaw   = atan2(2 * (q.x()*q.y() + q.w()*q.z()), sqw + sqx - sqy - sqz);
   }
-};
+}
 
 /** The code below is a simplified version of getEulerRPY that only
  * returns the yaw. It is mostly useful in navigation where only yaw
@@ -145,7 +146,7 @@ double getYaw(const tf2::Quaternion& q)
     yaw   = atan2(2 * (q.x()*q.y() + q.w()*q.z()), sqw + sqx - sqy - sqz);
   }
   return yaw;
-};
+}
 
 }
 }

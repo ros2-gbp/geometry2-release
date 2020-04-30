@@ -2,8 +2,17 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.5 (2020-01-17)
+0.13.0 (2020-04-30)
 -------------------
+* Added doxyfiles and sphinx Makefiles (`#257 <https://github.com/ros2/geometry2/issues/257>`_)
+* Fix displayTimePoint truncation error (`#253 <https://github.com/ros2/geometry2/issues/253>`_)
+* rename rosidl_generator_cpp namespace to rosidl_runtime_cpp (`#248 <https://github.com/ros2/geometry2/issues/248>`_)
+* Use the new rcutils_strerror function. (`#239 <https://github.com/ros2/geometry2/issues/239>`_)
+* Remove unnecessary semicolons. (`#235 <https://github.com/ros2/geometry2/issues/235>`_)
+* Export all tf2 dependencies. (`#238 <https://github.com/ros2/geometry2/issues/238>`_)
+* Fix a deprecated copy warning by implementing the assignment operator (`#201 <https://github.com/ros2/geometry2/issues/201>`_)
+* tf2 add windows cmath constants (`#217 <https://github.com/ros2/geometry2/issues/217>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Dirk Thomas, Hunter L. Allen, Michel Hidalgo, brawner
 
 0.12.4 (2019-11-19)
 -------------------
