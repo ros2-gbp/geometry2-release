@@ -1,0 +1,12 @@
+Source: ros-foxy-tf2-msgs
+Section: misc
+Priority: optional
+Maintainer: Tully Foote <tfoote@osrfoundation.org>
+Build-Depends: debhelper (>= 9.0.0), ros-foxy-action-msgs, ros-foxy-ament-cmake, ros-foxy-ament-lint-common, ros-foxy-builtin-interfaces, ros-foxy-geometry-msgs, ros-foxy-rosidl-default-generators, ros-foxy-ros-workspace, ros-foxy-rmw-connext-cpp, ros-foxy-rmw-fastrtps-cpp, ros-foxy-rmw-implementation, ros-foxy-rmw-opensplice-cpp, ros-foxy-rosidl-typesupport-connext-c, ros-foxy-rosidl-typesupport-connext-cpp, ros-foxy-rosidl-typesupport-opensplice-c, ros-foxy-rosidl-typesupport-opensplice-cpp
+Homepage: http://www.ros.org/wiki/tf2_msgs
+Standards-Version: 3.9.2
+
+Package: ros-foxy-tf2-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-foxy-action-msgs, ros-foxy-builtin-interfaces, ros-foxy-geometry-msgs, ros-foxy-rosidl-default-runtime, ros-foxy-ros-workspace
+Description: tf2_msgs
