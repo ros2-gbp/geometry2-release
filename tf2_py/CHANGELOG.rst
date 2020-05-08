@@ -2,6 +2,9 @@
 Changelog for package tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.13.1 (2020-05-08)
+-------------------
+
 0.13.0 (2020-04-30)
 -------------------
 * Fix build error in Focal (`#241 <https://github.com/ros2/geometry2/issues/241>`_)
