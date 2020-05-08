@@ -2,6 +2,9 @@
 Changelog for package test_tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.13.1 (2020-05-08)
+-------------------
+
 0.13.0 (2020-04-30)
 -------------------
 * Replace deprecated launch_ros usage (`#250 <https://github.com/ros2/geometry2/issues/250>`_)
