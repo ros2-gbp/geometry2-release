@@ -2,6 +2,9 @@
 Changelog for package tf2_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.13.1 (2020-05-08)
+-------------------
+
 0.13.0 (2020-04-30)
 -------------------
 * Added linter test to tf2_msgs (`#209 <https://github.com/ros2/geometry2/issues/209>`_)
