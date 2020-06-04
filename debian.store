@@ -1,1 +1,1 @@
-{"trim": "", "base": "ed509f2", "trimbase": "", "parent": "debian/foxy/tf2_sensor_msgs", "previous": "e79e88f"}
+{"base": "4d50064", "parent": "debian/foxy/tf2_sensor_msgs", "previous": "b8cf494", "trim": "", "trimbase": ""}
