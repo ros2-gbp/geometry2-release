@@ -1,3 +1,42 @@
+## geometry2 (foxy) - 0.13.4-1
+
+The packages in the `geometry2` repository were released into the `foxy` distro by running `/usr/bin/bloom-release -r foxy -t foxy geometry2` on `Thu, 04 Jun 2020 03:24:44 -0000`
+
+These packages were released:
+- `examples_tf2_py`
+- `geometry2`
+- `tf2`
+- `tf2_bullet`
+- `tf2_eigen`
+- `tf2_geometry_msgs`
+- `tf2_kdl`
+- `tf2_msgs`
+- `tf2_py`
+- `tf2_ros`
+- `tf2_sensor_msgs`
+- `tf2_tools`
+
+These packages were explicitly ignored:
+- `geometry_experimental`
+- `test_tf2`
+
+Version of package(s) in repository `geometry2`:
+
+- upstream repository: https://github.com/ros2/geometry2.git
+- release repository: https://github.com/ros2-gbp/geometry2-release.git
+- rosdistro version: `0.13.3-1`
+- old version: `0.13.3-1`
+- new version: `0.13.4-1`
+
+Versions of tools used:
+
+- bloom version: `0.9.7`
+- catkin_pkg version: `0.4.20`
+- rosdep version: `0.19.0`
+- rosdistro version: `0.8.2`
+- vcstools version: `0.1.42`
+
+
 ## geometry2 (foxy) - 0.13.3-1
 
 The packages in the `geometry2` repository were released into the `foxy` distro by running `/usr/bin/bloom-release -r foxy geometry2` on `Wed, 27 May 2020 03:09:03 -0000`
