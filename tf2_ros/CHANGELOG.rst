@@ -2,12 +2,19 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.5 (2020-08-05)
+0.14.0 (2020-08-14)
 -------------------
-* Make static_transform_broadcaster consistent with its command line description (`#294 <https://github.com/ros2/geometry2/issues/294>`_) (`#296 <https://github.com/ros2/geometry2/issues/296>`_)
-* Fix dependencies in tf2_ros (`#269 <https://github.com/ros2/geometry2/issues/269>`_) (`#288 <https://github.com/ros2/geometry2/issues/288>`_)
-* Moved unique_lock of messages_mutex\_ to guarantee pointer (`#279 <https://github.com/ros2/geometry2/issues/279>`_) (`#283 <https://github.com/ros2/geometry2/issues/283>`_)
-* Contributors: Chris Lalancette, Hunter L. Allen, Martin Ganeff
+* Fixed memory leak in Buffer::waitForTransform (`#281 <https://github.com/ros2/geometry2/issues/281>`_)
+* fix time-reset test with Connext (`#306 <https://github.com/ros2/geometry2/issues/306>`_)
+* reenable FrameGraph server (`#198 <https://github.com/ros2/geometry2/issues/198>`_)
+* Use the usual style of parameters for static_transform_program (`#300 <https://github.com/ros2/geometry2/issues/300>`_)
+* Make static_transform_broadcaster consistent with its command line description (`#294 <https://github.com/ros2/geometry2/issues/294>`_)
+* Avoid using invalid std::list iterators (`#293 <https://github.com/ros2/geometry2/issues/293>`_)
+* Generate callbacks after updating message\_ (`#274 <https://github.com/ros2/geometry2/issues/274>`_)
+* Moved unique_lock of messages_mutex\_ to guarantee pointer (`#279 <https://github.com/ros2/geometry2/issues/279>`_)
+* Fix dependencies in tf2_ros. (`#269 <https://github.com/ros2/geometry2/issues/269>`_)
+* Split tf2_ros in tf2_ros and tf2_ros_py (`#210 <https://github.com/ros2/geometry2/issues/210>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Dirk Thomas, Hunter L. Allen, Martin Ganeff, Michael Carroll, ymd-stella
 
 0.13.4 (2020-06-03)
 -------------------
