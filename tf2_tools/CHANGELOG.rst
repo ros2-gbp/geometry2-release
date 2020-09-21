@@ -2,6 +2,11 @@
 Changelog for package tf2_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.14.1 (2020-09-21)
+-------------------
+* Address security bug in yaml loading (`#313 <https://github.com/ros2/geometry2/issues/313>`_)
+* Contributors: Víctor Mayoral Vilches
+
 0.14.0 (2020-08-14)
 -------------------
 * Split tf2_ros in tf2_ros and tf2_ros_py (`#210 <https://github.com/ros2/geometry2/issues/210>`_)
