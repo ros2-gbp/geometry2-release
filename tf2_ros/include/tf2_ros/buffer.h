@@ -65,13 +65,10 @@ namespace tf2_ros
      * @brief  Constructor for a Buffer object
      * @param clock A clock to use for time and sleeping
      * @param cache_time How long to keep a history of transforms
-     * @param node If passed advertise the view_frames service that exposes debugging information from the buffer
+     * @param debug Whether to advertise the view_frames service that exposes debugging information from the buffer
      * @return 
      */
-    TF2_ROS_PUBLIC Buffer(
-      rclcpp::Clock::SharedPtr clock,
-      tf2::Duration cache_time = tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME),
-      rclcpp::Node::SharedPtr node = rclcpp::Node::SharedPtr());
+    TF2_ROS_PUBLIC Buffer(rclcpp::Clock::SharedPtr clock, tf2::Duration cache_time = tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME));
 
     /** \brief Get the transform between two frames by frame ID.
      * \param target_frame The frame to which data should be transformed
@@ -247,21 +244,18 @@ namespace tf2_ros
                        TransformStampedFuture future,
                        TransformReadyCallback callback);
 
-    bool getFrames(const tf2_msgs::srv::FrameGraph::Request::SharedPtr req, tf2_msgs::srv::FrameGraph::Response::SharedPtr res) ;
+    bool getFrames(tf2_msgs::srv::FrameGraph::Request& req, tf2_msgs::srv::FrameGraph::Response& res) ;
 
     void onTimeJump(const rcl_time_jump_t & jump);
 
     // conditionally error if dedicated_thread unset.
     bool checkAndErrorDedicatedThreadPresent(std::string* errstr) const;
 
-    // framegraph service
-    rclcpp::Service<tf2_msgs::srv::FrameGraph>::SharedPtr frames_server_;
+//TODO(tfoote)renable framegraph service
+//    ros::ServiceServer frames_server_;
 
     /// \brief A clock to use for time and sleeping
     rclcpp::Clock::SharedPtr clock_;
-
-    /// \brief A node to advertise the view_frames service
-    rclcpp::Node::SharedPtr node_;
 
     /// \brief Interface for creating timers
     CreateTimerInterface::SharedPtr timer_interface_;

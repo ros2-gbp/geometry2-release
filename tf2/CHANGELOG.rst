@@ -2,19 +2,14 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.14.1 (2020-09-21)
+0.13.6 (2020-10-28)
 -------------------
-* Active usual compiler warnings in tf2 (`#322 <https://github.com/ros2/geometry2/issues/322>`_)
-* Cleanups in buffer_core.cpp. (`#301 <https://github.com/ros2/geometry2/issues/301>`_)
-* Add PoseWithCovarianceStamped transform support (`#312 <https://github.com/ros2/geometry2/issues/312>`_)
-* Contributors: Chris Lalancette, Ivan Santiago Paunovic, Joshua Whitley
+* [Foxy backport] Add PoseWithCovarianceStamped transform support (`#336 <https://github.com/ros2/geometry2/issues/336>`_)
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
+* Contributors: Alejandro Hernández Cordero, Nikolai Morin
 
-0.14.0 (2020-08-14)
+0.13.5 (2020-08-05)
 -------------------
-* Fix a TOCTTOU race in tf2. (`#307 <https://github.com/ros2/geometry2/issues/307>`_)
-* Fixed memory leak in Buffer::waitForTransform (`#281 <https://github.com/ros2/geometry2/issues/281>`_)
-* Add common linters to tf2. (`#258 <https://github.com/ros2/geometry2/issues/258>`_)
-* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Martin Ganeff
 
 0.13.4 (2020-06-03)
 -------------------
@@ -51,7 +46,7 @@ Changelog for package tf2
 
 0.12.3 (2019-11-18)
 -------------------
-* Provide more available error messaging for nonexistent and invalid frames in canTransform (`ros2 #187 <https://github.com/ros2/geometry2/issues/187>`_)
+* Provide more available error messaging for nonexistent and invalid frames in canTransform (`#187 <https://github.com/ros2/geometry2/issues/187>`_)
 * Contributors: Emerson Knapp
 
 0.12.2 (2019-11-18)

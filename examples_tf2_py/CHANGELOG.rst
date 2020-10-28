@@ -2,14 +2,14 @@
 Changelog for package examples_tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.14.1 (2020-09-21)
+0.13.6 (2020-10-28)
 -------------------
-
-0.14.0 (2020-08-14)
--------------------
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
 * Add pytest.ini so local tests don't display warning (`#276 <https://github.com/ros2/geometry2/issues/276>`_)
-* Split tf2_ros in tf2_ros and tf2_ros_py (`#210 <https://github.com/ros2/geometry2/issues/210>`_)
 * Contributors: Alejandro Hernández Cordero, Chris Lalancette
+
+0.13.5 (2020-08-05)
+-------------------
 
 0.13.4 (2020-06-03)
 -------------------
