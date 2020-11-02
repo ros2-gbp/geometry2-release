@@ -27,11 +27,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <utility>
 #include <memory>
+#include <random>
 #include <stdexcept>
 #include <string>
-#include <random>
 
 #include "tf2_ros/static_transform_broadcaster_node.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -40,7 +39,7 @@ namespace
 {
 std::string get_unique_node_name()
 {
-  const static std::string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  static const std::string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   static std::random_device rd;
   static std::minstd_rand g{rd()};
 
@@ -59,7 +58,7 @@ std::string get_unique_node_name()
 
   return s;
 }
-}
+}  // namespace
 
 namespace tf2_ros
 {
@@ -72,21 +71,22 @@ StaticTransformBroadcasterNode::StaticTransformBroadcasterNode(const rclcpp::Nod
   descriptor.read_only = true;
 
   tf_msg.header.stamp = this->now();
-  tf_msg.transform.translation.x = this->declare_parameter("/translation/x", 0.0, descriptor);
-  tf_msg.transform.translation.y = this->declare_parameter("/translation/y", 0.0, descriptor);
-  tf_msg.transform.translation.z = this->declare_parameter("/translation/z", 0.0, descriptor);
-  tf_msg.transform.rotation.x = this->declare_parameter("/rotation/x", 0.0, descriptor);
-  tf_msg.transform.rotation.y = this->declare_parameter("/rotation/y", 0.0, descriptor);
-  tf_msg.transform.rotation.z = this->declare_parameter("/rotation/z", 0.0, descriptor);
-  tf_msg.transform.rotation.w = this->declare_parameter("/rotation/w", 1.0, descriptor);
+  tf_msg.transform.translation.x = this->declare_parameter("translation.x", 0.0, descriptor);
+  tf_msg.transform.translation.y = this->declare_parameter("translation.y", 0.0, descriptor);
+  tf_msg.transform.translation.z = this->declare_parameter("translation.z", 0.0, descriptor);
+  tf_msg.transform.rotation.x = this->declare_parameter("rotation.x", 0.0, descriptor);
+  tf_msg.transform.rotation.y = this->declare_parameter("rotation.y", 0.0, descriptor);
+  tf_msg.transform.rotation.z = this->declare_parameter("rotation.z", 0.0, descriptor);
+  tf_msg.transform.rotation.w = this->declare_parameter("rotation.w", 1.0, descriptor);
   tf_msg.header.frame_id =
-    this->declare_parameter("/frame_id", std::string("/frame"), descriptor);
+    this->declare_parameter("frame_id", std::string("/frame"), descriptor);
   tf_msg.child_frame_id =
-    this->declare_parameter("/child_frame_id", std::string("/child"), descriptor);
+    this->declare_parameter("child_frame_id", std::string("/child"), descriptor);
 
   // check frame_id != child_frame_id
   if (tf_msg.header.frame_id == tf_msg.child_frame_id) {
-    RCLCPP_ERROR(this->get_logger(),
+    RCLCPP_ERROR(
+      this->get_logger(),
       "cannot publish static transform from '%s' to '%s', exiting",
       tf_msg.header.frame_id.c_str(), tf_msg.child_frame_id.c_str());
     throw std::runtime_error("child_frame_id cannot equal frame_id");

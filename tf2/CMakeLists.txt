@@ -6,6 +6,10 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
 
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
+endif()
+
 find_package(ament_cmake)
 find_package(console_bridge_vendor REQUIRED) # Provides console_bridge 0.4.0 on platforms without it.
 find_package(console_bridge REQUIRED)
@@ -41,9 +45,8 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 # Tests
 if(BUILD_TESTING)
-  # TODO(tfoote) enable linters
-  # find_package(ament_lint_auto REQUIRED)
-  # ament_lint_auto_find_test_dependencies()
+  # TODO(clalancette) enable linters once https://github.com/ament/ament_lint/pull/238 lands
+
   find_package(ament_cmake_gtest)
 
   ament_add_gtest(test_cache_unittest test/cache_unittest.cpp)
@@ -75,7 +78,7 @@ if(BUILD_TESTING)
   endif()
 
   ament_add_gtest(test_time test/test_time.cpp)
-  if (TARGET test_time)
+  if(TARGET test_time)
     target_link_libraries(test_time tf2)
   endif()
 

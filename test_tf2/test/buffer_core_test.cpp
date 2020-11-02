@@ -29,27 +29,39 @@
 
 #if _WIN32
 #define _USE_MATH_DEFINES
-#include <cmath>
 #endif
+#include <chrono>
+#include <cmath>
+#include <functional>
+#include <limits>
+#include <string>
+#include <vector>
 
 #include <gtest/gtest.h>
+
+#include <builtin_interfaces/msg/time.hpp>
+#include <geometry_msgs/msg/quaternion.hpp>
+#include <geometry_msgs/msg/transform.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <tf2/buffer_core.h>
-#include "tf2/exceptions.h"
-#include <chrono>
-#include "rclcpp/rclcpp.hpp"
+#include <tf2/exceptions.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/time.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_ros/buffer_interface.h>
+
 #include "permuter.hpp"
-#include "tf2/LinearMath/Quaternion.h"
-#include "tf2/exceptions.h"
 
 void seed_rand()
 {
   //Seed random number generator with current time.
   srand((unsigned) time(0));
-};
+}
 
 void generate_rand_vectors(double scale, uint64_t runs, std::vector<double>& xvalues, std::vector<double>& yvalues, std::vector<double>&zvalues)
 {
+  (void)scale;
   seed_rand();
   for ( uint64_t i = 0; i < runs ; i++ )
   {
@@ -250,7 +262,7 @@ void setupTree(tf2::BufferCore& mBC, const std::string& mode, const builtin_inte
         else
           ts.child_frame_id = frames[i]; // connect first frame
         EXPECT_TRUE(mBC.setTransform(ts, "authority"));
-        if (interpolation_space > tf2::Duration())
+        if (interpolation_space > tf2::Duration(0))
         {
           // TODO (ahcorde): review this
           double time_stamp = time_seconds;// + time_interpolation_space;
@@ -295,7 +307,7 @@ void setupTree(tf2::BufferCore& mBC, const std::string& mode, const builtin_inte
     ts.header.frame_id = parents[i];
     ts.child_frame_id = children[i];
     EXPECT_TRUE(mBC.setTransform(ts, "authority"));
-    if (interpolation_space > tf2::Duration())
+    if (interpolation_space > tf2::Duration(0))
     {
       // TODO (ahcorde): review this
       double time_stamp = time_seconds;// + time_interpolation_space;
@@ -651,7 +663,7 @@ TEST(BufferCore_lookupTransform, i_configuration)
   durations.push_back(tf2::durationFromSec(1.0));
   durations.push_back(tf2::durationFromSec(0.001));
   durations.push_back(tf2::durationFromSec(0.1));
-  tf2::Duration interpolation_space;
+  tf2::Duration interpolation_space(0);
   permuter.addOptionSet(durations, &interpolation_space);
 
   std::vector<std::string> frames;
@@ -668,8 +680,6 @@ TEST(BufferCore_lookupTransform, i_configuration)
   {
     tf2::BufferCore mBC;
     setupTree(mBC, "i", eval_time, interpolation_space);
-
-    tf2::TimePoint eval_time_time_point = tf2_ros::fromMsg(eval_time);
 
     geometry_msgs::msg::TransformStamped outpose = mBC.lookupTransform(source_frame, target_frame, tf2_ros::fromMsg(eval_time));
 
@@ -981,7 +991,7 @@ TEST(BufferCore_lookupTransform, one_link_configuration)
   durations.push_back(tf2::durationFromSec(1.0));
   durations.push_back(tf2::durationFromSec(0.001));
   durations.push_back(tf2::durationFromSec(0.1));
-  tf2::Duration interpolation_space;
+  tf2::Duration interpolation_space(0);
   // permuter.addOptionSet(durations, &interpolation_space);
 
   std::vector<std::string> frames;
@@ -1023,7 +1033,7 @@ TEST(BufferCore_lookupTransform, v_configuration)
   durations.push_back(tf2::durationFromSec(1.0));
   durations.push_back(tf2::durationFromSec(0.001));
   durations.push_back(tf2::durationFromSec(0.1));
-  tf2::Duration interpolation_space;
+  tf2::Duration interpolation_space(0);
   //  permuter.addOptionSet(durations, &interpolation_space);
 
   std::vector<std::string> frames;
@@ -1068,7 +1078,7 @@ TEST(BufferCore_lookupTransform, y_configuration)
   durations.push_back(tf2::durationFromSec(1.0));
   durations.push_back(tf2::durationFromSec(0.001));
   durations.push_back(tf2::durationFromSec(0.1));
-  tf2::Duration interpolation_space;
+  tf2::Duration interpolation_space(0);
   //  permuter.addOptionSet(durations, &interpolation_space);
 
   std::vector<std::string> frames;
@@ -1112,7 +1122,7 @@ TEST(BufferCore_lookupTransform, multi_configuration)
   durations.push_back(tf2::durationFromSec(1.0));
   durations.push_back(tf2::durationFromSec(0.001));
   durations.push_back(tf2::durationFromSec(0.1));
-  tf2::Duration interpolation_space;
+  tf2::Duration interpolation_space(0);
   //  permuter.addOptionSet(durations, &interpolation_space);
 
   std::vector<std::string> frames;
@@ -1446,7 +1456,7 @@ TEST(BufferCore_lookupTransform, ring_45_configuration)
   durations.push_back(tf2::durationFromSec(1.0));
   durations.push_back(tf2::durationFromSec(0.001));
   durations.push_back(tf2::durationFromSec(0.1));
-  tf2::Duration interpolation_space;
+  tf2::Duration interpolation_space(0);
   permuter.addOptionSet(durations, &interpolation_space);
 
   std::vector<std::string> frames;
@@ -1754,7 +1764,7 @@ TEST(BufferCore_lookupTransform, invalid_arguments)
   EXPECT_THROW(mBC.lookupTransform("/b", "a", eval_time_time_point), tf2::InvalidArgumentException);
   EXPECT_THROW(mBC.lookupTransform("b", "/a", eval_time_time_point), tf2::InvalidArgumentException);
 
-};
+}
 
 TEST(BufferCore_canTransform, invalid_arguments)
 {
@@ -1776,7 +1786,7 @@ TEST(BufferCore_canTransform, invalid_arguments)
   EXPECT_FALSE(mBC.canTransform("/b", "a", eval_time_time_point));
   EXPECT_FALSE(mBC.canTransform("b", "/a", eval_time_time_point));
 
-};
+}
 
 struct TransformableHelper
 {
@@ -1790,6 +1800,11 @@ struct TransformableHelper
                 tf2::TimePoint time,
                 tf2::TransformableResult result)
   {
+    (void)request_handle;
+    (void)target_frame;
+    (void)source_frame;
+    (void)time;
+    (void)result;
     called = true;
   }
 
@@ -1812,34 +1827,34 @@ TEST(BufferCore_transformableCallbacks, alreadyTransformable)
       std::chrono::seconds(1) +
       std::chrono::nanoseconds(0));
 
-  tf2::TransformableCallbackHandle cb_handle = b.addTransformableCallback(std::bind(&TransformableHelper::callback,
+  tf2::BufferCore::TransformableCallback cb = std::bind(&TransformableHelper::callback,
       &h,
       std::placeholders::_1,
       std::placeholders::_2,
       std::placeholders::_3,
       std::placeholders::_4,
-      std::placeholders::_5));
+      std::placeholders::_5);
 
-  EXPECT_EQ(b.addTransformableRequest(cb_handle, "a", "b", eval_time_time_point), 0U);
+  EXPECT_EQ(b.addTransformableRequest(cb, "a", "b", eval_time_time_point), 0U);
 }
 
 TEST(BufferCore_transformableCallbacks, waitForNewTransform)
 {
   tf2::BufferCore b;
   TransformableHelper h;
-  tf2::TransformableCallbackHandle cb_handle = b.addTransformableCallback(std::bind(&TransformableHelper::callback,
+  tf2::BufferCore::TransformableCallback cb = std::bind(&TransformableHelper::callback,
       &h,
       std::placeholders::_1,
       std::placeholders::_2,
       std::placeholders::_3,
       std::placeholders::_4,
-      std::placeholders::_5));
+      std::placeholders::_5);
 
   tf2::TimePoint eval_time_time_point = tf2::TimePoint(
       std::chrono::seconds(10) +
       std::chrono::nanoseconds(0));
 
-  EXPECT_GT(b.addTransformableRequest(cb_handle, "a", "b", eval_time_time_point), 0U);
+  EXPECT_GT(b.addTransformableRequest(cb, "a", "b", eval_time_time_point), 0U);
 
   geometry_msgs::msg::TransformStamped t;
   for (uint32_t i = 1; i <= 10; ++i)
@@ -1865,19 +1880,19 @@ TEST(BufferCore_transformableCallbacks, waitForOldTransform)
 {
   tf2::BufferCore b;
   TransformableHelper h;
-  tf2::TransformableCallbackHandle cb_handle = b.addTransformableCallback(std::bind(&TransformableHelper::callback,
+  tf2::BufferCore::TransformableCallback cb = std::bind(&TransformableHelper::callback,
       &h,
       std::placeholders::_1,
       std::placeholders::_2,
       std::placeholders::_3,
       std::placeholders::_4,
-      std::placeholders::_5));
+      std::placeholders::_5);
 
   tf2::TimePoint eval_time_time_point = tf2::TimePoint(
       std::chrono::seconds(1) +
       std::chrono::nanoseconds(0));
 
-  EXPECT_GT(b.addTransformableRequest(cb_handle, "a", "b", eval_time_time_point), 0U);
+  EXPECT_GT(b.addTransformableRequest(cb, "a", "b", eval_time_time_point), 0U);
 
   geometry_msgs::msg::TransformStamped t;
   for (uint32_t i = 10; i > 0; --i)

@@ -27,16 +27,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <chrono>
+#include <functional>
+#include <memory>
+#include <thread>
+
 #include <gtest/gtest.h>
 
-#include "permuter.hpp"
-#include "tf2/exceptions.h"
-#include "tf2_ros/transform_listener.h"
+#include <geometry_msgs/msg/transform_stamped.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2/buffer_core.h>
+#include <tf2/exceptions.h>
+#include <tf2/time.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/buffer_interface.h>
 #include <tf2_ros/static_transform_broadcaster.h>
+#include <tf2_ros/transform_listener.h>
 
-const int MAX_ATTEMPTS = 100;
+#include "permuter.hpp"
+
+const int MAX_ATTEMPTS = 400;
 
 TEST(StaticTransformPublisher, a_b_different_times)
 {
@@ -69,7 +79,7 @@ TEST(StaticTransformPublisher, a_b_different_times)
   executor.cancel();
   spin_thread.join();
   node.reset();
-};
+}
 
 TEST(StaticTransformPublisher, a_c_different_times)
 {
@@ -101,7 +111,7 @@ TEST(StaticTransformPublisher, a_c_different_times)
   executor.cancel();
   spin_thread.join();
   node.reset();
-};
+}
 
 TEST(StaticTransformPublisher, a_d_different_times)
 {
@@ -150,7 +160,7 @@ TEST(StaticTransformPublisher, a_d_different_times)
   executor.cancel();
   spin_thread.join();
   node.reset();
-};
+}
 
 TEST(StaticTransformPublisher, multiple_parent_test)
 {
@@ -210,7 +220,7 @@ TEST(StaticTransformPublisher, multiple_parent_test)
   executor.cancel();
   spin_thread.join();
   node.reset();
-};
+}
 
 // TODO (ahcorde) static_transform_publisher allows to load transforma from yaml files
 // Revisit this test when "Load transform from yaml" is available
