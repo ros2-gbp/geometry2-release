@@ -32,20 +32,15 @@
 #ifndef TF2_ROS__TRANSFORM_LISTENER_H_
 #define TF2_ROS__TRANSFORM_LISTENER_H_
 
-#include <tf2/buffer_core.h>
-#include <tf2/time.h>
-#include <tf2_ros/visibility_control.h>
-
-#include <tf2_msgs/msg/tf_message.hpp>
-#include <rclcpp/rclcpp.hpp>
-
-#include <tf2_ros/qos.hpp>
-
-#include <functional>
 #include <memory>
+#include <string>
 #include <thread>
-#include <utility>
+#include "tf2_msgs/msg/tf_message.hpp"
+#include "rclcpp/rclcpp.hpp"
 
+#include "tf2_ros/buffer.h"
+#include "tf2_ros/qos.hpp"
+#include "tf2_ros/visibility_control.h"
 
 namespace tf2_ros
 {
@@ -67,7 +62,7 @@ public:
     const rclcpp::QoS & qos = DynamicListenerQoS(),
     const rclcpp::QoS & static_qos = StaticListenerQoS(),
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
-    rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
+      rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
   : buffer_(buffer)
   {
     init(node, spin_thread, qos, static_qos, options);
@@ -84,13 +79,11 @@ private:
     const rclcpp::QoS & qos,
     const rclcpp::QoS & static_qos,
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
-    rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
+      rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
   {
-    using callback_t = std::function<void (tf2_msgs::msg::TFMessage::SharedPtr)>;
-    callback_t cb = std::bind(
-      &TransformListener::subscription_callback, this, std::placeholders::_1, false);
-    callback_t static_cb = std::bind(
-      &TransformListener::subscription_callback, this, std::placeholders::_1, true);
+    using callback_t = std::function<void(tf2_msgs::msg::TFMessage::SharedPtr)>;
+    callback_t cb = std::bind(&TransformListener::subscription_callback, this, std::placeholders::_1, false);
+    callback_t static_cb = std::bind(&TransformListener::subscription_callback, this, std::placeholders::_1, true);
 
     message_subscription_tf_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
       node,
@@ -119,7 +112,7 @@ private:
 
   // ros::CallbackQueue tf_message_callback_queue_;
   using thread_ptr =
-    std::unique_ptr<std::thread, std::function<void (std::thread *)>>;
+    std::unique_ptr<std::thread, std::function<void(std::thread *)>>;
   thread_ptr dedicated_listener_thread_;
 
   rclcpp::Node::SharedPtr optional_default_node_ = nullptr;
