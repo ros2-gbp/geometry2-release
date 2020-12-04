@@ -2,40 +2,14 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.7 (2020-11-18)
+0.12.6 (2020-12-04)
 -------------------
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#331 <https://github.com/ros2/geometry2/issues/331>`_)
+* installed python tf2_geometry_msgs (`#207 <https://github.com/ros2/geometry2/issues/207>`_) (`#223 <https://github.com/ros2/geometry2/issues/223>`_)
+* Contributors: Alejandro Hernández Cordero
 
-0.13.6 (2020-10-28)
+0.12.5 (2020-01-17)
 -------------------
-* [Foxy backport] Add PoseWithCovarianceStamped transform support (`#336 <https://github.com/ros2/geometry2/issues/336>`_)
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
-* Don't install python tf2_geometry_msgs (`#299 <https://github.com/ros2/geometry2/issues/299>`_) (`#302 <https://github.com/ros2/geometry2/issues/302>`_)
-* Contributors: Alejandro Hernández Cordero, Nikolai Morin, Shane Loretz
-
-0.13.5 (2020-08-05)
--------------------
-
-0.13.4 (2020-06-03)
--------------------
-* export targets in addition to include directories / libraries (`#271 <https://github.com/ros2/geometry2/issues/271>`_)
-* Contributors: Dirk Thomas
-
-0.13.3 (2020-05-26)
--------------------
-
-0.13.2 (2020-05-18)
--------------------
-
-0.13.1 (2020-05-08)
--------------------
-
-0.13.0 (2020-04-30)
--------------------
-* Added doxyfiles and sphinx Makefiles (`#257 <https://github.com/ros2/geometry2/issues/257>`_)
-* add missing test dependency (`#256 <https://github.com/ros2/geometry2/issues/256>`_)
-* use target_include_directories (`#231 <https://github.com/ros2/geometry2/issues/231>`_)
-* installed python tf2_geometry_msgs (`#207 <https://github.com/ros2/geometry2/issues/207>`_)
-* Contributors: Alejandro Hernández Cordero, Dirk Thomas, Karsten Knese
 
 0.12.4 (2019-11-19)
 -------------------

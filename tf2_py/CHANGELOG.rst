@@ -2,37 +2,13 @@
 Changelog for package tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.7 (2020-11-18)
+0.12.6 (2020-12-04)
 -------------------
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#331 <https://github.com/ros2/geometry2/issues/331>`_)
+* Contributors: Alejandro Hernández Cordero
 
-0.13.6 (2020-10-28)
+0.12.5 (2020-01-17)
 -------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
-* Add in pytest.ini so tests succeed locally. (`#280 <https://github.com/ros2/geometry2/issues/280>`_)
-* Contributors: Alejandro Hernández Cordero, Chris Lalancette
-
-0.13.5 (2020-08-05)
--------------------
-
-0.13.4 (2020-06-03)
--------------------
-
-0.13.3 (2020-05-26)
--------------------
-
-0.13.2 (2020-05-18)
--------------------
-* Explicitly add DLL directories for Windows before importing (`#266 <https://github.com/ros2/geometry2/issues/266>`_)
-* Contributors: Jacob Perron
-
-0.13.1 (2020-05-08)
--------------------
-
-0.13.0 (2020-04-30)
--------------------
-* Fix build error in Focal (`#241 <https://github.com/ros2/geometry2/issues/241>`_)
-* Style cleanup on tf2_py.cpp (`#222 <https://github.com/ros2/geometry2/issues/222>`_)
-* Contributors: Alejandro Hernández Cordero, Ivan Santiago Paunovic
 
 0.12.4 (2019-11-19)
 -------------------

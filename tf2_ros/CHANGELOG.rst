@@ -2,104 +2,19 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.7 (2020-11-18)
+0.12.6 (2020-12-04)
 -------------------
-* [Foxy backport] Fixed memory leak in Buffer::waitForTransform (`#281 <https://github.com/ros2/geometry2/issues/281>`_) (`#330 <https://github.com/ros2/geometry2/issues/330>`_)
-* Contributors: Matthijs den Toom
+* Add missing visibility header include (`#246 <https://github.com/ros2/geometry2/issues/246>`_) (`#352 <https://github.com/ros2/geometry2/issues/352>`_)
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#331 <https://github.com/ros2/geometry2/issues/331>`_)
+* Moved unique_lock of messages_mutex\_ to guarantee pointer (`#279 <https://github.com/ros2/geometry2/issues/279>`_) (`#282 <https://github.com/ros2/geometry2/issues/282>`_)
+* Porting more tests to tf2_ros (`#202 <https://github.com/ros2/geometry2/issues/202>`_) (`#225 <https://github.com/ros2/geometry2/issues/225>`_)
+* message filter fix (`#216 <https://github.com/ros2/geometry2/issues/216>`_) (`#221 <https://github.com/ros2/geometry2/issues/221>`_)
+* Contributors: Alejandro Hernández Cordero, Jacob Perron, Martin Ganeff
 
-0.13.6 (2020-10-28)
+0.12.5 (2020-01-17)
 -------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
-* Clear callbacks_to_remove variable after removing (`#314 <https://github.com/ros2/geometry2/issues/314>`_)
-* Add pytest.ini to tf2_ros
-* Contributors: Alejandro Hernández Cordero, Jacob Perron, Matthijs den Toom
-
-0.13.5 (2020-08-05)
--------------------
-* Make static_transform_broadcaster consistent with its command line description (`#294 <https://github.com/ros2/geometry2/issues/294>`_) (`#296 <https://github.com/ros2/geometry2/issues/296>`_)
-* Fix dependencies in tf2_ros (`#269 <https://github.com/ros2/geometry2/issues/269>`_) (`#288 <https://github.com/ros2/geometry2/issues/288>`_)
-* Moved unique_lock of messages_mutex\_ to guarantee pointer (`#279 <https://github.com/ros2/geometry2/issues/279>`_) (`#283 <https://github.com/ros2/geometry2/issues/283>`_)
-* Contributors: Chris Lalancette, Hunter L. Allen, Martin Ganeff
-
-0.13.4 (2020-06-03)
--------------------
-* export targets in addition to include directories / libraries (`#271 <https://github.com/ros2/geometry2/issues/271>`_)
-* Add missing virtual destructors (`#272 <https://github.com/ros2/geometry2/issues/272>`_)
-* Contributors: Dirk Thomas, Ivan Santiago Paunovic
-
-0.13.3 (2020-05-26)
--------------------
-* Fixed in Exception constructor tf2_ros (`#267 <https://github.com/ros2/geometry2/issues/267>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.13.2 (2020-05-18)
--------------------
-
-0.13.1 (2020-05-08)
--------------------
-
-0.13.0 (2020-04-30)
--------------------
-* Added doxyfiles and sphinx Makefiles (`#257 <https://github.com/ros2/geometry2/issues/257>`_)
-* avoid more deprecations (`#255 <https://github.com/ros2/geometry2/issues/255>`_)
-* create_timer takes shared pointers (`#251 <https://github.com/ros2/geometry2/issues/251>`_)
-* Improve tf2_echo and tf2_monitor messages while waiting for data (`#254 <https://github.com/ros2/geometry2/issues/254>`_)
-* Add missing visibility header include (`#246 <https://github.com/ros2/geometry2/issues/246>`_)
-* Fix `-Wrange-loop-construct` (`#245 <https://github.com/ros2/geometry2/issues/245>`_)
-  ```
-  --- stderr: tf2_ros
-  /opt/ros/master/src/ros2/geometry2/tf2_ros/test/test_buffer.cpp:84:21: warning: loop variable 'elem' creates a copy from type 'const std::pair<const unsigned long, std::function<void (const unsigned long &)> >' [-Wrange-loop-construct]
-  for (const auto elem : timer_to_callback_map\_) {
-  ^
-  /opt/ros/master/src/ros2/geometry2/tf2_ros/test/test_buffer.cpp:84:10: note: use reference type 'const std::pair<const unsigned long, std::function<void (const unsigned long &)> > &' to prevent copying
-  for (const auto elem : timer_to_callback_map\_) {
-  ^~~~~~~~~~~~~~~~~
-  &
-  1 warning generated.
-  ---
-  ```
-* Remove TODO (`#234 <https://github.com/ros2/geometry2/issues/234>`_)
-  The TODO is done; The publisher is using QoS durability setting 'transient local' which is the closest thing to the 'latched' concept in ROS 1.
-  Signed-off-by: Jacob Perron <jacob@openrobotics.org>
-* Remove virtual keyword from overridden functions (`#214 <https://github.com/ros2/geometry2/issues/214>`_)
-  Signed-off-by: Hunter L. Allen <hunterlallen@protonmail.com>
-* message filter fix (`#216 <https://github.com/ros2/geometry2/issues/216>`_)
-  * Fixed meesage_filter add method
-  * removed using builtin_interfaces::msg::Time in tf2_ros
-* Porting more tests to tf2_ros (`#202 <https://github.com/ros2/geometry2/issues/202>`_)
-  * Added more tests to tf2_ros
-  * improving tf2_ros time_reset_test
-  * tf2_ros fixed failed test_buffer_client.cpp
-  * added some EXPECT to listener unittest
-  * reviews
-  * Update listener_unittest.cpp
-  * fixed tf2_ros time_reset_test
-  * tf2_ros removed ROS launch files
-  * Added TODO to fix test_buffer_client in CI
-  * tf2_ros added feedback
-* Add static transform component (`#182 <https://github.com/ros2/geometry2/issues/182>`_)
-  * Create a static transform component for composition
-  Signed-off-by: Hunter L. Allen <hunterlallen@protonmail.com>
-  * Suffix node name with randomly generated alpha-numeric string
-  Signed-off-by: Hunter L. Allen <hunterlallen@protonmail.com>
-  * Fix windows build
-  Signed-off-by: Hunter L. Allen <hunterlallen@protonmail.com>
-  * Switch to much more readable and more performant implementation by @clalancette
-  Signed-off-by: Hunter L. Allen <hunterlallen@protonmail.com>
 * Adding support for view_frame (`#192 <https://github.com/ros2/geometry2/issues/192>`_)
-  * Adding tf2_tools support for view_frames
-  * Changelog
-  * tf2_tools 0.12.1 package version
-  * tf2_tools common linters
-  * tf2_tools changelog Forthcoming
-  * tf2_tools log error and destroy client and node when a exception raised
-  * tf2_tools 0.12.4 package version
-  * tf2_tools revert some changes
-  * tf2_tools - reduce changes
-  * tf2_tools: finally block and passing the time instead of the node
-  * tf2_tools: buffer with less arguments
-  * tf2_tools: Fix condition
-* Contributors: Alejandro Hernández Cordero, Dan Rose, Hunter L. Allen, Jacob Perron, Karsten Knese, Shane Loretz, William Woodall
+* Contributors: Alejandro Hernández Cordero
 
 0.12.4 (2019-11-19)
 -------------------

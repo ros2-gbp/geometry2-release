@@ -2,41 +2,6 @@
 Changelog for package test_tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.7 (2020-11-18)
--------------------
-
-0.13.6 (2020-10-28)
--------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.13.5 (2020-08-05)
--------------------
-* Fix test_static_publisher (`#284 <https://github.com/ros2/geometry2/issues/284>`_) (`#287 <https://github.com/ros2/geometry2/issues/287>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.13.4 (2020-06-03)
--------------------
-
-0.13.3 (2020-05-26)
--------------------
-
-0.13.2 (2020-05-18)
--------------------
-* Fix deprecation warnings from launch (`#264 <https://github.com/ros2/geometry2/issues/264>`_)
-* Contributors: Chris Lalancette
-
-0.13.1 (2020-05-08)
--------------------
-
-0.13.0 (2020-04-30)
--------------------
-* Replace deprecated launch_ros usage (`#250 <https://github.com/ros2/geometry2/issues/250>`_)
-* Remote ready_fn from launch_testing tests (`#243 <https://github.com/ros2/geometry2/issues/243>`_)
-* [test_tf2] Call project() and ament_package() if not building tests (`#233 <https://github.com/ros2/geometry2/issues/233>`_)
-* Porting test_tf2  (`#203 <https://github.com/ros2/geometry2/issues/203>`_)
-* Contributors: Alejandro Hernández Cordero, Jacob Perron, Peter Baughman
-
 0.5.15 (2017-01-24)
 -------------------
 

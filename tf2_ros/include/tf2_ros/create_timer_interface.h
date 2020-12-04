@@ -74,10 +74,6 @@ public:
   using ConstSharedPtr = std::shared_ptr<const CreateTimerInterface>;
   using UniquePtr = std::unique_ptr<CreateTimerInterface>;
 
-  TF2_ROS_PUBLIC
-  virtual
-  ~CreateTimerInterface() = default;
-
   /**
    * \brief Create a new timer.
    *

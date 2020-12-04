@@ -31,14 +31,17 @@
 #*  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 #*  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 #*  POSSIBILITY OF SUCH DAMAGE.
-#*
+#* 
 #* Author: Felix Duvallet
 #***********************************************************
 
 import subprocess
 import unittest
 
-import rclpy
+import rospy
+PKG = 'test_tf2'
+import roslib; roslib.load_manifest(PKG)
+
 
 class TestStaticPublisher(unittest.TestCase):
     """
@@ -58,36 +61,36 @@ class TestStaticPublisher(unittest.TestCase):
 
     def test_publisher_no_args(self):
         # Start the publisher with no argument.
-        cmd = 'ros2 run tf2_ros static_transform_publisher'
+        cmd = 'rosrun tf2_ros static_transform_publisher'
         with self.assertRaises(subprocess.CalledProcessError) as cm:
             ret = subprocess.check_output(
                 cmd.split(' '), stderr=subprocess.STDOUT)
         self.assertEqual(255, cm.exception.returncode)
         self.assertIn('not having the right number of arguments',
-                      str(cm.exception.output))
+                      cm.exception.output)
 
     def test_publisher_nonexistent_param(self):
         # Here there is no paramater by that name.
-        cmd = 'ros2 run tf2_ros static_transform_publisher /test_tf2/tf_null'
+        cmd = 'rosrun tf2_ros static_transform_publisher /test_tf2/tf_null'
         with self.assertRaises(subprocess.CalledProcessError) as cm:
             ret = subprocess.check_output(
                 cmd.split(' '), stderr=subprocess.STDOUT)
 
         self.assertEqual(255, cm.exception.returncode)
-        self.assertIn('not having the right number of arguments',
-                      str(cm.exception.output))
+        self.assertIn('Could not read TF', cm.exception.output)
 
     def test_publisher_invalid_param(self):
         # Here there is an invalid parameter stored in the parameter server.
-        cmd = 'ros2 run tf2_ros static_transform_publisher /test_tf2/tf_invalid'
+        cmd = 'rosrun tf2_ros static_transform_publisher /test_tf2/tf_invalid'
         with self.assertRaises(subprocess.CalledProcessError) as cm:
             ret = subprocess.check_output(
                 cmd.split(' '), stderr=subprocess.STDOUT)
 
         self.assertEqual(255, cm.exception.returncode)
-        self.assertIn('exited due to not having the right number', str(cm.exception.output))
+        self.assertIn('Could not validate XmlRpcC', cm.exception.output)
 
 
 if __name__ == '__main__':
-    rclpy.init(args=None)
-    unittest.main()
+    rospy.init_node("test_static_publisher_py")
+    import rostest
+    rostest.rosrun(PKG, 'test_static_publisher_py', TestStaticPublisher)

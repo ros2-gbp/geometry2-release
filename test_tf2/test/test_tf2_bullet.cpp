@@ -29,9 +29,10 @@
 
 /** \author Wim Meeussen */
 
+
 #include <tf2_bullet/tf2_bullet.h>
 #include <tf2_ros/buffer.h>
-#include <rclcpp/rclcpp.hpp>
+#include <ros/ros.h>
 #include <gtest/gtest.h>
 #include <tf2/convert.h>
 
@@ -40,7 +41,7 @@ static const double EPS = 1e-3;
 
 TEST(TfBullet, Transform)
 {
-  tf2::Stamped<btTransform> v1(btTransform(btQuaternion(1,0,0,0), btVector3(1,2,3)), tf2::timeFromSec(2.0), "A");
+  tf2::Stamped<btTransform> v1(btTransform(btQuaternion(1,0,0,0), btVector3(1,2,3)), builtin_interfaces::msg::Time(2.0), "A");
 
   // simple api
   btTransform v_simple = tf_buffer->transform(v1, "B", tf2::durationFromSec(2.0));
@@ -49,16 +50,18 @@ TEST(TfBullet, Transform)
   EXPECT_NEAR(v_simple.getOrigin().getZ(), 27, EPS);
 
   // advanced api
-  btTransform v_advanced = tf_buffer->transform(v1, "B", tf2::timeFromSec(2.0),
+  btTransform v_advanced = tf_buffer->transform(v1, "B", builtin_interfaces::msg::Time(2.0),
 					       "B", tf2::durationFromSec(3.0));
   EXPECT_NEAR(v_advanced.getOrigin().getX(), -9, EPS);
   EXPECT_NEAR(v_advanced.getOrigin().getY(), 18, EPS);
   EXPECT_NEAR(v_advanced.getOrigin().getZ(), 27, EPS);
 }
 
+
+
 TEST(TfBullet, Vector)
 {
-  tf2::Stamped<btVector3>  v1(btVector3(1,2,3), tf2::timeFromSec(2.0), "A");
+  tf2::Stamped<btVector3>  v1(btVector3(1,2,3), builtin_interfaces::msg::Time(2.0), "A");
 
   // simple api
   btVector3 v_simple = tf_buffer->transform(v1, "B", tf2::durationFromSec(2.0));
@@ -67,24 +70,25 @@ TEST(TfBullet, Vector)
   EXPECT_NEAR(v_simple.getZ(), 27, EPS);
 
   // advanced api
-  btVector3 v_advanced = tf_buffer->transform(v1, "B", tf2::timeFromSec(2.0),
+  btVector3 v_advanced = tf_buffer->transform(v1, "B", builtin_interfaces::msg::Time(2.0),
   					     "B", tf2::durationFromSec(3.0));
   EXPECT_NEAR(v_advanced.getX(), -9, EPS);
   EXPECT_NEAR(v_advanced.getY(), 18, EPS);
   EXPECT_NEAR(v_advanced.getZ(), 27, EPS);
 }
 
+
+
+
 int main(int argc, char **argv){
   testing::InitGoogleTest(&argc, argv);
-  rclcpp::init(argc, argv);
+  ros::init(argc, argv, "test");
+  ros::NodeHandle n;
 
-  auto node = rclcpp::Node::make_shared("test_tf2_bullet");
-
-  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
-  tf_buffer = std::make_unique<tf2_ros::Buffer>(clock);
+  tf_buffer = std::make_unique<tf2_ros::Buffer>();
 
   // populate buffer
-  geometry_msgs::msg::TransformStamped t;
+  geometry_msgs::TransformStamped t;
   t.transform.translation.x = 10;
   t.transform.translation.y = 20;
   t.transform.translation.z = 30;
@@ -92,12 +96,11 @@ int main(int argc, char **argv){
   t.transform.rotation.x = 1;
   t.transform.rotation.y = 0;
   t.transform.rotation.z = 0;
-  t.header.stamp = tf2_ros::toMsg(tf2::timeFromSec(2));
+  t.header.stamp = builtin_interfaces::msg::Time(2.0);
   t.header.frame_id = "A";
   t.child_frame_id = "B";
   tf_buffer->setTransform(t, "test");
 
   int ret = RUN_ALL_TESTS();
-  rclcpp::shutdown();
   return ret;
 }

@@ -34,22 +34,19 @@
 *
 * Author: Eitan Marder-Eppstein
 *********************************************************************/
-#include <tf2_ros/buffer.h>
 #include <tf2_ros/buffer_server.h>
+#include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
-#include <rclcpp/rclcpp.hpp>
-#include <memory>
+#include <ros/ros.h>
 
 int main(int argc, char** argv)
 {
-  rclcpp::init(argc, argv);
+  ros::init(argc, argv, "buffer_server_test");
+  tf2_ros::Buffer buffer;
+  tf2_ros::TransformListener tfl(buffer);
+  tf2_ros::BufferServer server(buffer, "tf_action", false);
 
-  auto node = rclcpp::Node::make_shared("tf2_ros_message_filter");
-
-  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
-  tf2_ros::Buffer buffer(clock);
-  tf2_ros::TransformListener tfl(buffer, node, false);
-  std::unique_ptr<tf2_ros::BufferServer> server = std::make_unique<tf2_ros::BufferServer>(buffer, node, "tf_action");
-
-  rclcpp::spin(node);
+  server.start();
+  ros::spin();
 }
+

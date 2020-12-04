@@ -1,50 +1,24 @@
 cmake_minimum_required(VERSION 3.5)
 project(tf2_bullet)
 
-# Default to C11
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
+find_package(PkgConfig REQUIRED)
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+set(bullet_FOUND 0)
+pkg_check_modules(bullet REQUIRED bullet)
 
+find_package(catkin REQUIRED COMPONENTS geometry_msgs tf2)
 
-find_package(ament_cmake REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(tf2 REQUIRED)
-find_package(tf2_ros REQUIRED)
+include_directories(include ${bullet_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
 
-if(WIN32)
-  set(BULLET_ROOT $ENV{ChocolateyInstall}/lib/bullet)
-endif()
-find_package(Bullet REQUIRED)
-
-include_directories(include ${BULLET_INCLUDE_DIRS})
+catkin_package(INCLUDE_DIRS include ${bullet_INCLUDE_DIRS})
 
 install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION include/${PROJECT_NAME}
-)
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  find_package(ament_cmake_cppcheck REQUIRED)
-  list(APPEND AMENT_LINT_AUTO_EXCLUDE
-    ament_cmake_cppcheck
-  )
-  ament_lint_auto_find_test_dependencies()
-  ament_cppcheck(LANGUAGE c++)
 
-  find_package(ament_cmake_gtest REQUIRED)
-  ament_add_gtest(test_bullet test/test_tf2_bullet.cpp)
-  ament_target_dependencies(test_bullet
-    tf2
-    geometry_msgs
-    tf2_ros
-  )
+if(CATKIN_ENABLE_TESTING)
+
+catkin_add_gtest(test_bullet test/test_tf2_bullet.cpp)
+target_link_libraries(test_bullet ${catkin_LIBRARIES} ${GTEST_LIBRARIES})
+
 endif()
-
-ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})
-ament_package()

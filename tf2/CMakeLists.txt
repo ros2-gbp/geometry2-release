@@ -10,26 +10,22 @@ find_package(ament_cmake)
 find_package(console_bridge_vendor REQUIRED) # Provides console_bridge 0.4.0 on platforms without it.
 find_package(console_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(rcutils REQUIRED)
+
+include_directories(include src/bt)
 
 # export user definitions
 
 #CPP Libraries
 add_library(tf2 SHARED src/cache.cpp src/buffer_core.cpp src/static_cache.cpp src/time.cpp)
-target_include_directories(tf2 PUBLIC
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bt>"
-  "$<INSTALL_INTERFACE:include>")
 ament_target_dependencies(tf2
   "console_bridge"
   "geometry_msgs"
-  "rcutils"
 )
 # Causes the visibility macros to use dllexport rather than dllimport,
 # which is appropriate when building the dll but not consuming it.
 target_compile_definitions(tf2 PRIVATE "TF2_BUILDING_DLL")
 
-install(TARGETS tf2 EXPORT tf2
+install(TARGETS tf2
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -74,11 +70,6 @@ if(BUILD_TESTING)
     )
   endif()
 
-  ament_add_gtest(test_time test/test_time.cpp)
-  if (TARGET test_time)
-    target_link_libraries(test_time tf2)
-  endif()
-
 # TODO(tfoote) reimplement speed test without dependency on message datatypes.
 # add_executable(speed_test EXCLUDE_FROM_ALL test/speed_test.cpp)
 # target_link_libraries(speed_test tf2  ${geometry_msgs_LIBRARIES} ${console_bridge_LIBRARIES})
@@ -86,8 +77,7 @@ if(BUILD_TESTING)
 
 endif()
 
-ament_export_dependencies(console_bridge geometry_msgs rcutils)
+ament_export_dependencies(console_bridge)
 ament_export_include_directories(include)
 ament_export_libraries(tf2)
-ament_export_targets(tf2)
 ament_package()

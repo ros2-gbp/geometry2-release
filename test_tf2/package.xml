@@ -1,6 +1,6 @@
-<package format="2">
+<package>
   <name>test_tf2</name>
-  <version>0.13.7</version>
+  <version>0.9.1</version>
   <description>
     tf2 unit tests
   </description>
@@ -11,23 +11,29 @@
   <author email="tfoote@osrfoundation.org">Tully Foote</author>
   <author>Eitan Marder-Eppstein</author>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>rosconsole</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rostest</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>tf2</build_depend>
+  <build_depend>tf2_bullet</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2_geometry_msgs</build_depend>
+  <build_depend>tf2_kdl</build_depend>
+  <build_depend>tf2_msgs</build_depend>
 
-  <depend>geometry_msgs</depend>
-  <depend>rclcpp</depend>
-  <depend>rclcpp_action</depend>
-  <depend>rcpputils</depend>
-  <depend>rcutils</depend>
-  <depend>tf2</depend>
-  <depend>tf2_geometry_msgs</depend>
-  <depend>tf2_kdl</depend>
-  <depend>tf2_ros</depend>
-  <depend>launch_ros</depend>
+  <run_depend>rosconsole</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rostest</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>tf2</run_depend>
+  <run_depend>tf2_bullet</run_depend>
+  <run_depend>tf2_ros</run_depend>
+  <run_depend>tf2_geometry_msgs</run_depend>
+  <run_depend>tf2_kdl</run_depend>
+  <run_depend>tf2_msgs</run_depend>
 
-  <test_depend>ament_cmake_gtest</test_depend>
-  <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>rosunit</test_depend>
+  <test_depend>rosbash</test_depend>
 
-  <export>
-    <build_type>ament_cmake</build_type>
-  </export>
 </package>

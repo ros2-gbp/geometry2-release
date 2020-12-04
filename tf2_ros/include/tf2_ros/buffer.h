@@ -81,7 +81,7 @@ namespace tf2_ros
      * tf2::ExtrapolationException, tf2::InvalidArgumentException
      */
     TF2_ROS_PUBLIC
-    geometry_msgs::msg::TransformStamped
+    virtual geometry_msgs::msg::TransformStamped 
     lookupTransform(const std::string& target_frame, const std::string& source_frame,
                     const tf2::TimePoint& time, const tf2::Duration timeout) const override;
 
@@ -110,7 +110,7 @@ namespace tf2_ros
      * tf2::ExtrapolationException, tf2::InvalidArgumentException
      */
     TF2_ROS_PUBLIC
-    geometry_msgs::msg::TransformStamped
+    virtual geometry_msgs::msg::TransformStamped 
     lookupTransform(const std::string& target_frame, const tf2::TimePoint& target_time,
                     const std::string& source_frame, const tf2::TimePoint& source_time,
                     const std::string& fixed_frame, const tf2::Duration timeout) const override;
@@ -141,7 +141,7 @@ namespace tf2_ros
      * \return True if the transform is possible, false otherwise 
      */
     TF2_ROS_PUBLIC
-    bool
+    virtual bool
     canTransform(const std::string& target_frame, const std::string& source_frame, 
                  const tf2::TimePoint& target_time, const tf2::Duration timeout, std::string* errstr = NULL) const override;
 
@@ -169,7 +169,7 @@ namespace tf2_ros
      * \return True if the transform is possible, false otherwise 
      */
     TF2_ROS_PUBLIC
-    bool
+    virtual bool
       canTransform(const std::string& target_frame, const tf2::TimePoint& target_time,
                    const std::string& source_frame, const tf2::TimePoint& source_time,
                    const std::string& fixed_frame, const tf2::Duration timeout, std::string* errstr = NULL) const override;
@@ -211,7 +211,7 @@ namespace tf2_ros
     *   will be set on the future.
     */
     TF2_ROS_PUBLIC
-    TransformStampedFuture
+    virtual TransformStampedFuture
     waitForTransform(const std::string& target_frame, const std::string& source_frame, const tf2::TimePoint& time,
                      const tf2::Duration& timeout, TransformReadyCallback callback) override;
 

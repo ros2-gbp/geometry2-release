@@ -34,11 +34,9 @@
 
 #include <exception>
 #include <limits>
-#include <map>
 #include <mutex>
 #include <sstream>
 #include <thread>
-#include <unordered_map>
 
 //TODO(tfoote replace these terrible macros)
 #define ROS_ERROR printf
@@ -46,27 +44,9 @@
 #define ROS_INFO printf
 #define ROS_WARN printf
 
+
 namespace tf2_ros
 {
-
-// Added to backport: https://github.com/ros2/geometry2/pull/281
-static std::mutex g_object_map_to_cb_handle_mutex;
-static std::map<Buffer*, std::unordered_map<TimerHandle, tf2::TransformableCallbackHandle>> g_object_map_to_cb_handle;
-
-void deleteTransformCallbackHandle(Buffer *class_ptr, const TimerHandle &timer_handle)
-{
-  if (g_object_map_to_cb_handle.find(class_ptr) == g_object_map_to_cb_handle.end())
-  {
-    // Return if the object map cb handle is already removed
-    return;
-  }
-
-  g_object_map_to_cb_handle.at(class_ptr).erase(timer_handle);
-  if (g_object_map_to_cb_handle.at(class_ptr).size() == 0)
-  {
-    g_object_map_to_cb_handle.erase(class_ptr);
-  }
-}
 
 Buffer::Buffer(rclcpp::Clock::SharedPtr clock, tf2::Duration cache_time) :
   BufferCore(cache_time), clock_(clock), timer_interface_(nullptr)
@@ -235,14 +215,8 @@ Buffer::waitForTransform(const std::string& target_frame, const std::string& sou
         for (auto it = timer_to_request_map_.begin(); it != timer_to_request_map_.end(); ++it) {
           if (request_handle == it->second) {
             // The request handle was found, so a timeout has not occurred
-            auto timer_handle = it->first;
-            this->timer_interface_->remove(timer_handle);
-            this->timer_to_request_map_.erase(timer_handle);
-            {
-              std::lock_guard<std::mutex> lock(g_object_map_to_cb_handle_mutex);
-              // Remove the callback function.
-              deleteTransformCallbackHandle(this, timer_handle);
-            }
+            this->timer_interface_->remove(it->first);
+            this->timer_to_request_map_.erase(it->first);
             timeout_occurred = false;
             break;
           }
@@ -257,8 +231,8 @@ Buffer::waitForTransform(const std::string& target_frame, const std::string& sou
         geometry_msgs::msg::TransformStamped msg_stamped = this->lookupTransform(target_frame, source_frame, time);
         promise->set_value(msg_stamped);
       } else {
-        promise->set_exception(std::make_exception_ptr(tf2::LookupException(
-            "Failed to transform from " + source_frame + " to " + target_frame)));
+        promise->set_exception(std::make_exception_ptr<tf2::LookupException>(
+            "Failed to transform from " + source_frame + " to " + target_frame));
       }
       callback(future);
     });
@@ -268,14 +242,10 @@ Buffer::waitForTransform(const std::string& target_frame, const std::string& sou
     // Immediately transformable
     geometry_msgs::msg::TransformStamped msg_stamped = lookupTransform(target_frame, source_frame, time);
     promise->set_value(msg_stamped);
-    removeTransformableCallback(cb_handle);
-    callback(future);
   } else if (0xffffffffffffffffULL == handle) {
     // Never transformable
-    promise->set_exception(std::make_exception_ptr(tf2::LookupException(
-          "Failed to transform from " + source_frame + " to " + target_frame)));
-    removeTransformableCallback(cb_handle);
-    callback(future);
+    promise->set_exception(std::make_exception_ptr<tf2::LookupException>(
+          "Failed to transform from " + source_frame + " to " + target_frame));
   } else {
     std::lock_guard<std::mutex> lock(timer_to_request_map_mutex_);
     auto timer_handle = timer_interface_->createTimer(
@@ -283,16 +253,8 @@ Buffer::waitForTransform(const std::string& target_frame, const std::string& sou
       timeout,
       std::bind(&Buffer::timerCallback, this, std::placeholders::_1, promise, future, callback));
 
-    // Save association between timer and request/callback handle
+    // Save association between timer and request handle
     timer_to_request_map_[timer_handle] = handle;
-    {
-      std::lock_guard<std::mutex> lock(g_object_map_to_cb_handle_mutex);
-      if (g_object_map_to_cb_handle.find(this) == g_object_map_to_cb_handle.end())
-      {
-        g_object_map_to_cb_handle[this];
-      }
-      g_object_map_to_cb_handle.at(this)[timer_handle] = cb_handle;
-    }
   }
   return future;
 }
@@ -304,32 +266,22 @@ Buffer::timerCallback(const TimerHandle & timer_handle,
                       TransformReadyCallback callback)
 {
   bool timer_is_valid = false;
-  tf2::TransformableCallbackHandle callback_handle = 0u;
+  tf2::TransformableRequestHandle request_handle = 0u;
   {
     std::lock_guard<std::mutex> lock(timer_to_request_map_mutex_);
-    {
-      std::lock_guard<std::mutex> lock(g_object_map_to_cb_handle_mutex);
-      if (g_object_map_to_cb_handle.find(this) != g_object_map_to_cb_handle.end())
-      {
-        // Only if the map to callback handle isn't already removed.
-        auto timer_and_callback_it = g_object_map_to_cb_handle.at(this).find(timer_handle);
-        timer_is_valid = (g_object_map_to_cb_handle.at(this).end() != timer_and_callback_it);
-
-        if (timer_is_valid) {
-          callback_handle = timer_and_callback_it->second;
-        }
-
-        deleteTransformCallbackHandle(this, timer_handle);
-      }
+    auto timer_and_request_it = timer_to_request_map_.find(timer_handle);
+    timer_is_valid = (timer_to_request_map_.end() != timer_and_request_it);
+    if (timer_is_valid) {
+      request_handle = timer_and_request_it->second;
     }
     timer_to_request_map_.erase(timer_handle);
     timer_interface_->remove(timer_handle);
   }
 
   if (timer_is_valid) {
-    removeTransformableCallback(callback_handle);
+    cancelTransformableRequest(request_handle);
     promise->set_exception(
-      std::make_exception_ptr(tf2::TimeoutException(std::string("Timed out waiting for transform"))));
+      std::make_exception_ptr<tf2::TimeoutException>(std::string("Timed out waiting for transform")));
     callback(future);
   }
 }
