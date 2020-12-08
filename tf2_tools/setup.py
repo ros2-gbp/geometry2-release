@@ -1,12 +1,11 @@
-from setuptools import find_packages
 from setuptools import setup
 
-package_name = 'tf2_ros_py'
+package_name = 'tf2_tools'
 
 setup(
     name=package_name,
     version='0.15.1',
-    packages=find_packages(exclude=['test']),
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -14,20 +13,22 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    author='Eitan Marder-Eppstein',
-    author_email='',
-    maintainer='Tully Foote',
-    maintainer_email='tfoote@@osrfoundation.org',
+    author='Wim Meeussen',
+    maintainer='Chris Lalancette',
+    maintainer_email='clalancette@openrobotics.org',
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    description=(
-        'This package contains the ROS Python bindings for the tf2 library.'
-    ),
-    license='BSD',
+    description='tf2_tools for debugging',
+    license='Apache License, Version 2.0',
     tests_require=['pytest'],
+    entry_points={
+        'console_scripts': [
+            'view_frames = tf2_tools.view_frames:main',
+        ],
+    },
 )
