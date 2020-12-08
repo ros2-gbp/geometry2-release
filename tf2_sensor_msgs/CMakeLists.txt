@@ -6,7 +6,7 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra)
+  add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
 endif()
 
 find_package(ament_cmake_auto REQUIRED)
@@ -22,12 +22,8 @@ ament_auto_find_build_dependencies(REQUIRED ${required_dependencies})
 find_package(eigen3_cmake_module REQUIRED)
 find_package(Eigen3 REQUIRED)
 
-include_directories(include
-  ${sensor_msgs_INCLUDE_DIRS}
-  ${tf2_INCLUDE_DIRS}
-  ${tf2_ros_INCLUDE_DIRS}
-  ${Eigen3_INCLUDE_DIRS}
-)
+ament_export_dependencies(eigen3_cmake_module)
+ament_export_dependencies(Eigen3)
 
 # TODO enable tests
 #if(BUILD_TESTING)

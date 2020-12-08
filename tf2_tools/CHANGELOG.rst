@@ -2,14 +2,42 @@
 Changelog for package tf2_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.6 (2020-12-04)
+0.15.1 (2020-12-08)
 -------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#331 <https://github.com/ros2/geometry2/issues/331>`_)
-* tf2_tools update the shebang line (`#227 <https://github.com/ros2/geometry2/issues/227>`_)
+* Cleanup tf2_tools to be more modern. (`#351 <https://github.com/ros2/geometry2/issues/351>`_)
+* Contributors: Chris Lalancette
+
+0.15.0 (2020-11-02)
+-------------------
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
+* Contributors: Chris Lalancette
+
+0.14.1 (2020-09-21)
+-------------------
+* Address security bug in yaml loading (`#313 <https://github.com/ros2/geometry2/issues/313>`_)
+* Contributors: Víctor Mayoral Vilches
+
+0.14.0 (2020-08-14)
+-------------------
+* Split tf2_ros in tf2_ros and tf2_ros_py (`#210 <https://github.com/ros2/geometry2/issues/210>`_)
 * Contributors: Alejandro Hernández Cordero
 
-0.12.5 (2020-01-17)
+0.13.4 (2020-06-03)
 -------------------
+
+0.13.3 (2020-05-26)
+-------------------
+
+0.13.2 (2020-05-18)
+-------------------
+
+0.13.1 (2020-05-08)
+-------------------
+
+0.13.0 (2020-04-30)
+-------------------
+* Added doxyfiles and sphinx Makefiles (`#257 <https://github.com/ros2/geometry2/issues/257>`_)
+* tf2_tools update the shebang line (`#226 <https://github.com/ros2/geometry2/issues/226>`_)
 * Adding support for view_frame (`#192 <https://github.com/ros2/geometry2/issues/192>`_)
 * Contributors: Alejandro Hernández Cordero
 

@@ -26,14 +26,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include <functional>
+
+#include <tf2/time.h>
+#include <tf2_ros/create_timer_ros.h>
 
 #include <rclcpp/create_timer.hpp>
 #include <rclcpp/rclcpp.hpp>
 
-#include <tf2/time.h>
-
-#include <tf2_ros/create_timer_ros.h>
+#include <functional>
+#include <mutex>
+#include <stdexcept>
 
 namespace tf2_ros
 {
@@ -54,8 +56,8 @@ CreateTimerROS::createTimer(
   std::lock_guard<std::mutex> lock(timers_map_mutex_);
   auto timer_handle_index = next_timer_handle_index_++;
   auto timer = rclcpp::create_timer<std::function<void()>>(
-    node_base_.get(),
-    node_timers_.get(),
+    node_base_,
+    node_timers_,
     clock,
     period,
     std::bind(&CreateTimerROS::timerCallback, this, timer_handle_index, callback));

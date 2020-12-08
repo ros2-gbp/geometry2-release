@@ -27,8 +27,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <chrono>
-#include <future>
 
 #include <gtest/gtest.h>
 
@@ -39,7 +37,12 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/buffer_server.h>
 
-static const std::string ACTION_NAME = "test_tf2_buffer_action";
+#include <chrono>
+#include <future>
+#include <memory>
+#include <string>
+
+static const char ACTION_NAME[] = "test_tf2_buffer_action";
 
 class MockBufferClient : public rclcpp::Node
 {
@@ -48,8 +51,8 @@ class MockBufferClient : public rclcpp::Node
 
 public:
   MockBufferClient()
-    : rclcpp::Node("mock_buffer_client"),
-      accepted_(false)
+  : rclcpp::Node("mock_buffer_client"),
+    accepted_(false)
   {
     action_client_ = rclcpp_action::create_client<LookupTransformAction>(
       get_node_base_interface(),
@@ -82,8 +85,7 @@ public:
 
     auto send_goal_options = rclcpp_action::Client<LookupTransformAction>::SendGoalOptions();
     send_goal_options.goal_response_callback =
-      [this](std::shared_future<GoalHandle::SharedPtr> future) {
-        auto goal_handle = future.get();
+      [this](GoalHandle::SharedPtr goal_handle) {
         if (!goal_handle) {
           this->accepted_ = false;
         } else {
@@ -92,9 +94,9 @@ public:
       };
 
     send_goal_options.result_callback = [this, promise](const GoalHandle::WrappedResult & result) {
-      this->result_ = result;
-      promise->set_value(true);
-    };
+        this->result_ = result;
+        promise->set_value(true);
+      };
     action_client_->async_send_goal(goal, send_goal_options);
     return std::shared_future<bool>(promise->get_future());
   }
@@ -176,7 +178,7 @@ TEST_F(TestBufferServer, lookup_transform_available)
 
   auto spin_result = executor_.spin_until_future_complete(
     result_ready_future, std::chrono::seconds(3));
-  ASSERT_EQ(spin_result, rclcpp::executor::FutureReturnCode::SUCCESS);
+  ASSERT_EQ(spin_result, rclcpp::FutureReturnCode::SUCCESS);
 
   EXPECT_TRUE(mock_client_->accepted_);
   EXPECT_EQ(mock_client_->result_.code, rclcpp_action::ResultCode::SUCCEEDED);
@@ -193,7 +195,7 @@ TEST_F(TestBufferServer, lookup_transform_timeout)
   auto start_time = std::chrono::system_clock::now();
   auto spin_result = executor_.spin_until_future_complete(
     result_ready_future, std::chrono::seconds(3));
-  ASSERT_EQ(spin_result, rclcpp::executor::FutureReturnCode::SUCCESS);
+  ASSERT_EQ(spin_result, rclcpp::FutureReturnCode::SUCCESS);
   auto end_time = std::chrono::system_clock::now();
 
   auto time_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
@@ -214,7 +216,7 @@ TEST_F(TestBufferServer, lookup_transform_delayed)
   // Expect executor to timeout since transform is not available yet
   auto spin_result = executor_.spin_until_future_complete(
     result_ready_future, std::chrono::seconds(1));
-  EXPECT_EQ(spin_result, rclcpp::executor::FutureReturnCode::TIMEOUT);
+  EXPECT_EQ(spin_result, rclcpp::FutureReturnCode::TIMEOUT);
 
   EXPECT_TRUE(mock_client_->accepted_);
 
@@ -229,13 +231,13 @@ TEST_F(TestBufferServer, lookup_transform_delayed)
   // Wait some more
   spin_result = executor_.spin_until_future_complete(
     result_ready_future, std::chrono::seconds(3));
-  ASSERT_EQ(spin_result, rclcpp::executor::FutureReturnCode::SUCCESS);
+  ASSERT_EQ(spin_result, rclcpp::FutureReturnCode::SUCCESS);
 
   EXPECT_EQ(mock_client_->result_.code, rclcpp_action::ResultCode::SUCCEEDED);
 }
 
-int main(int argc, char **argv){
+int main(int argc, char ** argv)
+{
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-

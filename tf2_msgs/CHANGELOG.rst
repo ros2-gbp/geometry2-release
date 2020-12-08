@@ -2,13 +2,38 @@
 Changelog for package tf2_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.12.6 (2020-12-04)
+0.15.1 (2020-12-08)
 -------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#331 <https://github.com/ros2/geometry2/issues/331>`_)
-* Contributors: Alejandro Hernández Cordero
 
-0.12.5 (2020-01-17)
+0.15.0 (2020-11-02)
 -------------------
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
+* Contributors: Chris Lalancette
+
+0.14.1 (2020-09-21)
+-------------------
+* Activate usual compiler warnings and fix errors (`#270 <https://github.com/ros2/geometry2/issues/270>`_)
+* Contributors: Ivan Santiago Paunovic
+
+0.14.0 (2020-08-14)
+-------------------
+
+0.13.4 (2020-06-03)
+-------------------
+
+0.13.3 (2020-05-26)
+-------------------
+
+0.13.2 (2020-05-18)
+-------------------
+
+0.13.1 (2020-05-08)
+-------------------
+
+0.13.0 (2020-04-30)
+-------------------
+* Added linter test to tf2_msgs (`#209 <https://github.com/ros2/geometry2/issues/209>`_)
+* Contributors: Alejandro Hernández Cordero
 
 0.12.4 (2019-11-19)
 -------------------
