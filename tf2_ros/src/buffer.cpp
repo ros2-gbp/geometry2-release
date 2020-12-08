@@ -34,32 +34,49 @@
 
 #include <exception>
 #include <limits>
-#include <memory>
+#include <map>
 #include <mutex>
 #include <sstream>
-#include <string>
 #include <thread>
+#include <unordered_map>
 
-// TODO(tfoote): replace these terrible macros
+//TODO(tfoote replace these terrible macros)
 #define ROS_ERROR printf
 #define ROS_FATAL printf
 #define ROS_INFO printf
 #define ROS_WARN printf
 
-
 namespace tf2_ros
 {
 
-Buffer::Buffer(
-  rclcpp::Clock::SharedPtr clock, tf2::Duration cache_time,
-  rclcpp::Node::SharedPtr node)
-: BufferCore(cache_time), clock_(clock), node_(node), timer_interface_(nullptr)
+// Added to backport: https://github.com/ros2/geometry2/pull/281
+static std::mutex g_object_map_to_cb_handle_mutex;
+static std::map<Buffer*, std::unordered_map<TimerHandle, tf2::TransformableCallbackHandle>> g_object_map_to_cb_handle;
+
+void deleteTransformCallbackHandle(Buffer *class_ptr, const TimerHandle &timer_handle)
 {
-  if (nullptr == clock_) {
+  if (g_object_map_to_cb_handle.find(class_ptr) == g_object_map_to_cb_handle.end())
+  {
+    // Return if the object map cb handle is already removed
+    return;
+  }
+
+  g_object_map_to_cb_handle.at(class_ptr).erase(timer_handle);
+  if (g_object_map_to_cb_handle.at(class_ptr).size() == 0)
+  {
+    g_object_map_to_cb_handle.erase(class_ptr);
+  }
+}
+
+Buffer::Buffer(rclcpp::Clock::SharedPtr clock, tf2::Duration cache_time) :
+  BufferCore(cache_time), clock_(clock), timer_interface_(nullptr)
+{
+  if (nullptr == clock_)
+  {
     throw std::invalid_argument("clock must be a valid instance");
   }
 
-  auto post_jump_cb = [this](const rcl_time_jump_t & jump_info) {onTimeJump(jump_info);};
+  auto post_jump_cb = [this](const rcl_time_jump_t & jump_info) { onTimeJump(jump_info); };
 
   rcl_jump_threshold_t jump_threshold;
   // Disable forward jump callbacks
@@ -71,12 +88,12 @@ Buffer::Buffer(
 
   jump_handler_ = clock_->create_jump_callback(nullptr, post_jump_cb, jump_threshold);
 
-  if (node_) {
-    frames_server_ = node_->create_service<tf2_msgs::srv::FrameGraph>(
-      "tf2_frames", std::bind(
-        &Buffer::getFrames, this, std::placeholders::_1,
-        std::placeholders::_2));
-  }
+  // TODO(tfoote) reenable 
+  // if(debug && !ros::exists("~tf2_frames", false))
+  // {
+  //   ros::NodeHandle n("~");
+  //   frames_server_ = n.advertiseService("tf2_frames", &Buffer::getFrames, this);
+  // }
 }
 
 inline
@@ -90,13 +107,12 @@ inline
 rclcpp::Duration
 to_rclcpp(const tf2::Duration & duration)
 {
-  return rclcpp::Duration(std::chrono::nanoseconds(duration));
+  return rclcpp::Duration(std::chrono::nanoseconds(duration).count());
 }
 
-geometry_msgs::msg::TransformStamped
-Buffer::lookupTransform(
-  const std::string & target_frame, const std::string & source_frame,
-  const tf2::TimePoint & lookup_time, const tf2::Duration timeout) const
+geometry_msgs::msg::TransformStamped 
+Buffer::lookupTransform(const std::string& target_frame, const std::string& source_frame,
+                        const tf2::TimePoint& lookup_time, const tf2::Duration timeout) const
 {
   canTransform(target_frame, source_frame, lookup_time, timeout);
   return lookupTransform(target_frame, source_frame, lookup_time);
@@ -105,101 +121,99 @@ Buffer::lookupTransform(
 void Buffer::onTimeJump(const struct rcl_time_jump_t & time_jump)
 {
   if (RCL_ROS_TIME_ACTIVATED == time_jump.clock_change ||
-    RCL_ROS_TIME_DEACTIVATED == time_jump.clock_change)
+      RCL_ROS_TIME_DEACTIVATED == time_jump.clock_change)
   {
     ROS_WARN("Detected time source change. Clearing TF buffer.");
     clear();
-  } else if (time_jump.delta.nanoseconds < 0) {
+  }
+  else if (time_jump.delta.nanoseconds < 0)
+  {
     ROS_WARN("Detected jump back in time. Clearing TF buffer.");
     clear();
   }
 }
 
-geometry_msgs::msg::TransformStamped
-Buffer::lookupTransform(
-  const std::string & target_frame, const tf2::TimePoint & target_time,
-  const std::string & source_frame, const tf2::TimePoint & source_time,
-  const std::string & fixed_frame, const tf2::Duration timeout) const
+geometry_msgs::msg::TransformStamped 
+Buffer::lookupTransform(const std::string& target_frame, const tf2::TimePoint& target_time,
+                        const std::string& source_frame, const tf2::TimePoint& source_time,
+                        const std::string& fixed_frame, const tf2::Duration timeout) const
 {
   canTransform(target_frame, target_time, source_frame, source_time, fixed_frame, timeout);
   return lookupTransform(target_frame, target_time, source_frame, source_time, fixed_frame);
 }
 
-void conditionally_append_timeout_info(
-  std::string * errstr, const rclcpp::Time & start_time,
-  const rclcpp::Time & current_time,
-  const rclcpp::Duration & timeout)
+void conditionally_append_timeout_info(std::string * errstr, const rclcpp::Time& start_time,
+                                       const rclcpp::Time & current_time,
+                                       const rclcpp::Duration& timeout)
 {
-  if (errstr) {
+  if (errstr)
+  {
     std::stringstream ss;
-    ss << ". canTransform returned after " <<
-      tf2::durationToSec(from_rclcpp(current_time - start_time)) <<
-      " timeout was " << tf2::durationToSec(from_rclcpp(timeout)) << ".";
+    ss << ". canTransform returned after "
+       << tf2::durationToSec(from_rclcpp(current_time - start_time))
+       <<" timeout was " << tf2::durationToSec(from_rclcpp(timeout)) << ".";
     (*errstr) += ss.str();
   }
 }
 
 bool
-Buffer::canTransform(
-  const std::string & target_frame, const std::string & source_frame,
-  const tf2::TimePoint & time, const tf2::Duration timeout, std::string * errstr) const
+Buffer::canTransform(const std::string& target_frame, const std::string& source_frame, 
+                     const tf2::TimePoint& time, const tf2::Duration timeout, std::string* errstr) const
 {
-  if (!checkAndErrorDedicatedThreadPresent(errstr)) {
+  if (!checkAndErrorDedicatedThreadPresent(errstr))
     return false;
-  }
 
   rclcpp::Duration rclcpp_timeout(to_rclcpp(timeout));
 
   // poll for transform if timeout is set
   rclcpp::Time start_time = clock_->now();
   while (clock_->now() < start_time + rclcpp_timeout &&
-    !canTransform(target_frame, source_frame, time) &&
-    (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  // don't wait bag loop detected
-    (rclcpp::ok()))  // Make sure we haven't been stopped (won't work for pytf)
-  {
-    // TODO(sloretz) sleep using clock_->sleep_for when implemented
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-  }
+         !canTransform(target_frame, source_frame, time) &&
+         (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  //don't wait when we detect a bag loop
+         (rclcpp::ok()// || !ros::isInitialized() //TODO(tfoote) restore
+       )) // Make sure we haven't been stopped (won't work for pytf)
+    {
+      // TODO(sloretz) sleep using clock_->sleep_for when implemented
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
   bool retval = canTransform(target_frame, source_frame, time, errstr);
   rclcpp::Time current_time = clock_->now();
   conditionally_append_timeout_info(errstr, start_time, current_time, rclcpp_timeout);
   return retval;
 }
 
+    
 bool
-Buffer::canTransform(
-  const std::string & target_frame, const tf2::TimePoint & target_time,
-  const std::string & source_frame, const tf2::TimePoint & source_time,
-  const std::string & fixed_frame, const tf2::Duration timeout, std::string * errstr) const
+Buffer::canTransform(const std::string& target_frame, const tf2::TimePoint& target_time,
+                     const std::string& source_frame, const tf2::TimePoint& source_time,
+                     const std::string& fixed_frame, const tf2::Duration timeout, std::string* errstr) const
 {
-  if (!checkAndErrorDedicatedThreadPresent(errstr)) {
+  if (!checkAndErrorDedicatedThreadPresent(errstr))
     return false;
-  }
 
   rclcpp::Duration rclcpp_timeout(to_rclcpp(timeout));
 
   // poll for transform if timeout is set
   rclcpp::Time start_time = clock_->now();
   while (clock_->now() < start_time + rclcpp_timeout &&
-    !canTransform(target_frame, target_time, source_frame, source_time, fixed_frame) &&
-    (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  // don't wait bag loop detected
-    (rclcpp::ok()))  // Make sure we haven't been stopped (won't work for pytf)
-  {
-    // TODO(sloretz) sleep using clock_->sleep_for when implemented
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-  }
-  bool retval = canTransform(
-    target_frame, target_time,
-    source_frame, source_time, fixed_frame, errstr);
+         !canTransform(target_frame, target_time, source_frame, source_time, fixed_frame) &&
+         (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  //don't wait when we detect a bag loop
+         (rclcpp::ok() //|| !ros::isInitialized() //TODO(tfoote) restore
+          )
+        ) // Make sure we haven't been stopped (won't work for pytf)
+         {  
+          // TODO(sloretz) sleep using clock_->sleep_for when implemented
+          std::this_thread::sleep_for(std::chrono::milliseconds(10));
+         }
+  bool retval = canTransform(target_frame, target_time, source_frame, source_time, fixed_frame, errstr);
   rclcpp::Time current_time = clock_->now();
   conditionally_append_timeout_info(errstr, start_time, current_time, rclcpp_timeout);
-  return retval;
+  return retval; 
 }
 
 TransformStampedFuture
-Buffer::waitForTransform(
-  const std::string & target_frame, const std::string & source_frame, const tf2::TimePoint & time,
-  const tf2::Duration & timeout, TransformReadyCallback callback)
+Buffer::waitForTransform(const std::string& target_frame, const std::string& source_frame, const tf2::TimePoint& time,
+                         const tf2::Duration& timeout, TransformReadyCallback callback)
 {
   if (nullptr == timer_interface_) {
     throw CreateTimerInterfaceException("timer interface not set before call to waitForTransform");
@@ -208,9 +222,9 @@ Buffer::waitForTransform(
   auto promise = std::make_shared<std::promise<geometry_msgs::msg::TransformStamped>>();
   TransformStampedFuture future(promise->get_future());
 
-  auto cb = [this, promise, callback, future](
-    tf2::TransformableRequestHandle request_handle, const std::string & target_frame,
-    const std::string & source_frame, tf2::TimePoint time, tf2::TransformableResult result)
+  auto cb_handle = addTransformableCallback([this, promise, callback, future](
+    tf2::TransformableRequestHandle request_handle, const std::string& target_frame,
+    const std::string& source_frame, tf2::TimePoint time, tf2::TransformableResult result)
     {
       (void) request_handle;
 
@@ -221,8 +235,14 @@ Buffer::waitForTransform(
         for (auto it = timer_to_request_map_.begin(); it != timer_to_request_map_.end(); ++it) {
           if (request_handle == it->second) {
             // The request handle was found, so a timeout has not occurred
-            this->timer_interface_->remove(it->first);
-            this->timer_to_request_map_.erase(it->first);
+            auto timer_handle = it->first;
+            this->timer_interface_->remove(timer_handle);
+            this->timer_to_request_map_.erase(timer_handle);
+            {
+              std::lock_guard<std::mutex> lock(g_object_map_to_cb_handle_mutex);
+              // Remove the callback function.
+              deleteTransformCallbackHandle(this, timer_handle);
+            }
             timeout_occurred = false;
             break;
           }
@@ -234,31 +254,27 @@ Buffer::waitForTransform(
       }
 
       if (result == tf2::TransformAvailable) {
-        geometry_msgs::msg::TransformStamped msg_stamped = this->lookupTransform(
-          target_frame, source_frame, time);
+        geometry_msgs::msg::TransformStamped msg_stamped = this->lookupTransform(target_frame, source_frame, time);
         promise->set_value(msg_stamped);
       } else {
-        promise->set_exception(
-          std::make_exception_ptr(
-            tf2::LookupException(
-              "Failed to transform from " + source_frame + " to " + target_frame)));
+        promise->set_exception(std::make_exception_ptr(tf2::LookupException(
+            "Failed to transform from " + source_frame + " to " + target_frame)));
       }
       callback(future);
-    };
+    });
 
-  auto handle = addTransformableRequest(cb, target_frame, source_frame, time);
+  auto handle = addTransformableRequest(cb_handle, target_frame, source_frame, time);
   if (0 == handle) {
     // Immediately transformable
-    geometry_msgs::msg::TransformStamped msg_stamped = lookupTransform(
-      target_frame, source_frame, time);
+    geometry_msgs::msg::TransformStamped msg_stamped = lookupTransform(target_frame, source_frame, time);
     promise->set_value(msg_stamped);
+    removeTransformableCallback(cb_handle);
     callback(future);
   } else if (0xffffffffffffffffULL == handle) {
     // Never transformable
-    promise->set_exception(
-      std::make_exception_ptr(
-        tf2::LookupException(
+    promise->set_exception(std::make_exception_ptr(tf2::LookupException(
           "Failed to transform from " + source_frame + " to " + target_frame)));
+    removeTransformableCallback(cb_handle);
     callback(future);
   } else {
     std::lock_guard<std::mutex> lock(timer_to_request_map_mutex_);
@@ -267,62 +283,80 @@ Buffer::waitForTransform(
       timeout,
       std::bind(&Buffer::timerCallback, this, std::placeholders::_1, promise, future, callback));
 
-    // Save association between timer and request handle
+    // Save association between timer and request/callback handle
     timer_to_request_map_[timer_handle] = handle;
+    {
+      std::lock_guard<std::mutex> lock(g_object_map_to_cb_handle_mutex);
+      if (g_object_map_to_cb_handle.find(this) == g_object_map_to_cb_handle.end())
+      {
+        g_object_map_to_cb_handle[this];
+      }
+      g_object_map_to_cb_handle.at(this)[timer_handle] = cb_handle;
+    }
   }
   return future;
 }
 
 void
-Buffer::timerCallback(
-  const TimerHandle & timer_handle,
-  std::shared_ptr<std::promise<geometry_msgs::msg::TransformStamped>> promise,
-  TransformStampedFuture future,
-  TransformReadyCallback callback)
+Buffer::timerCallback(const TimerHandle & timer_handle,
+                      std::shared_ptr<std::promise<geometry_msgs::msg::TransformStamped>> promise,
+                      TransformStampedFuture future,
+                      TransformReadyCallback callback)
 {
   bool timer_is_valid = false;
-  tf2::TransformableRequestHandle request_handle = 0u;
+  tf2::TransformableCallbackHandle callback_handle = 0u;
   {
     std::lock_guard<std::mutex> lock(timer_to_request_map_mutex_);
-    auto timer_and_request_it = timer_to_request_map_.find(timer_handle);
-    timer_is_valid = (timer_to_request_map_.end() != timer_and_request_it);
-    if (timer_is_valid) {
-      request_handle = timer_and_request_it->second;
+    {
+      std::lock_guard<std::mutex> lock(g_object_map_to_cb_handle_mutex);
+      if (g_object_map_to_cb_handle.find(this) != g_object_map_to_cb_handle.end())
+      {
+        // Only if the map to callback handle isn't already removed.
+        auto timer_and_callback_it = g_object_map_to_cb_handle.at(this).find(timer_handle);
+        timer_is_valid = (g_object_map_to_cb_handle.at(this).end() != timer_and_callback_it);
+
+        if (timer_is_valid) {
+          callback_handle = timer_and_callback_it->second;
+        }
+
+        deleteTransformCallbackHandle(this, timer_handle);
+      }
     }
     timer_to_request_map_.erase(timer_handle);
     timer_interface_->remove(timer_handle);
   }
 
   if (timer_is_valid) {
-    cancelTransformableRequest(request_handle);
+    removeTransformableCallback(callback_handle);
     promise->set_exception(
-      std::make_exception_ptr(
-        tf2::TimeoutException(std::string("Timed out waiting for transform"))));
+      std::make_exception_ptr(tf2::TimeoutException(std::string("Timed out waiting for transform"))));
     callback(future);
   }
 }
 
-bool Buffer::getFrames(
-  const tf2_msgs::srv::FrameGraph::Request::SharedPtr req,
-  tf2_msgs::srv::FrameGraph::Response::SharedPtr res)
+bool Buffer::getFrames(tf2_msgs::srv::FrameGraph::Request& req, tf2_msgs::srv::FrameGraph::Response& res) 
 {
   (void)req;
-  res->frame_yaml = allFramesAsYAML();
+  res.frame_yaml = allFramesAsYAML();
   return true;
 }
 
-bool Buffer::checkAndErrorDedicatedThreadPresent(std::string * error_str) const
+
+
+bool Buffer::checkAndErrorDedicatedThreadPresent(std::string* error_str) const
 {
-  if (isUsingDedicatedThread()) {
+  if (isUsingDedicatedThread())
     return true;
-  }
+  
 
-  if (error_str) {
+
+  if (error_str)
     *error_str = tf2_ros::threading_error;
-  }
 
-  ROS_ERROR("%s", tf2_ros::threading_error);
+  ROS_ERROR("%s", tf2_ros::threading_error.c_str());
   return false;
 }
 
-}  // namespace tf2_ros
+
+
+}

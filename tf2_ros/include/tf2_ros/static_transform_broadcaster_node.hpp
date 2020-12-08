@@ -30,12 +30,11 @@
 #ifndef TF2_ROS__STATIC_TRANSFORM_BROADCASTER_NODE_HPP_
 #define TF2_ROS__STATIC_TRANSFORM_BROADCASTER_NODE_HPP_
 
-#include <tf2_ros/static_transform_broadcaster.h>
-#include <tf2_ros/static_transform_broadcaster_visibility_control.h>
-
-#include <rclcpp/rclcpp.hpp>
-
 #include <memory>
+
+#include "rclcpp/rclcpp.hpp"
+#include "tf2_ros/static_transform_broadcaster.h"
+#include "tf2_ros/static_transform_broadcaster_visibility_control.h"
 
 namespace tf2_ros
 {
@@ -51,7 +50,5 @@ public:
 private:
   std::unique_ptr<tf2_ros::StaticTransformBroadcaster> broadcaster_;
 };
-
-}  // namespace tf2_ros
-
+}
 #endif  // TF2_ROS__STATIC_TRANSFORM_BROADCASTER_NODE_HPP_
