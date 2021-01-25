@@ -2,6 +2,11 @@
 Changelog for package tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.16.0 (2021-01-25)
+-------------------
+* Adapt to Python 3.9 (`#362 <https://github.com/ros2/geometry2/issues/362>`_)
+* Contributors: Homalozoa X
+
 0.15.1 (2020-12-08)
 -------------------
 
