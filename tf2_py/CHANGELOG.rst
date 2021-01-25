@@ -2,23 +2,26 @@
 Changelog for package tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.9 (2020-12-09)
+0.16.0 (2021-01-25)
+-------------------
+* Adapt to Python 3.9 (`#362 <https://github.com/ros2/geometry2/issues/362>`_)
+* Contributors: Homalozoa X
+
+0.15.1 (2020-12-08)
 -------------------
 
-0.13.8 (2020-12-08)
+0.15.0 (2020-11-02)
+-------------------
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
+* Contributors: Chris Lalancette
+
+0.14.1 (2020-09-21)
 -------------------
 
-0.13.7 (2020-11-18)
+0.14.0 (2020-08-14)
 -------------------
-
-0.13.6 (2020-10-28)
--------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
 * Add in pytest.ini so tests succeed locally. (`#280 <https://github.com/ros2/geometry2/issues/280>`_)
-* Contributors: Alejandro Hernández Cordero, Chris Lalancette
-
-0.13.5 (2020-08-05)
--------------------
+* Contributors: Chris Lalancette
 
 0.13.4 (2020-06-03)
 -------------------

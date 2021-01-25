@@ -2,22 +2,28 @@
 Changelog for package tf2_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.9 (2020-12-09)
+0.16.0 (2021-01-25)
 -------------------
 
-0.13.8 (2020-12-08)
+0.15.1 (2020-12-08)
 -------------------
+* Cleanup tf2_tools to be more modern. (`#351 <https://github.com/ros2/geometry2/issues/351>`_)
+* Contributors: Chris Lalancette
 
-0.13.7 (2020-11-18)
+0.15.0 (2020-11-02)
 -------------------
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
+* Contributors: Chris Lalancette
 
-0.13.6 (2020-10-28)
+0.14.1 (2020-09-21)
 -------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
+* Address security bug in yaml loading (`#313 <https://github.com/ros2/geometry2/issues/313>`_)
+* Contributors: Víctor Mayoral Vilches
+
+0.14.0 (2020-08-14)
+-------------------
+* Split tf2_ros in tf2_ros and tf2_ros_py (`#210 <https://github.com/ros2/geometry2/issues/210>`_)
 * Contributors: Alejandro Hernández Cordero
-
-0.13.5 (2020-08-05)
--------------------
 
 0.13.4 (2020-06-03)
 -------------------
