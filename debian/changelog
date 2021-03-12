@@ -1,0 +1,71 @@
+ros-rolling-examples-tf2-py (0.16.0-2focal) focal; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Mon, 25 Jan 2021 08:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.15.1-2focal) focal; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Tue, 08 Dec 2020 08:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.15.0-2focal) focal; urgency=high
+
+  * Update maintainers of the ros2/geometry2 fork. (#328 <https://github.com/ros2/geometry2/issues/328>)
+  * Contributors: Chris Lalancette
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Mon, 02 Nov 2020 08:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.14.1-2focal) focal; urgency=high
+
+
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Mon, 21 Sep 2020 07:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.14.0-2focal) focal; urgency=high
+
+  * Add pytest.ini so local tests don't display warning (#276 <https://github.com/ros2/geometry2/issues/276>)
+  * Split tf2_ros in tf2_ros and tf2_ros_py (#210 <https://github.com/ros2/geometry2/issues/210>)
+  * Contributors: Alejandro Hernández Cordero, Chris Lalancette
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Fri, 14 Aug 2020 07:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.13.4-2focal) focal; urgency=high
+
+
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Wed, 03 Jun 2020 07:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.13.3-2focal) focal; urgency=high
+
+
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Tue, 26 May 2020 07:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.13.2-2focal) focal; urgency=high
+
+
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Mon, 18 May 2020 07:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.13.1-2focal) focal; urgency=high
+
+
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Fri, 08 May 2020 07:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.13.0-2focal) focal; urgency=high
+
+  * more verbose test_flake8 error messages (same as ros2/launch_ros#135 <https://github.com/ros2/launch_ros/issues/135>)
+  * Contributors: Dirk Thomas
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Thu, 30 Apr 2020 07:00:00 -0000
+
+ros-rolling-examples-tf2-py (0.12.4-2focal) focal; urgency=high
+
+  * Add Python examples for tf2_ros (#161 <https://github.com/ros2/geometry2/issues/161>)
+
+ -- Tully Foote <tfoote@osrfoundation.org>  Tue, 19 Nov 2019 08:00:00 -0000
+
+
