@@ -2,6 +2,11 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.17.0 (2021-03-19)
+-------------------
+* Fix doTransform with Eigen Quaternion (`#369 <https://github.com/ros2/geometry2/issues/369>`_)
+* Contributors: Bjar Ne
+
 0.16.0 (2021-01-25)
 -------------------
 
