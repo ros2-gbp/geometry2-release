@@ -37,14 +37,6 @@
 
 #include "tf2_ros/transform_listener.h"
 
-#include "rclcpp/create_subscription.hpp"
-
-// TODO(tfoote replace these terrible macros)
-#define ROS_ERROR printf
-#define ROS_FATAL printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-
 namespace tf2_ros
 {
 
@@ -60,7 +52,10 @@ TransformListener::TransformListener(tf2::BufferCore & buffer, bool spin_thread)
   options.start_parameter_event_publisher(false);
   options.start_parameter_services(false);
   optional_default_node_ = rclcpp::Node::make_shared("_", options);
-  init(optional_default_node_, spin_thread, DynamicListenerQoS(), StaticListenerQoS());
+  init(
+    optional_default_node_, spin_thread, DynamicListenerQoS(), StaticListenerQoS(),
+    detail::get_default_transform_listener_sub_options(),
+    detail::get_default_transform_listener_static_sub_options());
 }
 
 TransformListener::~TransformListener()
@@ -108,7 +103,8 @@ void TransformListener::subscription_callback(
     } catch (const tf2::TransformException & ex) {
       // /\todo Use error reporting
       std::string temp = ex.what();
-      ROS_ERROR(
+      RCLCPP_ERROR(
+        node_logging_interface_->get_logger(),
         "Failure to set received transform from %s to %s with error: %s\n",
         msg_in.transforms[i].child_frame_id.c_str(),
         msg_in.transforms[i].header.frame_id.c_str(), temp.c_str());
