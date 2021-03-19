@@ -59,8 +59,15 @@ public:
   TransformBroadcaster(
     NodeT && node,
     const rclcpp::QoS & qos = DynamicBroadcasterQoS(),
-    const rclcpp::PublisherOptionsWithAllocator<AllocatorT> & options =
-    rclcpp::PublisherOptionsWithAllocator<AllocatorT>())
+    const rclcpp::PublisherOptionsWithAllocator<AllocatorT> & options = []() {
+      rclcpp::PublisherOptionsWithAllocator<AllocatorT> options;
+      options.qos_overriding_options = rclcpp::QosOverridingOptions{
+        rclcpp::QosPolicyKind::Depth,
+        rclcpp::QosPolicyKind::Durability,
+        rclcpp::QosPolicyKind::History,
+        rclcpp::QosPolicyKind::Reliability};
+      return options;
+    } ())
   {
     publisher_ = rclcpp::create_publisher<tf2_msgs::msg::TFMessage>(
       node, "/tf", qos, options);
