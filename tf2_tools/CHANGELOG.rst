@@ -2,6 +2,9 @@
 Changelog for package tf2_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.17.1 (2021-04-06)
+-------------------
+
 0.17.0 (2021-03-19)
 -------------------
 * Add wait time option to view_frames (`#374 <https://github.com/ros2/geometry2/issues/374>`_)
