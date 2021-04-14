@@ -32,51 +32,18 @@
 #ifndef TF2_ROS__TRANSFORM_LISTENER_H_
 #define TF2_ROS__TRANSFORM_LISTENER_H_
 
-#include <tf2/buffer_core.h>
-#include <tf2/time.h>
-#include <tf2_ros/visibility_control.h>
-
-#include <tf2_msgs/msg/tf_message.hpp>
-#include <rclcpp/rclcpp.hpp>
-
-#include <tf2_ros/qos.hpp>
-
-#include <functional>
 #include <memory>
+#include <string>
 #include <thread>
-#include <utility>
+#include "tf2_msgs/msg/tf_message.hpp"
+#include "rclcpp/rclcpp.hpp"
 
+#include "tf2_ros/buffer.h"
+#include "tf2_ros/qos.hpp"
+#include "tf2_ros/visibility_control.h"
 
 namespace tf2_ros
 {
-
-namespace detail
-{
-template<class AllocatorT = std::allocator<void>>
-rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>
-get_default_transform_listener_sub_options()
-{
-  rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> options;
-  options.qos_overriding_options = rclcpp::QosOverridingOptions{
-    rclcpp::QosPolicyKind::Depth,
-    rclcpp::QosPolicyKind::Durability,
-    rclcpp::QosPolicyKind::History,
-    rclcpp::QosPolicyKind::Reliability};
-  return options;
-}
-
-template<class AllocatorT = std::allocator<void>>
-rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>
-get_default_transform_listener_static_sub_options()
-{
-  rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> options;
-  options.qos_overriding_options = rclcpp::QosOverridingOptions{
-    rclcpp::QosPolicyKind::Depth,
-    rclcpp::QosPolicyKind::History,
-    rclcpp::QosPolicyKind::Reliability};
-  return options;
-}
-}  // namespace detail
 
 /** \brief This class provides an easy way to request and receive coordinate frame transform information.
  */
@@ -95,13 +62,10 @@ public:
     const rclcpp::QoS & qos = DynamicListenerQoS(),
     const rclcpp::QoS & static_qos = StaticListenerQoS(),
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
-    detail::get_default_transform_listener_sub_options<AllocatorT>(),
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options =
-    detail::get_default_transform_listener_static_sub_options<AllocatorT>())
+      rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
   : buffer_(buffer)
   {
-    init(node, spin_thread, qos, static_qos, options, static_options);
-    node_logging_interface_ = node->get_node_logging_interface();
+    init(node, spin_thread, qos, static_qos, options);
   }
 
   TF2_ROS_PUBLIC
@@ -114,16 +78,12 @@ private:
     bool spin_thread,
     const rclcpp::QoS & qos,
     const rclcpp::QoS & static_qos,
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options,
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options)
+    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
+      rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>())
   {
-    node_logging_interface_ = node->get_node_logging_interface();
-
-    using callback_t = std::function<void (tf2_msgs::msg::TFMessage::SharedPtr)>;
-    callback_t cb = std::bind(
-      &TransformListener::subscription_callback, this, std::placeholders::_1, false);
-    callback_t static_cb = std::bind(
-      &TransformListener::subscription_callback, this, std::placeholders::_1, true);
+    using callback_t = std::function<void(tf2_msgs::msg::TFMessage::SharedPtr)>;
+    callback_t cb = std::bind(&TransformListener::subscription_callback, this, std::placeholders::_1, false);
+    callback_t static_cb = std::bind(&TransformListener::subscription_callback, this, std::placeholders::_1, true);
 
     message_subscription_tf_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
       node,
@@ -136,7 +96,7 @@ private:
       "/tf_static",
       static_qos,
       std::move(static_cb),
-      static_options);
+      options);
 
     if (spin_thread) {
       initThread(node->get_node_base_interface());
@@ -144,8 +104,7 @@ private:
   }
 
   TF2_ROS_PUBLIC
-  void initThread(
-    rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface);
+  void initThread(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface);
 
   /// Callback function for ros message subscriptoin
   TF2_ROS_PUBLIC
@@ -153,7 +112,7 @@ private:
 
   // ros::CallbackQueue tf_message_callback_queue_;
   using thread_ptr =
-    std::unique_ptr<std::thread, std::function<void (std::thread *)>>;
+    std::unique_ptr<std::thread, std::function<void(std::thread *)>>;
   thread_ptr dedicated_listener_thread_;
 
   rclcpp::Node::SharedPtr optional_default_node_ = nullptr;
@@ -161,7 +120,6 @@ private:
   rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr message_subscription_tf_static_;
   tf2::BufferCore & buffer_;
   tf2::TimePoint last_update_;
-  rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging_interface_;
 };
 }  // namespace tf2_ros
 

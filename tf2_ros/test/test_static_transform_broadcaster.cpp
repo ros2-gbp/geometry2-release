@@ -30,8 +30,6 @@
 #include <gtest/gtest.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 
-#include <memory>
-
 #include "node_wrapper.hpp"
 
 class CustomNode : public rclcpp::Node

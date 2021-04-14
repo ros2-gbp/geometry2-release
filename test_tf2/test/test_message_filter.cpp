@@ -29,24 +29,16 @@
 
 /** \author Josh Faust */
 
-#include <functional>
-#include <memory>
-#include <string>
-#include <vector>
-
 #include <gtest/gtest.h>
 
-#include <builtin_interfaces/msg/time.hpp>
 #include <geometry_msgs/msg/point_stamped.hpp>
-#include <geometry_msgs/msg/transform_stamped.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2/buffer_core.h>
-#include <tf2/LinearMath/Quaternion.h>
-#include <tf2/LinearMath/Vector3.h>
-#include <tf2/time.h>
-#include <tf2_ros/buffer_interface.h>
 #include <tf2_ros/create_timer_ros.h>
 #include <tf2_ros/message_filter.h>
+
+#include <functional>
+#include <memory>
 
 class Notification
 {
@@ -58,14 +50,11 @@ public:
 
   void notify(const geometry_msgs::msg::PointStamped::ConstSharedPtr& message)
   {
-    (void)message;
     ++count_;
   }
 
   void failure(const geometry_msgs::msg::PointStamped::ConstSharedPtr& message, tf2_ros::filter_failure_reasons::FilterFailureReason reason)
   {
-    (void)message;
-    (void)reason;
     ++failure_count_;
   }
 
@@ -223,6 +212,7 @@ TEST(MessageFilter, concurrentTransforms)
       filter.add(msg);
     }
     t.join();
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
     EXPECT_EQ(messages, n.count_);
 

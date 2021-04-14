@@ -9,28 +9,22 @@ if(NOT BUILD_TESTING)
   return()
 endif()
 
-# Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
-
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
-endif()
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(ament_cmake_gtest REQUIRED)
-find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(launch_testing_ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(tf2 REQUIRED)
 # TODO (ahcorde): activate when tf2_bullet is merged
 # find_package(tf2_bullet REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_kdl REQUIRED)
-find_package(tf2_ros REQUIRED)
 
 ament_find_gtest()
+
+include_directories(${GTEST_INCLUDE_DIRS})
 
 # TODO (ahcorde): activate when tf2_bullet is merged
 # find_package(PkgConfig REQUIRED)
@@ -40,19 +34,15 @@ ament_find_gtest()
 ament_add_gtest(buffer_core_test test/buffer_core_test.cpp)
 if(TARGET buffer_core_test)
   ament_target_dependencies(buffer_core_test
-    builtin_interfaces
-    geometry_msgs
     rclcpp
     tf2
     tf2_geometry_msgs
-    tf2_ros
   )
 endif()
 
 ament_add_gtest(test_message_filter test/test_message_filter.cpp)
 if(TARGET test_message_filter)
   ament_target_dependencies(test_message_filter
-    builtin_interfaces
     geometry_msgs
     rclcpp
     tf2
@@ -72,7 +62,6 @@ endif()
 ament_add_gtest(test_utils test/test_utils.cpp)
 if(TARGET test_utils)
   ament_target_dependencies(test_utils
-    geometry_msgs
     tf2
     tf2_geometry_msgs
     tf2_kdl
@@ -84,6 +73,7 @@ endif()
 # if(TARGET test_buffer_server)
 #   ament_target_dependencies(test_buffer_server
 #     rclcpp
+#     rclcpp_action
 #     tf2_bullet
 #     tf2_ros
 #   )
@@ -94,6 +84,7 @@ endif()
 # if(TARGET test_buffer_client)
 #   ament_target_dependencies(test_buffer_client
 #     rclcpp
+#     rclcpp_action
 #     tf2_bullet
 #     tf2_kdl
 #     tf2_ros
@@ -105,12 +96,10 @@ endif()
 add_executable(test_static_publisher test/test_static_publisher.cpp)
 if(TARGET test_static_publisher)
   ament_target_dependencies(test_static_publisher
-    geometry_msgs
-    rclcpp
-    tf2
     tf2_ros
+    rclcpp
+    rclcpp_action
   )
-  target_include_directories(test_static_publisher PRIVATE ${GTEST_INCLUDE_DIRS})
   target_link_libraries(test_static_publisher ${GTEST_LIBRARIES})
   add_launch_test(test/static_publisher.launch.py)
 endif()
@@ -120,6 +109,7 @@ endif()
 # if(TARGET test_tf2_bullet)
 #   ament_target_dependencies(test_tf2_bullet
 #       rclcpp
+#       rclcpp_action
 #       tf2_bullet
 #       tf2_ros
 #   )
