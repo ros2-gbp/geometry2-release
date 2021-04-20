@@ -1,1 +1,1 @@
-{"base": "b91fecb1", "parent": "debian/rolling/tf2_eigen_kdl", "previous": "b4d33203", "trim": "", "trimbase": ""}
+{"base": "82efc4c0", "parent": "debian/galactic/tf2_eigen_kdl", "previous": "ca9a0374", "trim": "", "trimbase": ""}
