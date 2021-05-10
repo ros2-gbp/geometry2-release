@@ -1,0 +1,12 @@
+Source: ros-galactic-geometry2
+Section: misc
+Priority: optional
+Maintainer: Chris Lalancette <clalancette@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-galactic-ament-cmake, ros-galactic-ros-workspace
+Homepage: http://www.ros.org/wiki/geometry2
+Standards-Version: 3.9.2
+
+Package: ros-galactic-geometry2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-galactic-tf2, ros-galactic-tf2-bullet, ros-galactic-tf2-eigen, ros-galactic-tf2-eigen-kdl, ros-galactic-tf2-geometry-msgs, ros-galactic-tf2-kdl, ros-galactic-tf2-msgs, ros-galactic-tf2-py, ros-galactic-tf2-ros, ros-galactic-tf2-sensor-msgs, ros-galactic-tf2-tools, ros-galactic-ros-workspace
+Description: A metapackage to bring in the default packages second generation Transform Library in ros, tf2.
