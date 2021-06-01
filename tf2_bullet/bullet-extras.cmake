@@ -1,4 +1,4 @@
-# Copyright 2008 Willow Garage, Inc.
+# Copyright 2021 Open Source Robotics Foundation, Inc.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -10,7 +10,7 @@
 #      notice, this list of conditions and the following disclaimer in the
 #      documentation and/or other materials provided with the distribution.
 #
-#    * Neither the name of the Willow Garage, Inc. nor the names of its
+#    * Neither the name of the Open Source Robotics Foundation, Inc. nor the names of its
 #      contributors may be used to endorse or promote products derived from
 #      this software without specific prior written permission.
 #
@@ -26,5 +26,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+if(WIN32)
+  set(BULLET_ROOT $ENV{ChocolateyInstall}/lib/bullet)
+endif()
+find_package(Bullet REQUIRED)
 
-from .tf2_geometry_msgs import *  # noqa
+include_directories(SYSTEM ${BULLET_INCLUDE_DIRS})
