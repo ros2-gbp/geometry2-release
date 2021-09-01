@@ -2,38 +2,28 @@
 Changelog for package tf2_bullet
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.18.0 (2021-06-01)
--------------------
-* Fix tf2_bullet dependency export (`#428 <https://github.com/ros2/geometry2/issues/428>`_)
-* Deprecate tf2_bullet.h (`#412 <https://github.com/ros2/geometry2/issues/412>`_)
-* Contributors: Bjar Ne, Chris Lalancette
+0.13.11 (2021-08-31)
+--------------------
 
-0.17.1 (2021-04-06)
--------------------
+0.13.10 (2021-04-14)
+--------------------
 
-0.17.0 (2021-03-19)
+0.13.9 (2020-12-09)
 -------------------
 
-0.16.0 (2021-01-25)
+0.13.8 (2020-12-08)
 -------------------
 
-0.15.1 (2020-12-08)
+0.13.7 (2020-11-18)
 -------------------
 
-0.15.0 (2020-11-02)
+0.13.6 (2020-10-28)
 -------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
-* Contributors: Chris Lalancette
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
+* Contributors: Alejandro Hernández Cordero
 
-0.14.1 (2020-09-21)
+0.13.5 (2020-08-05)
 -------------------
-* Activate usual compiler warnings and fix errors (`#270 <https://github.com/ros2/geometry2/issues/270>`_)
-* Contributors: Ivan Santiago Paunovic
-
-0.14.0 (2020-08-14)
--------------------
-* Suppress compiler warning on Centos (`#290 <https://github.com/ros2/geometry2/issues/290>`_)
-* Contributors: Michael Carroll
 
 0.13.4 (2020-06-03)
 -------------------

@@ -30,15 +30,20 @@
 /** \author Tully Foote */
 
 #include <memory>
-#include <sstream>
 #include <string>
-#include <thread>
 #include <utility>
 
 #include "tf2_ros/transform_listener.h"
 
-namespace tf2_ros
-{
+#include "rclcpp/create_subscription.hpp"
+
+using namespace tf2_ros;
+
+// TODO(tfoote replace these terrible macros)
+#define ROS_ERROR printf
+#define ROS_FATAL printf
+#define ROS_INFO printf
+#define ROS_WARN printf
 
 TransformListener::TransformListener(tf2::BufferCore & buffer, bool spin_thread)
 : buffer_(buffer)
@@ -52,10 +57,7 @@ TransformListener::TransformListener(tf2::BufferCore & buffer, bool spin_thread)
   options.start_parameter_event_publisher(false);
   options.start_parameter_services(false);
   optional_default_node_ = rclcpp::Node::make_shared("_", options);
-  init(
-    optional_default_node_, spin_thread, DynamicListenerQoS(), StaticListenerQoS(),
-    detail::get_default_transform_listener_sub_options(),
-    detail::get_default_transform_listener_static_sub_options());
+  init(optional_default_node_, spin_thread, DynamicListenerQoS(), StaticListenerQoS());
 }
 
 TransformListener::~TransformListener()
@@ -90,26 +92,20 @@ void TransformListener::initThread(
   buffer_.setUsingDedicatedThread(true);
 }
 
-void TransformListener::subscription_callback(
-  const tf2_msgs::msg::TFMessage::SharedPtr msg,
-  bool is_static)
+void TransformListener::subscription_callback(const tf2_msgs::msg::TFMessage::SharedPtr msg, bool is_static)
 {
   const tf2_msgs::msg::TFMessage & msg_in = *msg;
   // TODO(tfoote) find a way to get the authority
-  std::string authority = "Authority undetectable";
-  for (size_t i = 0u; i < msg_in.transforms.size(); i++) {
+  std::string authority = "Authority undetectable";  // msg_evt.getPublisherName();  // lookup the authority
+  for (auto i = 0u; i < msg_in.transforms.size(); i++) {
     try {
       buffer_.setTransform(msg_in.transforms[i], authority, is_static);
-    } catch (const tf2::TransformException & ex) {
+    } catch (tf2::TransformException & ex) {
       // /\todo Use error reporting
       std::string temp = ex.what();
-      RCLCPP_ERROR(
-        node_logging_interface_->get_logger(),
-        "Failure to set received transform from %s to %s with error: %s\n",
+      ROS_ERROR("Failure to set recieved transform from %s to %s with error: %s\n",
         msg_in.transforms[i].child_frame_id.c_str(),
         msg_in.transforms[i].header.frame_id.c_str(), temp.c_str());
     }
   }
 }
-
-}  // namespace tf2_ros

@@ -27,17 +27,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <gtest/gtest.h>
-#include <tf2_ros/buffer.h>
-#include <tf2_ros/transform_listener.h>
-
-#include <rclcpp/rclcpp.hpp>
-#include <builtin_interfaces/msg/time.hpp>
-
 #include <chrono>
+#include <gtest/gtest.h>
 #include <functional>
 #include <memory>
 #include <thread>
+#include <rclcpp/rclcpp.hpp>
+#include <builtin_interfaces/msg/time.hpp>
+#include <tf2_ros/transform_listener.h>
 
 TEST(tf2_ros_test_listener, transform_listener)
 {
@@ -69,9 +66,7 @@ TEST(tf2_ros_test_listener, transform_listener)
 
   EXPECT_TRUE(buffer.canTransform("a", "b", tf2::timeFromSec(0)));
 
-  geometry_msgs::msg::TransformStamped out_rootc = buffer.lookupTransform(
-    "a", "b",
-    builtin_interfaces::msg::Time());
+  geometry_msgs::msg::TransformStamped out_rootc = buffer.lookupTransform("a", "b", builtin_interfaces::msg::Time());
 
   EXPECT_EQ(1, out_rootc.transform.translation.x);
   EXPECT_EQ(2, out_rootc.transform.translation.y);
@@ -86,8 +81,7 @@ TEST(tf2_ros_test_listener, transform_listener)
   node.reset();
 }
 
-int main(int argc, char ** argv)
-{
+int main(int argc, char **argv){
   testing::InitGoogleTest(&argc, argv);
   rclcpp::init(argc, argv);
   return RUN_ALL_TESTS();

@@ -27,6 +27,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <rclcpp/rclcpp.hpp>
+#include <geometry_msgs/msg/point_stamped.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
 #include <gtest/gtest.h>
 #include <message_filters/subscriber.h>
 #include <message_filters/simple_filter.h>
@@ -37,14 +40,6 @@
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2_ros/transform_listener.h>
 
-#include <rclcpp/rclcpp.hpp>
-#include <geometry_msgs/msg/point_stamped.hpp>
-#include <geometry_msgs/msg/transform_stamped.hpp>
-
-#include <memory>
-#include <string>
-#include <vector>
-
 uint8_t filter_callback_fired = 0;
 void filter_callback(const geometry_msgs::msg::PointStamped & msg)
 {
@@ -54,6 +49,7 @@ void filter_callback(const geometry_msgs::msg::PointStamped & msg)
 
 TEST(tf2_ros_message_filter, construction_and_destruction)
 {
+
   auto node = rclcpp::Node::make_shared("test_message_filter_node");
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer buffer(clock);
@@ -200,13 +196,22 @@ TEST(tf2_ros_message_filter, failure_reason_string_conversion)
 {
   // Sanity test defined messages
   EXPECT_EQ(
-    "unknown",
+    "Unknown",
     tf2_ros::get_filter_failure_reason_string(tf2_ros::filter_failure_reasons::Unknown)
   );
+  EXPECT_EQ(
+    "OutTheBack",
+    tf2_ros::get_filter_failure_reason_string(tf2_ros::filter_failure_reasons::OutTheBack)
+  );
+  EXPECT_EQ(
+    "EmptyFrameID",
+    tf2_ros::get_filter_failure_reason_string(tf2_ros::filter_failure_reasons::EmptyFrameID)
+  );
+
   // Make sure all values have been given a string
-  for (size_t i = 1; i < tf2_ros::filter_failure_reasons::FilterFailureReasonCount; i++) {
+  for (size_t i=0; i < tf2_ros::filter_failure_reasons::FilterFailureReasonCount; i++) {
     EXPECT_NE(
-      "unknown",
+      "Invalid Failure Reason",
       tf2_ros::get_filter_failure_reason_string(
         tf2_ros::filter_failure_reasons::FilterFailureReason(i))
     );
@@ -215,7 +220,7 @@ TEST(tf2_ros_message_filter, failure_reason_string_conversion)
   // Test that value outside the defined range has been given a string and that count was
   // maintained at the end
   EXPECT_EQ(
-    "unknown",
+    "Invalid Failure Reason",
     tf2_ros::get_filter_failure_reason_string(
       tf2_ros::filter_failure_reasons::FilterFailureReasonCount)
   );
