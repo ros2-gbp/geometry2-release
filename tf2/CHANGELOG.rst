@@ -2,38 +2,58 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.13.12 (2021-10-05)
---------------------
-* Workaround with pragma push and pop for NO_ERROR collison (`#456 <https://github.com/ros2/geometry2/issues/456>`_)
-* Contributors: Lior Lustgarten
+0.19.0 (2021-10-15)
+-------------------
+* Remove unnecessary test dependencies.
+* Remove some references to the ROS 1 wiki.
+* Add rosidl_runtime_cpp as build_depend and build_export_depend.
+* Minor cleanups in CMakeLists.txt.
+* Remove include directory that doesn't exist.
+* Remove completely unnecessary target_link_libraries.
+* Remove unused speed_test from tf2.
+* Suppress clang warnings about enumerator attributes. (`#463 <https://github.com/ros2/geometry2/issues/463>`_)
+* Change TF2Error names to be a bit more descriptive. (`#349 <https://github.com/ros2/geometry2/issues/349>`_)
+* Fixed errors due to missing header link. (`#432 <https://github.com/ros2/geometry2/issues/432>`_)
+* Contributors: Chris Lalancette, Shivam Pandey
 
-0.13.11 (2021-08-31)
---------------------
-* Fix a TOCTTOU race in tf2 (`#307 <https://github.com/ros2/geometry2/issues/307>`_) (`#449 <https://github.com/ros2/geometry2/issues/449>`_)
-* Contributors: Chris Lalancette, Louise Poubel
+0.18.0 (2021-06-01)
+-------------------
+* Deprecate tf2_geometry_msgs.h (`#418 <https://github.com/ros2/geometry2/issues/418>`_)
+* Speedup covariance unwrapping (`#399 <https://github.com/ros2/geometry2/issues/399>`_)
+* Contributors: Chris Lalancette, Dima Dorezyuk
 
-0.13.10 (2021-04-14)
---------------------
+0.17.1 (2021-04-06)
+-------------------
+* Change index.ros.org -> docs.ros.org. (`#394 <https://github.com/ros2/geometry2/issues/394>`_)
+* Contributors: Chris Lalancette
 
-0.13.9 (2020-12-09)
+0.17.0 (2021-03-19)
 -------------------
 
-0.13.8 (2020-12-08)
+0.16.0 (2021-01-25)
 -------------------
 
-0.13.7 (2020-11-18)
+0.15.1 (2020-12-08)
 -------------------
-* [Foxy backport] Fixed memory leak in Buffer::waitForTransform (`#281 <https://github.com/ros2/geometry2/issues/281>`_) (`#330 <https://github.com/ros2/geometry2/issues/330>`_)
-* Contributors: Matthijs den Toom
 
-0.13.6 (2020-10-28)
+0.15.0 (2020-11-02)
 -------------------
-* [Foxy backport] Add PoseWithCovarianceStamped transform support (`#336 <https://github.com/ros2/geometry2/issues/336>`_)
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
-* Contributors: Alejandro Hernández Cordero, Nikolai Morin
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
+* Contributors: Chris Lalancette
 
-0.13.5 (2020-08-05)
+0.14.1 (2020-09-21)
 -------------------
+* Active usual compiler warnings in tf2 (`#322 <https://github.com/ros2/geometry2/issues/322>`_)
+* Cleanups in buffer_core.cpp. (`#301 <https://github.com/ros2/geometry2/issues/301>`_)
+* Add PoseWithCovarianceStamped transform support (`#312 <https://github.com/ros2/geometry2/issues/312>`_)
+* Contributors: Chris Lalancette, Ivan Santiago Paunovic, Joshua Whitley
+
+0.14.0 (2020-08-14)
+-------------------
+* Fix a TOCTTOU race in tf2. (`#307 <https://github.com/ros2/geometry2/issues/307>`_)
+* Fixed memory leak in Buffer::waitForTransform (`#281 <https://github.com/ros2/geometry2/issues/281>`_)
+* Add common linters to tf2. (`#258 <https://github.com/ros2/geometry2/issues/258>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Martin Ganeff
 
 0.13.4 (2020-06-03)
 -------------------
@@ -70,7 +90,7 @@ Changelog for package tf2
 
 0.12.3 (2019-11-18)
 -------------------
-* Provide more available error messaging for nonexistent and invalid frames in canTransform (`#187 <https://github.com/ros2/geometry2/issues/187>`_)
+* Provide more available error messaging for nonexistent and invalid frames in canTransform (`ros2 #187 <https://github.com/ros2/geometry2/issues/187>`_)
 * Contributors: Emerson Knapp
 
 0.12.2 (2019-11-18)

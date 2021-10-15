@@ -6,7 +6,7 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra)
+  add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
 endif()
 
 find_package(ament_cmake_auto REQUIRED)
@@ -28,8 +28,18 @@ ament_auto_find_build_dependencies(REQUIRED ${required_dependencies})
 # )
 
 if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+
+  list(APPEND AMENT_LINT_AUTO_EXCLUDE
+    ament_cmake_cppcheck
+  )
+  ament_lint_auto_find_test_dependencies()
+
+  ament_cppcheck(LANGUAGE "c++")
+
   find_package(ament_cmake_gtest REQUIRED)
   find_package(rclcpp REQUIRED)
+
   ament_add_gtest(test_tf2_geometry_msgs test/test_tf2_geometry_msgs.cpp)
   if(TARGET test_tf2_geometry_msgs)
     target_include_directories(test_tf2_geometry_msgs PUBLIC include)

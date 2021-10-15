@@ -33,6 +33,9 @@
 #include <gtest/gtest.h>
 #include <rclcpp/rclcpp.hpp>
 
+#include <memory>
+#include <string>
+
 class NodeWrapper
 {
 public:
@@ -45,6 +48,12 @@ public:
 
   rclcpp::node_interfaces::NodeTopicsInterface::SharedPtr
   get_node_topics_interface() {return this->node->get_node_topics_interface();}
+
+  rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr
+  get_node_logging_interface() {return this->node->get_node_logging_interface();}
+
+  rclcpp::node_interfaces::NodeParametersInterface::SharedPtr
+  get_node_parameters_interface() {return this->node->get_node_parameters_interface();}
 
 private:
   rclcpp::Node::SharedPtr node;

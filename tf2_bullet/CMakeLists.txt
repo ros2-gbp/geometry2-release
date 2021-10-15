@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(tf2_bullet)
 
-# Default to C11
+# Default to C14
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
 endif()
 
 
@@ -46,5 +46,4 @@ if(BUILD_TESTING)
 endif()
 
 ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})
-ament_package()
+ament_package(CONFIG_EXTRAS bullet-extras.cmake)
