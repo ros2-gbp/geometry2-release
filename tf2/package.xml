@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>tf2</name>
-  <version>0.18.0</version>
+  <version>0.19.0</version>
   <description>
     tf2 is the second generation of the transform library, which lets
     the user keep track of multiple coordinate frames over time. tf2
@@ -19,6 +19,9 @@
   <author>Wim Meeussen</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rosidl_runtime_cpp</build_depend>
+  <build_export_depend>rosidl_runtime_cpp</build_export_depend>
 
   <depend>console_bridge_vendor</depend>
   <depend>geometry_msgs</depend>
