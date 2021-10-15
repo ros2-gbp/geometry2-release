@@ -15,6 +15,7 @@ find_package(console_bridge_vendor REQUIRED) # Provides console_bridge 0.4.0 on 
 find_package(console_bridge REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(rcutils REQUIRED)
+find_package(rosidl_runtime_cpp REQUIRED)
 
 # export user definitions
 
@@ -22,7 +23,6 @@ find_package(rcutils REQUIRED)
 add_library(tf2 SHARED src/cache.cpp src/buffer_core.cpp src/static_cache.cpp src/time.cpp)
 target_include_directories(tf2 PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bt>"
   "$<INSTALL_INTERFACE:include>")
 ament_target_dependencies(tf2
   "console_bridge"
@@ -52,28 +52,18 @@ if(BUILD_TESTING)
   ament_add_gtest(test_cache_unittest test/cache_unittest.cpp)
   if(TARGET test_cache_unittest)
     target_link_libraries(test_cache_unittest tf2)
-    ament_target_dependencies(test_cache_unittest
-      "geometry_msgs"
-      "console_bridge"
-    )
   endif()
 
   ament_add_gtest(test_static_cache_unittest test/static_cache_test.cpp)
   if(TARGET test_static_cache_unittest)
     target_link_libraries(test_static_cache_unittest tf2)
-    ament_target_dependencies(test_static_cache_unittest
-      "geometry_msgs"
-      "console_bridge"
-    )
-    target_link_libraries(test_static_cache_unittest tf2 ${geometry_msgs_LIBRARIES} ${console_bridge_LIBRARIES})
   endif()
 
-  ament_add_gtest(test_simple test/simple_tf2_core.cpp)
-  if(TARGET test_simple)
-    target_link_libraries(test_simple tf2)
-    ament_target_dependencies(test_simple
+  ament_add_gtest(test_simple_tf2_core test/simple_tf2_core.cpp)
+  if(TARGET test_simple_tf2_core)
+    target_link_libraries(test_simple_tf2_core tf2)
+    ament_target_dependencies(test_simple_tf2_core
       "geometry_msgs"
-      "console_bridge"
     )
   endif()
 
@@ -81,15 +71,9 @@ if(BUILD_TESTING)
   if(TARGET test_time)
     target_link_libraries(test_time tf2)
   endif()
-
-# TODO(tfoote) reimplement speed test without dependency on message datatypes.
-# add_executable(speed_test EXCLUDE_FROM_ALL test/speed_test.cpp)
-# target_link_libraries(speed_test tf2  ${geometry_msgs_LIBRARIES} ${console_bridge_LIBRARIES})
-# add_dependencies(tests speed_test)
-
 endif()
 
-ament_export_dependencies(console_bridge geometry_msgs rcutils)
+ament_export_dependencies(console_bridge geometry_msgs rcutils rosidl_runtime_cpp)
 ament_export_include_directories(include)
 ament_export_libraries(tf2)
 ament_export_targets(tf2)
