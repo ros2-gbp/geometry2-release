@@ -31,9 +31,9 @@
 
 import unittest
 
-from geometry_msgs.msg import (PointStamped, PoseStamped,
-                               PoseWithCovarianceStamped, Quaternion,
-                               TransformStamped, Vector3Stamped)
+from geometry_msgs.msg import PointStamped, PoseStamped, PoseWithCovarianceStamped, Quaternion
+from geometry_msgs.msg import TransformStamped, Vector3Stamped
+import numpy as np
 import rclpy
 import tf2_geometry_msgs
 import tf2_ros
@@ -50,7 +50,8 @@ class GeometryMsgs(unittest.TestCase):
         t.header.frame_id = 'a'
         t.child_frame_id = 'b'
         b.set_transform(t, 'eitan_rocks')
-        out = b.lookup_transform('a', 'b',
+        out = b.lookup_transform('a',
+                                 'b',
                                  rclpy.time.Time(seconds=2.0).to_msg(),
                                  rclpy.time.Duration(seconds=2))
         self.assertEqual(out.transform.translation.x, 1)
@@ -134,6 +135,47 @@ class GeometryMsgs(unittest.TestCase):
         self.assertEqual(out.vector.x, -1)
         self.assertEqual(out.vector.y, 0)
         self.assertEqual(out.vector.z, 0)
+
+        # Testing for pose and covariance transform
+        t = TransformStamped()
+        t.transform.translation.x = 1.0
+        t.transform.translation.y = 2.0
+        t.transform.translation.z = 3.0
+        t.transform.rotation = Quaternion(w=0.0, x=1.0, y=0.0, z=0.0)
+
+        v = PoseWithCovarianceStamped()
+        v.header.stamp = rclpy.time.Time(seconds=2.0).to_msg()
+        v.header.frame_id = 'a'
+        v.pose.covariance = (
+          1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
+          1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
+          1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
+          1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
+          1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
+          1.0, 2.0, 3.0, 4.0, 5.0, 6.0
+        )
+        v.pose.pose.position.x = 1.0
+        v.pose.pose.position.y = 2.0
+        v.pose.pose.position.z = 3.0
+        v.pose.pose.orientation = Quaternion(w=0.0, x=1.0, y=0.0, z=0.0)
+
+        out = tf2_geometry_msgs.do_transform_pose_with_covariance_stamped(v, t)
+        expected_covariance = np.array([
+          1.0, -2.0, -3.0, 4.0, -5.0, -6.0,
+          -1.0, 2.0, 3.0, -4.0, 5.0, 6.0,
+          -1.0, 2.0, 3.0, -4.0, 5.0, 6.0,
+          1.0, -2.0, -3.0, 4.0, -5.0, -6.0,
+          -1.0, 2.0, 3.0, -4.0, 5.0, 6.0,
+          -1.0, 2.0, 3.0, -4.0, 5.0, 6.0
+        ])
+        self.assertEqual(out.pose.pose.position.x, 2)
+        self.assertEqual(out.pose.pose.position.y, 0)
+        self.assertEqual(out.pose.pose.position.z, 0)
+        self.assertEqual(out.pose.orientation.x, 0)
+        self.assertEqual(out.pose.orientation.y, 0)
+        self.assertEqual(out.pose.orientation.z, 0)
+        self.assertEqual(out.pose.orientation.w, 1)
+        self.assertTrue(np.array_equal(out.pose.covariance, expected_covariance))
 
 
 if __name__ == '__main__':
