@@ -2,6 +2,9 @@
 Changelog for package test_tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.0 (2021-12-17)
+-------------------
+
 0.19.0 (2021-10-15)
 -------------------
 * More Intuitive CLI for Static Transform Publisher (`#392 <https://github.com/ros2/geometry2/issues/392>`_)
