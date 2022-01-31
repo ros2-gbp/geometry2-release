@@ -73,7 +73,6 @@ class TestBroadcasterAndListener(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.node.destroy_node()
         rclpy.shutdown()
 
     def setUp(self):

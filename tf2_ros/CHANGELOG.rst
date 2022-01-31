@@ -2,79 +2,53 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.21.0 (2022-01-14)
+0.13.13 (2022-01-31)
+--------------------
+
+0.13.12 (2021-10-05)
+--------------------
+
+0.13.11 (2021-08-31)
+--------------------
+* Fix tf2_echo does not work with ros-args (`#407 <https://github.com/ros2/geometry2/issues/407>`_) (`#408 <https://github.com/ros2/geometry2/issues/408>`_) (`#411 <https://github.com/ros2/geometry2/issues/411>`_)
+* Avoid using invalid std::list iterators (`#293 <https://github.com/ros2/geometry2/issues/293>`_) (`#419 <https://github.com/ros2/geometry2/issues/419>`_)
+* Fix accessing free'd resources (`#386 <https://github.com/ros2/geometry2/issues/386>`_) (`#419 <https://github.com/ros2/geometry2/issues/419>`_)
+* Contributors: Chris Lalancette, Kazunari Tanaka, Michael Carroll, PGotzmann, simutisernestas
+
+0.13.10 (2021-04-14)
+--------------------
+* Update for python3.8 (`#359 <https://github.com/ros2/geometry2/issues/359>`_)
+* Contributors: Fabrice Larribe
+
+0.13.9 (2020-12-09)
 -------------------
-* Fix cpplint errors (`#497 <https://github.com/ros2/geometry2/issues/497>`_)
+
+0.13.8 (2020-12-08)
+-------------------
+* Generate callbacks after updating message\_ (`#274 <https://github.com/ros2/geometry2/issues/274>`_) (`#353 <https://github.com/ros2/geometry2/issues/353>`_)
+  * Generate callbacks after updating message\_
+  * Add test for multithread TransformListener to test_message_filter
+  Co-authored-by: ymd-stella <7959916+ymd-stella@users.noreply.github.com>
 * Contributors: Jacob Perron
 
-0.20.0 (2021-12-17)
+0.13.7 (2020-11-18)
 -------------------
-* Fixes for uncrustify 0.72 (`#486 <https://github.com/ros2/geometry2/issues/486>`_)
-* Contributors: Chris Lalancette
+* [Foxy backport] Fixed memory leak in Buffer::waitForTransform (`#281 <https://github.com/ros2/geometry2/issues/281>`_) (`#330 <https://github.com/ros2/geometry2/issues/330>`_)
+* Contributors: Matthijs den Toom
 
-0.19.0 (2021-10-15)
+0.13.6 (2020-10-28)
 -------------------
-* More Intuitive CLI for Static Transform Publisher (`#392 <https://github.com/ros2/geometry2/issues/392>`_)
-* Reduce transform listener nodes (`#442 <https://github.com/ros2/geometry2/issues/442>`_)
-* `tf2_ros`: Fix deprecated subscriber callbacks (`#448 <https://github.com/ros2/geometry2/issues/448>`_)
-* Contributors: Abrar Rahman Protyasha, Hunter L. Allen, gezp
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
+* Clear callbacks_to_remove variable after removing (`#314 <https://github.com/ros2/geometry2/issues/314>`_)
+* Add pytest.ini to tf2_ros
+* Contributors: Alejandro Hernández Cordero, Jacob Perron, Matthijs den Toom
 
-0.18.0 (2021-06-01)
+0.13.5 (2020-08-05)
 -------------------
-* Fix tf2_echo does not work with ros-args (`#407 <https://github.com/ros2/geometry2/issues/407>`_) (`#408 <https://github.com/ros2/geometry2/issues/408>`_)
-* Contributors: PGotzmann
-
-0.17.1 (2021-04-06)
--------------------
-
-0.17.0 (2021-03-19)
--------------------
-* Guard against access to null node pointer (`#393 <https://github.com/ros2/geometry2/issues/393>`_)
-* Allow to reconfigure durability for /tf topic broadcaster/listener (`#383 <https://github.com/ros2/geometry2/issues/383>`_)
-* Fix the rcl type used in the time jump. (`#391 <https://github.com/ros2/geometry2/issues/391>`_)
-* Fix linter errors (`#385 <https://github.com/ros2/geometry2/issues/385>`_)
-* fix accessing freed resources (`#386 <https://github.com/ros2/geometry2/issues/386>`_)
-* Allow reconfiguring qos of tf and tf_static topics through parameters (`#381 <https://github.com/ros2/geometry2/issues/381>`_)
-* Replace ROS\_* logging macros and use RCLCPP\_* instead (`#380 <https://github.com/ros2/geometry2/issues/380>`_)
-* Contributors: Audrow Nash, Chris Lalancette, Ivan Santiago Paunovic, Jacob Perron, Kazunari Tanaka
-
-0.16.0 (2021-01-25)
--------------------
-* Improve message filters error messages (`#364 <https://github.com/ros2/geometry2/issues/364>`_)
-* Contributors: Ivan Santiago Paunovic
-
-0.15.1 (2020-12-08)
--------------------
-* Clarify the role of child_frame_id and header.frame_id in the documentation. (`#345 <https://github.com/ros2/geometry2/issues/345>`_)
-* Contributors: Vikas Dhiman
-
-0.15.0 (2020-11-02)
--------------------
-* Remove usage of deprecated rclcpp::Duration constructor (`#340 <https://github.com/ros2/geometry2/issues/340>`_)
-* Remove messages_count member from tf2_ros::MessageFilter. (`#335 <https://github.com/ros2/geometry2/issues/335>`_)
-* Style fixup in tf2_ros. (`#325 <https://github.com/ros2/geometry2/issues/325>`_)
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
-* Contributors: Chris Lalancette, Ivan Santiago Paunovic
-
-0.14.1 (2020-09-21)
--------------------
-* Update goal response callback signature (`#323 <https://github.com/ros2/geometry2/issues/323>`_)
-* Activate usual compiler warnings and fix errors (`#270 <https://github.com/ros2/geometry2/issues/270>`_)
-* Contributors: Ivan Santiago Paunovic, Jacob Perron
-
-0.14.0 (2020-08-14)
--------------------
-* Fixed memory leak in Buffer::waitForTransform (`#281 <https://github.com/ros2/geometry2/issues/281>`_)
-* fix time-reset test with Connext (`#306 <https://github.com/ros2/geometry2/issues/306>`_)
-* reenable FrameGraph server (`#198 <https://github.com/ros2/geometry2/issues/198>`_)
-* Use the usual style of parameters for static_transform_program (`#300 <https://github.com/ros2/geometry2/issues/300>`_)
-* Make static_transform_broadcaster consistent with its command line description (`#294 <https://github.com/ros2/geometry2/issues/294>`_)
-* Avoid using invalid std::list iterators (`#293 <https://github.com/ros2/geometry2/issues/293>`_)
-* Generate callbacks after updating message\_ (`#274 <https://github.com/ros2/geometry2/issues/274>`_)
-* Moved unique_lock of messages_mutex\_ to guarantee pointer (`#279 <https://github.com/ros2/geometry2/issues/279>`_)
-* Fix dependencies in tf2_ros. (`#269 <https://github.com/ros2/geometry2/issues/269>`_)
-* Split tf2_ros in tf2_ros and tf2_ros_py (`#210 <https://github.com/ros2/geometry2/issues/210>`_)
-* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Dirk Thomas, Hunter L. Allen, Martin Ganeff, Michael Carroll, ymd-stella
+* Make static_transform_broadcaster consistent with its command line description (`#294 <https://github.com/ros2/geometry2/issues/294>`_) (`#296 <https://github.com/ros2/geometry2/issues/296>`_)
+* Fix dependencies in tf2_ros (`#269 <https://github.com/ros2/geometry2/issues/269>`_) (`#288 <https://github.com/ros2/geometry2/issues/288>`_)
+* Moved unique_lock of messages_mutex\_ to guarantee pointer (`#279 <https://github.com/ros2/geometry2/issues/279>`_) (`#283 <https://github.com/ros2/geometry2/issues/283>`_)
+* Contributors: Chris Lalancette, Hunter L. Allen, Martin Ganeff
 
 0.13.4 (2020-06-03)
 -------------------
