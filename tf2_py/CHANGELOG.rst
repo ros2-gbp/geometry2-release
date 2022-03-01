@@ -2,6 +2,9 @@
 Changelog for package tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.22.0 (2022-03-01)
+-------------------
+
 0.21.0 (2022-01-14)
 -------------------
 * Make tf2_py Use FindPython3 (`#494 <https://github.com/ros2/geometry2/issues/494>`_)
