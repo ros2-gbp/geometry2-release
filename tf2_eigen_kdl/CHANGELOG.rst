@@ -2,6 +2,9 @@
 Changelog for package tf2_eigen_kdl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.22.0 (2022-03-01)
+-------------------
+
 0.21.0 (2022-01-14)
 -------------------
 * Fix cpplint errors (`#497 <https://github.com/ros2/geometry2/issues/497>`_)
