@@ -1,0 +1,71 @@
+ros-rolling-tf2-eigen-kdl (0.23.0-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Mon, 28 Mar 2022 07:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.22.0-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Tue, 01 Mar 2022 08:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.21.0-1bullseye) bullseye; urgency=high
+
+  * Fix cpplint errors (#497 <https://github.com/ros2/geometry2/issues/497>)
+  * Contributors: Jacob Perron
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Fri, 14 Jan 2022 08:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.20.0-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Fri, 17 Dec 2021 08:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.19.0-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Fri, 15 Oct 2021 07:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.18.0-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Tue, 01 Jun 2021 07:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.17.1-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Tue, 06 Apr 2021 07:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.17.0-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Fri, 19 Mar 2021 07:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.16.0-1bullseye) bullseye; urgency=high
+
+
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Mon, 25 Jan 2021 08:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.15.1-1bullseye) bullseye; urgency=high
+
+  * fix order of find eigen3_cmake_module & find eigen3 (#344 <https://github.com/ros2/geometry2/issues/344>)
+  * Contributors: Ahmed Sobhy
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Tue, 08 Dec 2020 08:00:00 -0000
+
+ros-rolling-tf2-eigen-kdl (0.15.0-1bullseye) bullseye; urgency=high
+
+  * Update package.xml (#333 <https://github.com/ros2/geometry2/issues/333>)
+  * Port eigen_kdl.h/cpp to ROS2 (#311 <https://github.com/ros2/geometry2/issues/311>)
+  * Contributors: Jafar Abdi
+
+ -- Chris Lalancette <clalancette@openrobotics.org>  Mon, 02 Nov 2020 08:00:00 -0000
+
+
