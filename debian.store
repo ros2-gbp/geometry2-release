@@ -1,1 +1,1 @@
-{"base": "fe3b9143", "parent": "debian/rolling/tf2_sensor_msgs", "previous": "fc3bb84e", "trim": "", "trimbase": ""}
+{"base": "54800e0a", "parent": "debian/humble/tf2_sensor_msgs", "previous": "5ff22a5e", "trim": "", "trimbase": ""}
