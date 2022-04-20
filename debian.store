@@ -1,1 +1,1 @@
-{"base": "0300306b", "parent": "debian/rolling/tf2_geometry_msgs", "previous": "107650f6", "trim": "", "trimbase": ""}
+{"base": "43073ee8", "parent": "debian/humble/tf2_geometry_msgs", "previous": "e7fdca39", "trim": "", "trimbase": ""}
