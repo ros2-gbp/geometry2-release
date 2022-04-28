@@ -2,49 +2,13 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.25.0 (2022-04-05)
+0.17.3 (2022-04-28)
 -------------------
-* Install includes to include/${PROJECT_NAME} and use modern CMake (`#493 <https://github.com/ros2/geometry2/issues/493>`_)
-* Contributors: Shane Loretz
+* Fix tf2_echo does not work with ros-args (`#407 <https://github.com/ros2/geometry2/issues/407>`_) (`#408 <https://github.com/ros2/geometry2/issues/408>`_) (`#410 <https://github.com/ros2/geometry2/issues/410>`_)
+* Contributors: mergify[bot]
 
-0.24.0 (2022-03-31)
+0.17.2 (2021-05-10)
 -------------------
-
-0.23.0 (2022-03-28)
--------------------
-* use dedicated callback group and executor to isolate timer (`#447 <https://github.com/ros2/geometry2/issues/447>`_)
-* Adding shared pointer definition to tf2 buffer (`#508 <https://github.com/ros2/geometry2/issues/508>`_)
-* fix for a basic logic (`#510 <https://github.com/ros2/geometry2/issues/510>`_)
-* Fix precision loss from using rclcpp::Time::seconds() (`#511 <https://github.com/ros2/geometry2/issues/511>`_)
-* Contributors: Chen Lihui, Kenji Brameld, Steve Macenski, Zhenpeng Ge
-
-0.22.0 (2022-03-01)
--------------------
-* clear relative callback of Buffer if MessageFilter is destroyed (`#490 <https://github.com/ros2/geometry2/issues/490>`_)
-* More info in tf2_echo output (`#468 <https://github.com/ros2/geometry2/issues/468>`_)
-* Contributors: Chen Lihui, simulacrus
-
-0.21.0 (2022-01-14)
--------------------
-* Fix cpplint errors (`#497 <https://github.com/ros2/geometry2/issues/497>`_)
-* Contributors: Jacob Perron
-
-0.20.0 (2021-12-17)
--------------------
-* Fixes for uncrustify 0.72 (`#486 <https://github.com/ros2/geometry2/issues/486>`_)
-* Contributors: Chris Lalancette
-
-0.19.0 (2021-10-15)
--------------------
-* More Intuitive CLI for Static Transform Publisher (`#392 <https://github.com/ros2/geometry2/issues/392>`_)
-* Reduce transform listener nodes (`#442 <https://github.com/ros2/geometry2/issues/442>`_)
-* `tf2_ros`: Fix deprecated subscriber callbacks (`#448 <https://github.com/ros2/geometry2/issues/448>`_)
-* Contributors: Abrar Rahman Protyasha, Hunter L. Allen, gezp
-
-0.18.0 (2021-06-01)
--------------------
-* Fix tf2_echo does not work with ros-args (`#407 <https://github.com/ros2/geometry2/issues/407>`_) (`#408 <https://github.com/ros2/geometry2/issues/408>`_)
-* Contributors: PGotzmann
 
 0.17.1 (2021-04-06)
 -------------------

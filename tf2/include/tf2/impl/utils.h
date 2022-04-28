@@ -15,19 +15,12 @@
 #ifndef TF2__IMPL__UTILS_H_
 #define TF2__IMPL__UTILS_H_
 
-#include <tf2/convert.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2/transform_datatypes.h>
 #include <tf2/LinearMath/Quaternion.h>
-#include <geometry_msgs/msg/quaternion.hpp>
-#include <geometry_msgs/msg/quaternion_stamped.hpp>
-
 
 namespace tf2
 {
-
-// Forward declare functions needed in this header
-void fromMsg(const geometry_msgs::msg::Quaternion & in, tf2::Quaternion & out);
-
 namespace impl
 {
 
