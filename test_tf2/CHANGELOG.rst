@@ -2,11 +2,44 @@
 Changelog for package test_tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.17.3 (2022-04-28)
+0.26.0 (2022-04-29)
 -------------------
 
-0.17.2 (2021-05-10)
+0.25.0 (2022-04-05)
 -------------------
+* Fix more instances of Eigen problems on RHEL. (`#515 <https://github.com/ros2/geometry2/issues/515>`_)
+* Install includes to include/${PROJECT_NAME} and use modern CMake (`#493 <https://github.com/ros2/geometry2/issues/493>`_)
+* Contributors: Chris Lalancette, Shane Loretz
+
+0.24.0 (2022-03-31)
+-------------------
+
+0.23.0 (2022-03-28)
+-------------------
+* Fix precision loss from using rclcpp::Time::seconds() (`#511 <https://github.com/ros2/geometry2/issues/511>`_)
+* Contributors: Kenji Brameld
+
+0.22.0 (2022-03-01)
+-------------------
+
+0.21.0 (2022-01-14)
+-------------------
+
+0.20.0 (2021-12-17)
+-------------------
+
+0.19.0 (2021-10-15)
+-------------------
+* More Intuitive CLI for Static Transform Publisher (`#392 <https://github.com/ros2/geometry2/issues/392>`_)
+* Contributors: Hunter L. Allen
+
+0.18.0 (2021-06-01)
+-------------------
+* Conversion tests for toMsg() (`#423 <https://github.com/ros2/geometry2/issues/423>`_)
+* Deprecate tf2_geometry_msgs.h (`#418 <https://github.com/ros2/geometry2/issues/418>`_)
+* Deprecate tf2_kdl.h (`#414 <https://github.com/ros2/geometry2/issues/414>`_)
+* Deprecate tf2_bullet.h (`#412 <https://github.com/ros2/geometry2/issues/412>`_)
+* Contributors: Bjar Ne, Chris Lalancette
 
 0.17.1 (2021-04-06)
 -------------------
