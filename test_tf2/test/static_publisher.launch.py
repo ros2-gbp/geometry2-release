@@ -21,13 +21,13 @@ def generate_test_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         output='screen',
-        arguments=["--x", "1", "--y", "0", "--z", "0", "--qx", "0", "--qy", "0", "--qz", "0", "--qw", "1", "--frame-id", "a", "--child-frame-id", "b"]
+        arguments=["1", "0", "0", "0", "0", "0", "1", "a", "b"]
     )
     node_static_transform_publisher_2 = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         output='screen',
-        arguments=["--x", "0", "--y", "1", "--z", "0", "--qx", "0", "--qy", "0", "--qz", "0", "--qw", "1", "--frame-id", "b", "--child-frame-id", "c"]
+        arguments=["0", "1", "0", "0", "0", "0", "1", "b", "c"]
     )
 
     return LaunchDescription([

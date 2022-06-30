@@ -28,8 +28,8 @@
 
 /** \author Tully Foote */
 
-#include <cassert>
-#include <sstream>
+#include <assert.h>
+
 #include <string>
 #include <utility>
 

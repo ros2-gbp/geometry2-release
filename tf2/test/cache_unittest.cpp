@@ -28,7 +28,6 @@
 
 #include <gtest/gtest.h>
 
-#include <chrono>
 #include <cmath>
 #include <stdexcept>
 #include <string>
