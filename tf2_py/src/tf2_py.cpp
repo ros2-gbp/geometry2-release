@@ -1,4 +1,3 @@
-#include <python_compat.h>
 #include <Python.h>
 
 #include <tf2/buffer_core.h>
@@ -6,6 +5,53 @@
 
 #include <string>
 #include <vector>
+
+/// \brief Converts a C++ string into a Python string.
+/// \note The caller is responsible for decref'ing the returned object.
+/// \note If the return value is NULL then an exception is set.
+/// \return a new PyObject reference, or NULL
+inline PyObject * stringToPython(const std::string & input)
+{
+  return PyUnicode_FromStringAndSize(input.c_str(), input.size());
+}
+
+/// \brief Converts a C string into a Python string.
+/// \note The caller is responsible for decref'ing the returned object.
+/// \note If the return value is NULL then an exception is set.
+/// \return a new PyObject reference, or NULL
+inline PyObject * stringToPython(const char * input)
+{
+  return PyUnicode_FromString(input);
+}
+
+/// \brief Converts a Python string into a C++ string.
+/// \note The input PyObject is borrowed, and will not be decref'd.
+/// \note It's possible for this function to set an exception.
+///   If the returned string is empty, callers should check if an exception was
+///   set using PyErr_Ocurred().
+/// \return a new std::string instance
+inline std::string stringFromPython(PyObject * input)
+{
+  Py_ssize_t size;
+  const char * data;
+  data = PyUnicode_AsUTF8AndSize(input, &size);
+  return std::string(data, size);
+}
+
+/// \brief Imports a python module by name.
+/// \note The caller is responsible for decref'ing the returned object.
+/// \note If the return value is NULL then an exception is set.
+/// \return a reference to the imported module.
+inline PyObject * pythonImport(const std::string & name)
+{
+  PyObject * py_name = stringToPython(name);
+  if (!py_name) {
+    return nullptr;
+  }
+  PyObject * module = PyImport_Import(py_name);
+  Py_XDECREF(py_name);
+  return module;
+}
 
 // Run x (a tf method, catching TF's exceptions and reraising them as Python exceptions)
 //
@@ -340,6 +386,21 @@ static int BufferCore_init(PyObject * self, PyObject * args, PyObject * kw)
   return 0;
 }
 
+static void BufferCore_finalize(PyObject * self)
+{
+  PyObject * error_type, * error_value, * error_traceback;
+
+  /* Save the current exception, if any. */
+  PyErr_Fetch(&error_type, &error_value, &error_traceback);
+
+  buffer_core_t * buffer_core = reinterpret_cast<buffer_core_t *>(self);
+
+  delete buffer_core->bc;
+
+  /* Restore the saved exception. */
+  PyErr_Restore(error_type, error_value, error_traceback);
+}
+
 static PyObject * allFramesAsYAML(PyObject * self, PyObject * args)
 {
   (void)args;
@@ -459,7 +520,7 @@ static PyObject * getLatestCommonTime(PyObject * self, PyObject * args)
   WRAP(source_id = bc->_validateFrameId("get_latest_common_time", source_frame));
   const tf2::TF2Error r = bc->_getLatestCommonTime(target_id, source_id, tf2_time, &error_string);
 
-  if (r != tf2::TF2Error::NO_ERROR) {
+  if (r != tf2::TF2Error::TF2_NO_ERROR) {
     PyErr_SetString(tf2_exception, error_string.c_str());
     return nullptr;
   }
@@ -1027,6 +1088,7 @@ bool staticInit()
   buffer_core_Type.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE;
   buffer_core_Type.tp_methods = buffer_core_methods;
   buffer_core_Type.tp_init = BufferCore_init;
+  buffer_core_Type.tp_finalize = BufferCore_finalize;
   buffer_core_Type.tp_alloc = PyType_GenericAlloc;
   buffer_core_Type.tp_new = PyType_GenericNew;
 

@@ -2,16 +2,64 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.17.4 (2022-06-30)
+0.25.1 (2022-08-05)
 -------------------
 
-0.17.3 (2022-04-28)
+0.25.0 (2022-04-05)
 -------------------
-* Workaround with pragma push and pop for NO_ERROR collison (`#456 <https://github.com/ros2/geometry2/issues/456>`_) (`#458 <https://github.com/ros2/geometry2/issues/458>`_)
+* Install includes to include/${PROJECT_NAME} and use modern CMake (`#493 <https://github.com/ros2/geometry2/issues/493>`_)
+* Contributors: Shane Loretz
+
+0.24.0 (2022-03-31)
+-------------------
+
+0.23.0 (2022-03-28)
+-------------------
+* forward declare fromMsg to avoid missing symbols in downstream libraries (`#485 <https://github.com/ros2/geometry2/issues/485>`_)
+* Contributors: João C. Monteiro
+
+0.22.0 (2022-03-01)
+-------------------
+
+0.21.0 (2022-01-14)
+-------------------
+* tf2: Enable common linter tests (`#469 <https://github.com/ros2/geometry2/issues/469>`_)
 * Contributors: Abrar Rahman Protyasha
 
-0.17.2 (2021-05-10)
+0.20.0 (2021-12-17)
 -------------------
+* Move time functions into time.cpp.
+* Change a for loop to a while loop.
+* Switch to C++-style casts.
+* Remove totally unused (and unreachable) code.
+* Replace NULL with nullptr.
+* Fix up some comments.
+* Use std::make_shared where we can.
+* Replace two comparisons with empty string to empty().
+* Make sure to include-what-you-use.
+* Remove unnecessary internal method.
+* Remove long-deprecated walkToTopParent overload.
+* Contributors: Chris Lalancette
+
+0.19.0 (2021-10-15)
+-------------------
+* Remove unnecessary test dependencies.
+* Remove some references to the ROS 1 wiki.
+* Add rosidl_runtime_cpp as build_depend and build_export_depend.
+* Minor cleanups in CMakeLists.txt.
+* Remove include directory that doesn't exist.
+* Remove completely unnecessary target_link_libraries.
+* Remove unused speed_test from tf2.
+* Suppress clang warnings about enumerator attributes. (`#463 <https://github.com/ros2/geometry2/issues/463>`_)
+* Change TF2Error names to be a bit more descriptive. (`#349 <https://github.com/ros2/geometry2/issues/349>`_)
+* Fixed errors due to missing header link. (`#432 <https://github.com/ros2/geometry2/issues/432>`_)
+* Contributors: Chris Lalancette, Shivam Pandey
+
+0.18.0 (2021-06-01)
+-------------------
+* Deprecate tf2_geometry_msgs.h (`#418 <https://github.com/ros2/geometry2/issues/418>`_)
+* Speedup covariance unwrapping (`#399 <https://github.com/ros2/geometry2/issues/399>`_)
+* Contributors: Chris Lalancette, Dima Dorezyuk
 
 0.17.1 (2021-04-06)
 -------------------

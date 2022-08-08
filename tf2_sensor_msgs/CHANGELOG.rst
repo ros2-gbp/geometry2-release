@@ -2,14 +2,39 @@
 Changelog for package tf2_sensor_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.17.4 (2022-06-30)
+0.25.1 (2022-08-05)
 -------------------
 
-0.17.3 (2022-04-28)
+0.25.0 (2022-04-05)
 -------------------
 
-0.17.2 (2021-05-10)
+0.24.0 (2022-03-31)
 -------------------
+
+0.23.0 (2022-03-28)
+-------------------
+* Disable mem-access warnings on aarch64. (`#506 <https://github.com/ros2/geometry2/issues/506>`_)
+* Contributors: Chris Lalancette
+
+0.22.0 (2022-03-01)
+-------------------
+
+0.21.0 (2022-01-14)
+-------------------
+* Fix cpplint errors (`#497 <https://github.com/ros2/geometry2/issues/497>`_)
+* Contributors: Jacob Perron
+
+0.20.0 (2021-12-17)
+-------------------
+
+0.19.0 (2021-10-15)
+-------------------
+
+0.18.0 (2021-06-01)
+-------------------
+* Reenable sensor_msgs test (`#422 <https://github.com/ros2/geometry2/issues/422>`_)
+* Deprecate tf2_sensor_msgs.h (`#416 <https://github.com/ros2/geometry2/issues/416>`_)
+* Contributors: Bjar Ne, Chris Lalancette
 
 0.17.1 (2021-04-06)
 -------------------

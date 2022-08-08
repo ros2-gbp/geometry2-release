@@ -2,16 +2,54 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.17.4 (2022-06-30)
+0.25.1 (2022-08-05)
+-------------------
+* Use orocos_kdl_vendor and orocos-kdl target (`#548 <https://github.com/ros2/geometry2/issues/548>`_)
+* Contributors: Scott K Logan
+
+0.25.0 (2022-04-05)
+-------------------
+* Make sure to find the right Python executable. (`#514 <https://github.com/ros2/geometry2/issues/514>`_)
+* Depend on orocos_kdl_vendor  (`#473 <https://github.com/ros2/geometry2/issues/473>`_)
+* Install includes to include/${PROJECT_NAME} and use modern CMake (`#493 <https://github.com/ros2/geometry2/issues/493>`_)
+* Contributors: Chris Lalancette, Jacob Perron, Shane Loretz
+
+0.24.0 (2022-03-31)
 -------------------
 
-0.17.3 (2022-04-28)
+0.23.0 (2022-03-28)
 -------------------
-* `tf2_geometry_msgs`: Fixing covariance transformation in `doTransform<PoseWithCovarianceStamped, TransformStamped>` (`#430 <https://github.com/ros2/geometry2/issues/430>`_) (`#488 <https://github.com/ros2/geometry2/issues/488>`_)
-* Contributors: mergify[bot]
+* Drop PyKDL dependency in tf2_geometry_msgs (`#509 <https://github.com/ros2/geometry2/issues/509>`_)
+* Contributors: Florian Vahl
 
-0.17.2 (2021-05-10)
+0.22.0 (2022-03-01)
 -------------------
+
+0.21.0 (2022-01-14)
+-------------------
+* Fix cpplint errors (`#497 <https://github.com/ros2/geometry2/issues/497>`_)
+* Export a tf2_geometry_msgs::tf2_geometry_msgs target (`#496 <https://github.com/ros2/geometry2/issues/496>`_)
+* Feature: Add doTransform for Wrench messages (`#476 <https://github.com/ros2/geometry2/issues/476>`_)
+* Contributors: Denis Štogl, Jacob Perron, Shane Loretz
+
+0.20.0 (2021-12-17)
+-------------------
+
+0.19.0 (2021-10-15)
+-------------------
+* Remove some references to the ROS 1 wiki.
+* Style fixes in tf2_geometry_msgs. (`#464 <https://github.com/ros2/geometry2/issues/464>`_)
+* Fix for issue `#431 <https://github.com/ros2/geometry2/issues/431>`_ - Covariance is not transformed in do_transform_pose_with_covariance_stamped (`#453 <https://github.com/ros2/geometry2/issues/453>`_)
+* doTransform non stamped msgs (`#452 <https://github.com/ros2/geometry2/issues/452>`_)
+* `tf2_geometry_msgs`: Fixing covariance transformation in `doTransform<PoseWithCovarianceStamped, TransformStamped>` (`#430 <https://github.com/ros2/geometry2/issues/430>`_)
+* Contributors: Abrar Rahman Protyasha, Chris Lalancette, Khasreto, vineet131
+
+0.18.0 (2021-06-01)
+-------------------
+* Geometry nitpicks (`#426 <https://github.com/ros2/geometry2/issues/426>`_)
+* Conversion tests for toMsg() (`#423 <https://github.com/ros2/geometry2/issues/423>`_)
+* Deprecate tf2_geometry_msgs.h (`#418 <https://github.com/ros2/geometry2/issues/418>`_)
+* Contributors: Bjar Ne, Chris Lalancette
 
 0.17.1 (2021-04-06)
 -------------------
