@@ -2,10 +2,16 @@
 Changelog for package tf2_kdl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.25.1 (2022-08-05)
+0.26.2 (2022-08-15)
 -------------------
-* Use orocos_kdl_vendor and orocos-kdl target (`#548 <https://github.com/ros2/geometry2/issues/548>`_)
+
+0.26.1 (2022-06-24)
+-------------------
+* Use orocos_kdl_vendor and orocos-kdl target (`#534 <https://github.com/ros2/geometry2/issues/534>`_)
 * Contributors: Scott K Logan
+
+0.26.0 (2022-04-29)
+-------------------
 
 0.25.0 (2022-04-05)
 -------------------
