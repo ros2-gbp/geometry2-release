@@ -43,40 +43,55 @@ namespace tf2_ros
 TransformListener::TransformListener(tf2::BufferCore & buffer, bool spin_thread)
 : buffer_(buffer)
 {
-  rclcpp::NodeOptions options;
   // create a unique name for the node
-  // but specify its name in .arguments to override any __node passed on the command line.
-  // avoiding sstream because it's behavior can be overridden by external libraries.
-  // See this issue: https://github.com/ros2/geometry2/issues/540
-  char node_name[42];
-  snprintf(
-    node_name, sizeof(node_name), "transform_listener_impl_%zx",
-    reinterpret_cast<size_t>(this)
-  );
-  options.arguments({"--ros-args", "-r", "__node:=" + std::string(node_name)});
+  std::stringstream sstream;
+  sstream << "transform_listener_impl_" << std::hex << reinterpret_cast<size_t>(this);
+  rclcpp::NodeOptions options;
+  // but specify its name in .arguments to override any __node passed on the command line
+  options.arguments({"--ros-args", "-r", "__node:=" + std::string(sstream.str())});
   options.start_parameter_event_publisher(false);
   options.start_parameter_services(false);
   optional_default_node_ = rclcpp::Node::make_shared("_", options);
   init(
-    optional_default_node_->get_node_base_interface(),
-    optional_default_node_->get_node_logging_interface(),
-    optional_default_node_->get_node_parameters_interface(),
-    optional_default_node_->get_node_topics_interface(),
-    spin_thread, DynamicListenerQoS(), StaticListenerQoS(),
+    optional_default_node_, spin_thread, DynamicListenerQoS(), StaticListenerQoS(),
     detail::get_default_transform_listener_sub_options(),
     detail::get_default_transform_listener_static_sub_options());
 }
 
 TransformListener::~TransformListener()
 {
-  if (spin_thread_) {
-    executor_->cancel();
-    dedicated_listener_thread_->join();
-  }
+}
+
+void TransformListener::initThread(
+  rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface)
+{
+  auto executor = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
+
+  // This lambda is required because `std::thread` cannot infer the correct
+  // rclcpp::spin, since there are more than one versions of it (overloaded).
+  // see: http://stackoverflow.com/a/27389714/671658
+  // I (wjwwood) chose to use the lamda rather than the static cast solution.
+  auto run_func =
+    [executor](rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface) {
+      executor->add_node(node_base_interface);
+      executor->spin();
+      executor->remove_node(node_base_interface);
+    };
+  dedicated_listener_thread_ = thread_ptr(
+    new std::thread(run_func, node_base_interface),
+    [executor](std::thread * t) {
+      executor->cancel();
+      t->join();
+      delete t;
+      // TODO(tfoote) reenable callback queue processing
+      // tf_message_callback_queue_.callAvailable(ros::WallDuration(0.01));
+    });
+  // Tell the buffer we have a dedicated thread to enable timeouts
+  buffer_.setUsingDedicatedThread(true);
 }
 
 void TransformListener::subscription_callback(
-  const tf2_msgs::msg::TFMessage::ConstSharedPtr msg,
+  const tf2_msgs::msg::TFMessage::SharedPtr msg,
   bool is_static)
 {
   const tf2_msgs::msg::TFMessage & msg_in = *msg;

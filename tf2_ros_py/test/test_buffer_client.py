@@ -28,9 +28,9 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import pytest
 import threading
 import time
+import unittest
 
 import rclpy
 
@@ -63,7 +63,9 @@ def build_transform(target_frame, source_frame, stamp):
 class MockBufferServer():
     def __init__(self, node, buffer_core):
         self.action_server = rclpy.action.ActionServer(node, LookupTransform, 'lookup_transform', self.execute_callback)
+        self.node = node
         self.buffer_core = buffer_core
+        self.result_buffer = {}
 
     def execute_callback(self, goal_handle):
         response = LookupTransform.Result()
@@ -84,20 +86,15 @@ class MockBufferServer():
                     fixed_frame=goal_handle.request.fixed_frame
                 )
             response.transform = transform
-            goal_handle.succeed()
         except LookupException as e:
             response.error.error = TF2Error.LOOKUP_ERROR
-            goal_handle.abort()
 
         return response
 
-    def destroy(self):
-        self.action_server.destroy()
 
-
-class TestBufferClient:
+class TestBufferClient(unittest.TestCase):
     @classmethod
-    def setup_class(cls):
+    def setUpClass(cls):
         cls.context = rclpy.context.Context()
         rclpy.init(context=cls.context)
         cls.executor = SingleThreadedExecutor(context=cls.context)
@@ -111,17 +108,16 @@ class TestBufferClient:
         cls.mock_action_server = MockBufferServer(cls.node, buffer_core)
 
     @classmethod
-    def teardown_class(cls):
-        cls.mock_action_server.destroy()
+    def tearDownClass(cls):
         cls.node.destroy_node()
         rclpy.shutdown(context=cls.context)
 
-    def setup_method(self, method):
+    def setUp(self):
         self.spinning = threading.Event()
         self.spin_thread = threading.Thread(target=self.spin)
         self.spin_thread.start()
 
-    def teardown_method(self, method):
+    def tearDown(self):
         self.spinning.set()
         self.spin_thread.join()
 
@@ -131,23 +127,23 @@ class TestBufferClient:
 
     def test_lookup_transform_true(self):
         buffer_client = BufferClient(
-            self.node, 'lookup_transform', check_frequency=10.0, timeout_padding=rclpy.duration.Duration(seconds=0.0))
+            self.node, 'lookup_transform', check_frequency=10.0, timeout_padding=0.0)
 
         result = buffer_client.lookup_transform(
             'foo', 'bar', rclpy.time.Time(), rclpy.duration.Duration(seconds=5.0))
 
-        tf = build_transform('foo', 'bar', rclpy.time.Time().to_msg())
-        assert tf == result
-        buffer_client.destroy()
+        self.assertEqual(build_transform(
+            'foo', 'bar', rclpy.time.Time().to_msg()), result)
 
     def test_lookup_transform_fail(self):
         buffer_client = BufferClient(
-            self.node, 'lookup_transform', check_frequency=10.0, timeout_padding=rclpy.duration.Duration(seconds=0.0))
+            self.node, 'lookup_transform', check_frequency=10.0, timeout_padding=0.0)
 
-        with pytest.raises(LookupException) as excinfo:
-            buffer_client.lookup_transform(
+        with self.assertRaises(LookupException) as ex:
+            result = buffer_client.lookup_transform(
                 'bar', 'baz', rclpy.time.Time(), rclpy.duration.Duration(seconds=5.0))
 
-        assert LookupException == excinfo.type
+        self.assertEqual(LookupException, type(ex.exception))
 
-        buffer_client.destroy()
+if __name__ == '__main__':
+    unittest.main()

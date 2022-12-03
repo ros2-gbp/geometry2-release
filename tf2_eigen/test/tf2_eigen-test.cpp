@@ -34,53 +34,30 @@
 #endif
 #endif
 
+#include <gtest/gtest.h>
+#include <rclcpp/clock.hpp>
+#include <tf2/convert.h>
+#include <tf2_eigen/tf2_eigen.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+
 #include <cmath>
 #include <memory>
 
-// Version 3.4.0 of Eigen in Ubuntu 22.04 has a bug that causes -Wclass-memaccess warnings on
-// aarch64.  Upstream Eigen has already fixed this in
-// https://gitlab.com/libeigen/eigen/-/merge_requests/645 .  The Debian fix for this is in
-// https://salsa.debian.org/science-team/eigen3/-/merge_requests/1 .
-// However, it is not clear that that fix is going to make it into Ubuntu 22.04 before it
-// freezes, so disable the warning here.
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wclass-memaccess"
-#endif
-#include <Eigen/Geometry>  // NOLINT
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
-
-#include "gtest/gtest.h"
-
-#include "geometry_msgs/msg/point.hpp"
-#include "geometry_msgs/msg/point_stamped.hpp"
-#include "geometry_msgs/msg/pose.hpp"
-#include "geometry_msgs/msg/pose_stamped.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "rclcpp/clock.hpp"
-
-#include "tf2/convert.h"
-#include "tf2/transform_datatypes.h"
-#include "tf2_eigen/tf2_eigen.hpp"
-#include "tf2_ros/buffer.h"
-#include "tf2_ros/transform_listener.h"
-
-TEST(TfEigen, ConvertVector3dStamped)
-{
-  const tf2::Stamped<Eigen::Vector3d> v(Eigen::Vector3d(1, 2, 3), tf2::TimePoint(
-      std::chrono::seconds(5)), "test");
-
-  tf2::Stamped<Eigen::Vector3d> v1;
-  geometry_msgs::msg::PointStamped p1;
-  tf2::convert(v, p1);
-  tf2::convert(p1, v1);
-
-  EXPECT_EQ(v, v1);
-}
-
 // TODO(clalancette) Re-enable these tests once we have tf2/convert.h:convert(A, B) implemented
+// TEST(TfEigen, ConvertVector3dStamped)
+// {
+//   const tf2::Stamped<Eigen::Vector3d> v(Eigen::Vector3d(1,2,3),
+//     tf2::TimePoint(std::chrono::seconds(5)), "test");
+
+//   tf2::Stamped<Eigen::Vector3d> v1;
+//   geometry_msgs::msg::PointStamped p1;
+//   tf2::convert(v, p1);
+//   tf2::convert(p1, v1);
+
+//   EXPECT_EQ(v, v1);
+// }
+
 // TEST(TfEigen, ConvertVector3d)
 // {
 //   const Eigen::Vector3d v(1,2,3);
@@ -93,25 +70,24 @@ TEST(TfEigen, ConvertVector3dStamped)
 //   EXPECT_EQ(v, v1);
 // }
 
-TEST(TfEigen, ConvertAffine3dStamped)
-{
-  const Eigen::Affine3d v_nonstamped(Eigen::Translation3d(1, 2, 3) * Eigen::AngleAxis<double>(
-      1, Eigen::Vector3d::UnitX()));
-  const tf2::Stamped<Eigen::Affine3d> v(v_nonstamped, tf2::TimePoint(
-      std::chrono::seconds(42)), "test_frame");
+// TEST(TfEigen, ConvertAffine3dStamped)
+// {
+//   const Eigen::Affine3d v_nonstamped(
+//     Eigen::Translation3d(1,2,3) * Eigen::AngleAxis<double>(1, Eigen::Vector3d::UnitX()));
+//   const tf2::Stamped<Eigen::Affine3d> v(
+//     v_nonstamped, tf2::TimePoint(std::chrono::seconds(42)), "test_frame");
 
-  tf2::Stamped<Eigen::Affine3d> v1;
-  geometry_msgs::msg::PoseStamped p1;
-  tf2::convert(v, p1);
-  tf2::convert(p1, v1);
+//   tf2::Stamped<Eigen::Affine3d> v1;
+//   geometry_msgs::msg::PoseStamped p1;
+//   tf2::convert(v, p1);
+//   tf2::convert(p1, v1);
 
-  EXPECT_EQ(v.translation(), v1.translation());
-  EXPECT_EQ(v.rotation(), v1.rotation());
-  EXPECT_EQ(v.frame_id_, v1.frame_id_);
-  EXPECT_EQ(v.stamp_, v1.stamp_);
-}
+//   EXPECT_EQ(v.translation(), v1.translation());
+//   EXPECT_EQ(v.rotation(), v1.rotation());
+//   EXPECT_EQ(v.frame_id_, v1.frame_id_);
+//   EXPECT_EQ(v.stamp_, v1.stamp_);
+// }
 
-// TODO(clalancette) Re-enable these tests once we have tf2/convert.h:convert(A, B) implemented
 // TEST(TfEigen, ConvertAffine3d)
 // {
 //   const Eigen::Affine3d v(
@@ -252,34 +228,6 @@ TEST_F(EigenBufferTransform, Vector)
   EXPECT_NEAR(v_advanced.x(), -9, EPS);
   EXPECT_NEAR(v_advanced.y(), 18, EPS);
   EXPECT_NEAR(v_advanced.z(), 27, EPS);
-}
-
-// Test transformation of a 6-long wrench or twist
-TEST_F(EigenBufferTransform, WrenchTransform)
-{
-  // Transform the wrench (due to gravity) of a point mass to a different frame
-
-  double mass = 1.0;
-  double gravity = -9.81;
-  // Negative y force, no moment
-  Eigen::VectorXd wrench_in(6);
-  wrench_in << 0., mass * gravity, 0., 0., 0., 0.;
-
-  // The new frame is not rotated at all but it is offset along x-axis
-  double x_offset = -0.1;
-  geometry_msgs::msg::TransformStamped tf_to_new_frame;
-  tf_to_new_frame.transform.translation.x = x_offset;
-  tf_to_new_frame.transform.rotation.w = 1.0;
-
-  Eigen::VectorXd wrench_out(6);
-  tf2::doTransform(wrench_in, wrench_out, tf_to_new_frame);
-
-  EXPECT_NEAR(wrench_out(0), 0., EPS);
-  EXPECT_NEAR(wrench_out(1), mass * gravity, EPS);
-  EXPECT_NEAR(wrench_out(2), 0., EPS);
-  EXPECT_NEAR(wrench_out(3), 0., EPS);
-  EXPECT_NEAR(wrench_out(4), 0., EPS);
-  EXPECT_NEAR(wrench_out(5), mass * gravity * x_offset, EPS);
 }
 
 // helper method for Quaternion tests

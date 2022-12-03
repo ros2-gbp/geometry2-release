@@ -70,12 +70,14 @@ class BufferClient(tf2_ros.BufferInterface):
         timeout_padding: Duration = Duration(seconds=2.0)
     ) -> None:
         """
-        Constructor.
+        .. function:: __init__(ns, check_frequency = 10.0, timeout_padding = rospy.Duration.from_sec(2.0))
 
-        :param node: The ROS2 node.
-        :param ns: The namespace in which to look for a BufferServer.
-        :param check_frequency: How frequently to check for updates to known transforms.
-        :param timeout_padding: A constant timeout to add to blocking calls.
+            Constructor.
+
+            :param node: The ROS2 node.
+            :param ns: The namespace in which to look for a BufferServer.
+            :param check_frequency: How frequently to check for updates to known transforms.
+            :param timeout_padding: A constant timeout to add to blocking calls.
         """
         tf2_ros.BufferInterface.__init__(self)
         self.node = node
@@ -224,7 +226,7 @@ class BufferClient(tf2_ros.BufferInterface):
             clock = Clock()
             start_time = clock.now()
             timeout = Duration.from_msg(goal.timeout)
-            timeout_padding = self.timeout_padding
+            timeout_padding = Duration(seconds=self.timeout_padding)
             while not send_goal_future.done() and not event.is_set():
                 if clock.now() > start_time + timeout + timeout_padding:
                     break
@@ -241,7 +243,7 @@ class BufferClient(tf2_ros.BufferInterface):
 
         event.wait()
 
-        # This shouldn't happen, but could in rare cases where the server hangs
+        #This shouldn't happen, but could in rare cases where the server hangs
         if not send_goal_future.done():
             raise tf2.TimeoutException("The LookupTransform goal sent to the BufferServer did not come back in the specified time. Something is likely wrong with the server.")
 
@@ -273,8 +275,3 @@ class BufferClient(tf2_ros.BufferInterface):
             raise tf2.TransformException(result.error.error_string)
 
         return result.transform
-
-    def destroy(self) -> None:
-        """Cleanup resources associated with this BufferClient."""
-
-        self.action_client.destroy()
