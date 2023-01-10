@@ -1,22 +1,23 @@
-# Copyright (c) 2008, Willow Garage, Inc.
-# All rights reserved.
+# Copyright 2008 Willow Garage, Inc.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
-#     * Redistributions of source code must retain the above copyright
-#       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#     * Neither the name of the Willow Garage, Inc. nor the names of its
-#       contributors may be used to endorse or promote products derived from
-#       this software without specific prior written permission.
+#    * Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#
+#    * Redistributions in binary form must reproduce the above copyright
+#      notice, this list of conditions and the following disclaimer in the
+#      documentation and/or other materials provided with the distribution.
+#
+#    * Neither the name of the Willow Garage, Inc. nor the names of its
+#      contributors may be used to endorse or promote products derived from
+#      this software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 # IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 # LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 # CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 # SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
@@ -24,6 +25,7 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+
 
 # author: Wim Meeussen
 
@@ -35,15 +37,19 @@ from geometry_msgs.msg import (PointStamped, Pose, PoseStamped,
 import numpy as np
 import tf2_ros
 
+
 def to_msg_msg(msg):
     return msg
+
 
 tf2_ros.ConvertRegistration().add_to_msg(Vector3Stamped, to_msg_msg)
 tf2_ros.ConvertRegistration().add_to_msg(PoseStamped, to_msg_msg)
 tf2_ros.ConvertRegistration().add_to_msg(PointStamped, to_msg_msg)
 
+
 def from_msg_msg(msg):
     return msg
+
 
 tf2_ros.ConvertRegistration().add_from_msg(Vector3Stamped, from_msg_msg)
 tf2_ros.ConvertRegistration().add_from_msg(PoseStamped, from_msg_msg)
@@ -286,6 +292,8 @@ def do_transform_point(
     res.point.z = point[2]
     res.header = transform.header
     return res
+
+
 tf2_ros.TransformRegistration().add(PointStamped, do_transform_point)
 
 
@@ -317,6 +325,8 @@ def do_transform_vector3(
     res.vector.z = point[2]
     res.header = transform.header
     return res
+
+
 tf2_ros.TransformRegistration().add(Vector3Stamped, do_transform_vector3)
 
 
@@ -378,6 +388,7 @@ def do_transform_pose_stamped(
 
 tf2_ros.TransformRegistration().add(PoseStamped, do_transform_pose_stamped)
 
+
 # PoseWithCovarianceStamped
 def do_transform_pose_with_covariance_stamped(
         pose: PoseWithCovarianceStamped,
@@ -394,4 +405,7 @@ def do_transform_pose_with_covariance_stamped(
     res.pose.covariance = transform_covariance(pose.pose.covariance, transform)
     res.header = transform.header
     return res
-tf2_ros.TransformRegistration().add(PoseWithCovarianceStamped, do_transform_pose_with_covariance_stamped)
+
+
+tf2_ros.TransformRegistration().add(PoseWithCovarianceStamped,
+                                    do_transform_pose_with_covariance_stamped)

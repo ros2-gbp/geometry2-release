@@ -33,6 +33,7 @@
 #define TF2__BUFFER_CORE_H_
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <functional>
 #include <map>
@@ -160,13 +161,13 @@ public:
    * \param target_frame The frame into which to transform
    * \param source_frame The frame from which to transform
    * \param time The time at which to transform
-   * \param error_msg A pointer to a string which will be filled with why the transform failed, if not NULL
+   * \param error_msg A pointer to a string which will be filled with why the transform failed, if not nullptr
    * \return True if the transform is possible, false otherwise
    */
   TF2_PUBLIC
   bool canTransform(
     const std::string & target_frame, const std::string & source_frame,
-    const TimePoint & time, std::string * error_msg = NULL) const override;
+    const TimePoint & time, std::string * error_msg = nullptr) const override;
 
   /** \brief Test if a transform is possible
    * \param target_frame The frame into which to transform
@@ -174,14 +175,14 @@ public:
    * \param source_frame The frame from which to transform
    * \param source_time The time from which to transform
    * \param fixed_frame The frame in which to treat the transform as constant in time
-   * \param error_msg A pointer to a string which will be filled with why the transform failed, if not NULL
+   * \param error_msg A pointer to a string which will be filled with why the transform failed, if not nullptr
    * \return True if the transform is possible, false otherwise
    */
   TF2_PUBLIC
   bool canTransform(
     const std::string & target_frame, const TimePoint & target_time,
     const std::string & source_frame, const TimePoint & source_time,
-    const std::string & fixed_frame, std::string * error_msg = NULL) const override;
+    const std::string & fixed_frame, std::string * error_msg = nullptr) const override;
 
   /** \brief Get all frames that exist in the system.
    */
@@ -222,7 +223,7 @@ public:
   void cancelTransformableRequest(TransformableRequestHandle handle);
 
 
-  // Tell the buffer that there are multiple threads serviciing it.
+  // Tell the buffer that there are multiple threads servicing it.
   // This is useful for derived classes to know if they can block or not.
   TF2_PUBLIC
   void setUsingDedicatedThread(bool value) {using_dedicated_thread_ = value;}
@@ -302,12 +303,6 @@ public:
     std::vector<std::string> & output) const;
 
 private:
-  /** \brief A way to see what frames have been cached
-   * Useful for debugging. Use this call internally.
-   */
-  std::string allFramesAsStringNoLock() const;
-
-
   /******************** Internal Storage ****************/
 
   /** \brief The pointers to potential frames that the tree can be made of.
@@ -353,8 +348,14 @@ private:
   std::mutex transformable_requests_mutex_;
   uint64_t transformable_requests_counter_;
 
+  bool using_dedicated_thread_;
 
   /************************* Internal Functions ****************************/
+
+  /** \brief A way to see what frames have been cached
+   * Useful for debugging. Use this call internally.
+   */
+  std::string allFramesAsStringNoLock() const;
 
   bool setTransformImpl(
     const tf2::Transform & transform_in, const std::string frame_id,
@@ -369,11 +370,8 @@ private:
     const std::string & source_frame, const TimePoint & source_time,
     const std::string & fixed_frame, tf2::Transform & transform, TimePoint & time_out) const;
 
-  /** \brief An accessor to get a frame, which will throw an exception if the frame is no there.
+  /** \brief An accessor to get a frame.
    * \param frame_number The frameID of the desired Reference Frame
-   *
-   * This is an internal function which will get the pointer to the frame associated with the frame id
-   * Possible Exception: tf::LookupException
    */
   TimeCacheInterfacePtr getFrame(CompactFrameID c_frame_id) const;
 
@@ -384,7 +382,7 @@ private:
     * \param function_name_arg string to print out in the message,
     *   the current function and argument name being validated
     * \param frame_id name of the tf frame to validate
-    * \param[out] error_msg if non-NULL, fill with produced error messaging.
+    * \param[out] error_msg if non-nullptr, fill with produced error messaging.
     *   Otherwise messages are logged as warning.
     * \return The CompactFrameID of the frame or 0 if not found.
     */
@@ -425,12 +423,7 @@ private:
     CompactFrameID target_frame, CompactFrameID source_frame,
     TimePoint & time, std::string * error_string) const;
 
-  template<typename F>
-  tf2::TF2Error walkToTopParent(
-    F & f, TimePoint time, CompactFrameID target_id,
-    CompactFrameID source_id, std::string * error_string) const;
-
-  /**@brief Traverse the transform tree. If frame_chain is not NULL, store the traversed frame tree in vector frame_chain.
+  /**@brief Traverse the transform tree. If frame_chain is not nullptr, store the traversed frame tree in vector frame_chain.
    * */
   template<typename F>
   tf2::TF2Error walkToTopParent(
@@ -439,18 +432,11 @@ private:
     std::vector<CompactFrameID> * frame_chain) const;
 
   void testTransformableRequests();
-  // Thread safe transform check, acquire lock and call canTransformNoLock.
+
+  // Actual implementation to walk the transform tree and find out if a transform exists.
   bool canTransformInternal(
     CompactFrameID target_id, CompactFrameID source_id,
     const TimePoint & time, std::string * error_msg) const;
-  // Actual implementation to walk the transform tree and find out if a transform exists.
-  bool canTransformNoLock(
-    CompactFrameID target_id, CompactFrameID source_id,
-    const TimePoint & time, std::string * error_msg) const;
-
-  // Whether it is safe to use canTransform with a timeout.
-  // (If another thread is not provided it will always timeout.)
-  bool using_dedicated_thread_;
 };
 }  // namespace tf2
 

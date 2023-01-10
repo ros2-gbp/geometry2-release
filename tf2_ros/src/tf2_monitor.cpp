@@ -30,19 +30,19 @@
 
 /** \author Wim Meeussen */
 
-#include <tf2_ros/buffer.h>
-#include <tf2_ros/transform_listener.h>
-
-#include <tf2_ros/qos.hpp>
-#include <tf2_msgs/msg/tf_message.hpp>
-#include <rclcpp/rclcpp.hpp>
-
 #include <algorithm>
 #include <map>
 #include <memory>
 #include <string>
 #include <thread>
 #include <vector>
+
+#include "tf2_ros/buffer.h"
+#include "tf2_ros/transform_listener.h"
+#include "tf2_ros/qos.hpp"
+
+#include "rclcpp/rclcpp.hpp"
+#include "tf2_msgs/msg/tf_message.hpp"
 
 class TFMonitor
 {
@@ -55,7 +55,6 @@ public:
   std::vector<std::string> chain_;
   std::map<std::string, std::string> frame_authority_map;
   std::map<std::string, std::vector<double>> delay_map;
-  std::map<std::string, std::vector<double>> frequency_map;
   std::map<std::string, std::vector<double>> authority_map;
   std::map<std::string, std::vector<double>> authority_frequency_map;
 
@@ -66,7 +65,7 @@ public:
   tf2_msgs::msg::TFMessage message_;
   std::mutex map_mutex_;
 
-  void callback(const tf2_msgs::msg::TFMessage::SharedPtr msg)
+  void callback(const tf2_msgs::msg::TFMessage::ConstSharedPtr msg)
   {
     const tf2_msgs::msg::TFMessage & message = *(msg);
     // TODO(tfoote): recover authority info
@@ -83,23 +82,17 @@ public:
 
       std::map<std::string, std::vector<double>>::iterator it = delay_map.find(
         message.transforms[i].child_frame_id);
-      std::map<std::string, std::vector<double>>::iterator it4 = frequency_map.find(
-        message.transforms[i].child_frame_id);
       if (it == delay_map.end()) {
         delay_map[message.transforms[i].child_frame_id] = std::vector<double>(1, offset);
-        frequency_map[message.transforms[i].child_frame_id] = std::vector<double>(
-          1, clock_->now().seconds());
       } else {
         it->second.push_back(offset);
-        it4->second.push_back(clock_->now().seconds());
         if (it->second.size() > 1000) {
           it->second.erase(it->second.begin());
-          it4->second.erase(it4->second.begin());
         }
       }
     }
 
-    average_offset /= std::max((size_t) 1, message.transforms.size());
+    average_offset /= std::max(static_cast<size_t>(1), message.transforms.size());
 
     // create the authority log
     std::map<std::string, std::vector<double>>::iterator it2 = authority_map.find(authority);
@@ -169,7 +162,6 @@ public:
 
   std::string outputFrameInfo(
     const std::map<std::string, std::vector<double>>::iterator & it,
-    const std::map<std::string, std::vector<double>>::iterator & it4,
     const std::string & frame_authority)
   {
     std::stringstream ss;
@@ -180,10 +172,8 @@ public:
       max_delay = std::max(max_delay, it->second[i]);
     }
     average_delay /= it->second.size();
-    double frequency_out = static_cast<double>(it4->second.size()) /
-      std::max(0.00000001, (it4->second.back() - it4->second.front()));
-    ss << "Frame: " << it->first << ", published by " << frame_authority << " " << frequency_out <<
-      " Hz, Average Delay: " << average_delay << " Max Delay: " << max_delay << std::endl;
+    ss << "Frame: " << it->first << ", published by " << frame_authority << ", Average Delay: " <<
+      average_delay << ", Max Delay: " << max_delay << std::endl;
     return ss.str();
   }
 
@@ -236,18 +226,17 @@ public:
         std::unique_lock<std::mutex> lock(map_mutex_);
         std::cout << std::endl << "Frames:" << std::endl;
         std::map<std::string, std::vector<double>>::iterator it = delay_map.begin();
-        std::map<std::string, std::vector<double>>::iterator it4 = frequency_map.begin();
-        for ( ; it != delay_map.end(); ++it, ++it4) {
+        for ( ; it != delay_map.end(); ++it) {
           if (using_specific_chain_) {
             for (size_t i = 0; i < chain_.size(); i++) {
               if (it->first != chain_[i]) {
                 continue;
               }
 
-              std::cout << outputFrameInfo(it, it4, frame_authority_map[it->first]);
+              std::cout << outputFrameInfo(it, frame_authority_map[it->first]);
             }
           } else {
-            std::cout << outputFrameInfo(it, it4, frame_authority_map[it->first]);
+            std::cout << outputFrameInfo(it, frame_authority_map[it->first]);
           }
         }
         std::cerr << std::endl << "All Broadcasters:" << std::endl;

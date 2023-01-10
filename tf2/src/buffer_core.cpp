@@ -30,7 +30,9 @@
 
 #include <algorithm>
 #include <cassert>
+#include <chrono>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <string>
 #include <utility>
@@ -41,84 +43,22 @@
 #include "tf2/exceptions.h"
 
 #include "console_bridge/console.h"
+#include "tf2/LinearMath/Quaternion.h"
 #include "tf2/LinearMath/Transform.h"
+#include "tf2/LinearMath/Vector3.h"
+
+#include "builtin_interfaces/msg/time.hpp"
+#include "geometry_msgs/msg/transform.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
 
 namespace tf2
 {
 
+namespace
+{
+
 // Tolerance for acceptable quaternion normalization
 constexpr static double QUATERNION_NORMALIZATION_TOLERANCE = 10e-3;
-
-/** \brief convert Transform msg to Transform */
-void transformMsgToTF2(const geometry_msgs::msg::Transform & msg, tf2::Transform & tf2)
-{
-  tf2 =
-    tf2::Transform(
-    tf2::Quaternion(
-      msg.rotation.x, msg.rotation.y, msg.rotation.z,
-      msg.rotation.w),
-    tf2::Vector3(msg.translation.x, msg.translation.y, msg.translation.z));
-}
-
-/** \brief convert Transform to Transform msg*/
-void transformTF2ToMsg(const tf2::Transform & tf2, geometry_msgs::msg::Transform & msg)
-{
-  msg.translation.x = tf2.getOrigin().x();
-  msg.translation.y = tf2.getOrigin().y();
-  msg.translation.z = tf2.getOrigin().z();
-  msg.rotation.x = tf2.getRotation().x();
-  msg.rotation.y = tf2.getRotation().y();
-  msg.rotation.z = tf2.getRotation().z();
-  msg.rotation.w = tf2.getRotation().w();
-}
-
-/** \brief convert Transform to Transform msg*/
-void transformTF2ToMsg(
-  const tf2::Transform & tf2, geometry_msgs::msg::TransformStamped & msg,
-  builtin_interfaces::msg::Time stamp, const std::string & frame_id,
-  const std::string & child_frame_id)
-{
-  transformTF2ToMsg(tf2, msg.transform);
-  msg.header.stamp = stamp;
-  msg.header.frame_id = frame_id;
-  msg.child_frame_id = child_frame_id;
-}
-
-void transformTF2ToMsg(
-  const tf2::Quaternion & orient, const tf2::Vector3 & pos,
-  geometry_msgs::msg::Transform & msg)
-{
-  msg.translation.x = pos.x();
-  msg.translation.y = pos.y();
-  msg.translation.z = pos.z();
-  msg.rotation.x = orient.x();
-  msg.rotation.y = orient.y();
-  msg.rotation.z = orient.z();
-  msg.rotation.w = orient.w();
-}
-
-void transformTF2ToMsg(
-  const tf2::Quaternion & orient, const tf2::Vector3 & pos,
-  geometry_msgs::msg::TransformStamped & msg,
-  builtin_interfaces::msg::Time stamp, const std::string & frame_id,
-  const std::string & child_frame_id)
-{
-  transformTF2ToMsg(orient, pos, msg.transform);
-  msg.header.stamp = stamp;
-  msg.header.frame_id = frame_id;
-  msg.child_frame_id = child_frame_id;
-}
-
-void setIdentity(geometry_msgs::msg::Transform & tx)
-{
-  tx.translation.x = 0;
-  tx.translation.y = 0;
-  tx.translation.z = 0;
-  tx.rotation.x = 0;
-  tx.rotation.y = 0;
-  tx.rotation.z = 0;
-  tx.rotation.w = 1;
-}
 
 bool startsWithSlash(const std::string & frame_id)
 {
@@ -138,9 +78,6 @@ std::string stripSlash(const std::string & in)
   }
   return out;
 }
-
-namespace
-{
 
 void fillOrWarnMessageForInvalidFrame(
   const char * function_name_arg,
@@ -276,14 +213,14 @@ bool BufferCore::setTransformImpl(
     error_exists = true;
   }
 
-  if (stripped_child_frame_id == "") {
+  if (stripped_child_frame_id.empty()) {
     CONSOLE_BRIDGE_logError(
       "TF_NO_CHILD_FRAME_ID: Ignoring transform from authority \"%s\" because child_frame_id not"
       " set ", authority.c_str());
     error_exists = true;
   }
 
-  if (stripped_frame_id == "") {
+  if (stripped_frame_id.empty()) {
     CONSOLE_BRIDGE_logError(
       "TF_NO_FRAME_ID: Ignoring transform with child_frame_id \"%s\"  from authority \"%s\" "
       "because frame_id not set", stripped_child_frame_id.c_str(), authority.c_str());
@@ -331,7 +268,7 @@ bool BufferCore::setTransformImpl(
     std::unique_lock<std::mutex> lock(frame_mutex_);
     CompactFrameID frame_number = lookupOrInsertFrameNumber(stripped_child_frame_id);
     TimeCacheInterfacePtr frame = getFrame(frame_number);
-    if (frame == NULL) {
+    if (frame == nullptr) {
       frame = allocateFrame(frame_number, is_static);
     } else {
       // Overwrite TimeCacheInterface type with a current input
@@ -365,13 +302,13 @@ bool BufferCore::setTransformImpl(
   return true;
 }
 
+// This method expects that the caller is holding frame_mutex_
 TimeCacheInterfacePtr BufferCore::allocateFrame(CompactFrameID cfid, bool is_static)
 {
-  TimeCacheInterfacePtr frame_ptr = frames_[cfid];
   if (is_static) {
-    frames_[cfid] = TimeCacheInterfacePtr(new StaticCache());
+    frames_[cfid] = std::make_shared<StaticCache>();
   } else {
-    frames_[cfid] = TimeCacheInterfacePtr(new TimeCache(cache_time_));
+    frames_[cfid] = std::make_shared<TimeCache>(cache_time_);
   }
 
   return frames_[cfid];
@@ -384,16 +321,6 @@ enum WalkEnding
   SourceParentOfTarget,
   FullPath,
 };
-
-// TODO(anyone): for Jade: Merge walkToTopParent functions; this is now a stub to preserve ABI
-template<typename F>
-tf2::TF2Error BufferCore::walkToTopParent(
-  F & f, TimePoint time, CompactFrameID target_id,
-  CompactFrameID source_id,
-  std::string * error_string) const
-{
-  return walkToTopParent(f, time, target_id, source_id, error_string, NULL);
-}
 
 template<typename F>
 tf2::TF2Error BufferCore::walkToTopParent(
@@ -408,13 +335,13 @@ tf2::TF2Error BufferCore::walkToTopParent(
   // Short circuit if zero length transform to allow lookups on non existant links
   if (source_id == target_id) {
     f.finalize(Identity, time);
-    return tf2::TF2Error::NO_ERROR;
+    return tf2::TF2Error::TF2_NO_ERROR;
   }
 
   // If getting the latest get the latest common time
   if (time == TimePointZero) {
     tf2::TF2Error retval = getLatestCommonTime(target_id, source_id, time, error_string);
-    if (retval != tf2::TF2Error::NO_ERROR) {
+    if (retval != tf2::TF2Error::TF2_NO_ERROR) {
       return retval;
     }
   }
@@ -450,7 +377,7 @@ tf2::TF2Error BufferCore::walkToTopParent(
     // Early out... target frame is a direct parent of the source frame
     if (frame == target_id) {
       f.finalize(TargetParentOfSource, time);
-      return tf2::TF2Error::NO_ERROR;
+      return tf2::TF2Error::TF2_NO_ERROR;
     }
 
     f.accum(true);
@@ -466,7 +393,7 @@ tf2::TF2Error BufferCore::walkToTopParent(
           allFramesAsStringNoLock() << std::endl;
         *error_string = ss.str();
       }
-      return tf2::TF2Error::LOOKUP_ERROR;
+      return tf2::TF2Error::TF2_LOOKUP_ERROR;
     }
   }
 
@@ -494,7 +421,7 @@ tf2::TF2Error BufferCore::walkToTopParent(
         *error_string = ss.str();
       }
 
-      return tf2::TF2Error::EXTRAPOLATION_ERROR;
+      return tf2::TF2Error::TF2_EXTRAPOLATION_ERROR;
     }
 
     // Early out... source frame is a direct parent of the target frame
@@ -503,7 +430,7 @@ tf2::TF2Error BufferCore::walkToTopParent(
       if (frame_chain) {
         frame_chain->swap(reverse_frame_chain);
       }
-      return tf2::TF2Error::NO_ERROR;
+      return tf2::TF2Error::TF2_NO_ERROR;
     }
 
     f.accum(false);
@@ -518,7 +445,7 @@ tf2::TF2Error BufferCore::walkToTopParent(
           allFramesAsStringNoLock() << std::endl;
         *error_string = ss.str();
       }
-      return tf2::TF2Error::LOOKUP_ERROR;
+      return tf2::TF2Error::TF2_LOOKUP_ERROR;
     }
   }
 
@@ -530,10 +457,10 @@ tf2::TF2Error BufferCore::walkToTopParent(
           lookupFrameString(source_id) << "] to frame [" << lookupFrameString(target_id) << "]";
         *error_string = ss.str();
       }
-      return tf2::TF2Error::EXTRAPOLATION_ERROR;
+      return tf2::TF2Error::TF2_EXTRAPOLATION_ERROR;
     }
     createConnectivityErrorString(source_id, target_id, error_string);
-    return tf2::TF2Error::CONNECTIVITY_ERROR;
+    return tf2::TF2Error::TF2_CONNECTIVITY_ERROR;
   }
 
   f.finalize(FullPath, time);
@@ -562,7 +489,7 @@ tf2::TF2Error BufferCore::walkToTopParent(
     }
   }
 
-  return tf2::TF2Error::NO_ERROR;
+  return tf2::TF2Error::TF2_NO_ERROR;
 }
 
 struct TransformAccum
@@ -659,8 +586,8 @@ BufferCore::lookupTransform(
     time_out.time_since_epoch());
   std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(
     time_out.time_since_epoch());
-  msg.header.stamp.sec = (int32_t)s.count();
-  msg.header.stamp.nanosec = (uint32_t)(ns.count() % 1000000000ull);
+  msg.header.stamp.sec = static_cast<int32_t>(s.count());
+  msg.header.stamp.nanosec = static_cast<uint32_t>(ns.count() % 1000000000ull);
   msg.header.frame_id = target_frame;
   msg.child_frame_id = source_frame;
 
@@ -690,8 +617,8 @@ BufferCore::lookupTransform(
     time_out.time_since_epoch());
   std::chrono::seconds s = std::chrono::duration_cast<std::chrono::seconds>(
     time_out.time_since_epoch());
-  msg.header.stamp.sec = (int32_t)s.count();
-  msg.header.stamp.nanosec = (uint32_t)(ns.count() % 1000000000ull);
+  msg.header.stamp.sec = static_cast<int32_t>(s.count());
+  msg.header.stamp.nanosec = static_cast<uint32_t>(ns.count() % 1000000000ull);
   msg.header.frame_id = target_frame;
   msg.child_frame_id = source_frame;
 
@@ -729,14 +656,14 @@ void BufferCore::lookupTransformImpl(
 
   std::string error_string;
   TransformAccum accum;
-  tf2::TF2Error retval = walkToTopParent(accum, time, target_id, source_id, &error_string);
-  if (retval != tf2::TF2Error::NO_ERROR) {
+  tf2::TF2Error retval = walkToTopParent(accum, time, target_id, source_id, &error_string, nullptr);
+  if (retval != tf2::TF2Error::TF2_NO_ERROR) {
     switch (retval) {
-      case tf2::TF2Error::CONNECTIVITY_ERROR:
+      case tf2::TF2Error::TF2_CONNECTIVITY_ERROR:
         throw ConnectivityException(error_string);
-      case tf2::TF2Error::EXTRAPOLATION_ERROR:
+      case tf2::TF2Error::TF2_EXTRAPOLATION_ERROR:
         throw ExtrapolationException(error_string);
-      case tf2::TF2Error::LOOKUP_ERROR:
+      case tf2::TF2Error::TF2_LOOKUP_ERROR:
         throw LookupException(error_string);
       default:
         CONSOLE_BRIDGE_logError("Unknown error code: %d", retval);
@@ -790,10 +717,11 @@ struct CanTransformAccum
   TransformStorage st;
 };
 
-bool BufferCore::canTransformNoLock(
+bool BufferCore::canTransformInternal(
   CompactFrameID target_id, CompactFrameID source_id,
   const TimePoint & time, std::string * error_msg) const
 {
+  std::unique_lock<std::mutex> lock(frame_mutex_);
   if (target_id == 0 || source_id == 0) {
     if (error_msg) {
       *error_msg = "Source or target frame is not yet defined";
@@ -806,19 +734,14 @@ bool BufferCore::canTransformNoLock(
   }
 
   CanTransformAccum accum;
-  if (walkToTopParent(accum, time, target_id, source_id, error_msg) == tf2::TF2Error::NO_ERROR) {
+  if (walkToTopParent(
+      accum, time, target_id, source_id,
+      error_msg, nullptr) == tf2::TF2Error::TF2_NO_ERROR)
+  {
     return true;
   }
 
   return false;
-}
-
-bool BufferCore::canTransformInternal(
-  CompactFrameID target_id, CompactFrameID source_id,
-  const TimePoint & time, std::string * error_msg) const
-{
-  std::unique_lock<std::mutex> lock(frame_mutex_);
-  return canTransformNoLock(target_id, source_id, time, error_msg);
 }
 
 bool BufferCore::canTransform(
@@ -953,7 +876,7 @@ std::string BufferCore::allFramesAsStringNoLock() const
   // regular transforms
   for (size_t counter = 1; counter < frames_.size(); counter++) {
     TimeCacheInterfacePtr frame_ptr = getFrame(static_cast<CompactFrameID>(counter));
-    if (frame_ptr == NULL) {
+    if (frame_ptr == nullptr) {
       continue;
     }
     CompactFrameID frame_id_num;
@@ -988,7 +911,7 @@ tf2::TF2Error BufferCore::getLatestCommonTime(
   TimePoint & time, std::string * error_string) const
 {
   // Error if one of the frames don't exist.
-  if (source_id == 0 || target_id == 0) {return tf2::TF2Error::LOOKUP_ERROR;}
+  if (source_id == 0 || target_id == 0) {return tf2::TF2Error::TF2_LOOKUP_ERROR;}
 
   if (source_id == target_id) {
     TimeCacheInterfacePtr cache = getFrame(source_id);
@@ -998,7 +921,7 @@ tf2::TF2Error BufferCore::getLatestCommonTime(
     } else {
       time = TimePointZero;
     }
-    return tf2::TF2Error::NO_ERROR;
+    return tf2::TF2Error::TF2_NO_ERROR;
   }
 
   std::vector<P_TimeAndFrameID> lct_cache;
@@ -1037,7 +960,7 @@ tf2::TF2Error BufferCore::getLatestCommonTime(
       if (time == TimePoint::max()) {
         time = TimePointZero;
       }
-      return tf2::TF2Error::NO_ERROR;
+      return tf2::TF2Error::TF2_NO_ERROR;
     }
 
     ++depth;
@@ -1048,7 +971,7 @@ tf2::TF2Error BufferCore::getLatestCommonTime(
           allFramesAsStringNoLock() << std::endl;
         *error_string = ss.str();
       }
-      return tf2::TF2Error::LOOKUP_ERROR;
+      return tf2::TF2Error::TF2_LOOKUP_ERROR;
     }
   }
 
@@ -1091,7 +1014,7 @@ tf2::TF2Error BufferCore::getLatestCommonTime(
       if (time == TimePoint::max()) {
         time = TimePointZero;
       }
-      return tf2::TF2Error::NO_ERROR;
+      return tf2::TF2Error::TF2_NO_ERROR;
     }
 
     ++depth;
@@ -1102,13 +1025,13 @@ tf2::TF2Error BufferCore::getLatestCommonTime(
           allFramesAsStringNoLock() << std::endl;
         *error_string = ss.str();
       }
-      return tf2::TF2Error::LOOKUP_ERROR;
+      return tf2::TF2Error::TF2_LOOKUP_ERROR;
     }
   }
 
   if (common_parent == 0) {
     createConnectivityErrorString(source_id, target_id, error_string);
-    return tf2::TF2Error::CONNECTIVITY_ERROR;
+    return tf2::TF2Error::TF2_CONNECTIVITY_ERROR;
   }
 
   // Loop through the source -> root list until we hit the common parent
@@ -1131,7 +1054,7 @@ tf2::TF2Error BufferCore::getLatestCommonTime(
   }
 
   time = common_time;
-  return tf2::TF2Error::NO_ERROR;
+  return tf2::TF2Error::TF2_NO_ERROR;
 }
 
 std::string BufferCore::allFramesAsYAML(TimePoint current_time) const
@@ -1289,8 +1212,9 @@ void BufferCore::cancelTransformableRequest(TransformableRequestHandle handle)
   std::unique_lock<std::mutex> tr_lock(transformable_requests_mutex_);
   std::unique_lock<std::mutex> tc_lock(transformable_callbacks_mutex_);
 
-  V_TransformableRequest::iterator remove_it = std::remove_if(transformable_requests_.begin(), transformable_requests_.end(),
-                                                              [handle](TransformableRequest req) { return handle == req.request_handle; });
+  V_TransformableRequest::iterator remove_it = std::remove_if(
+    transformable_requests_.begin(), transformable_requests_.end(),
+    [handle](TransformableRequest req) {return handle == req.request_handle;});
   for (V_TransformableRequest::iterator it = remove_it; it != transformable_requests_.end(); ++it) {
     transformable_callbacks_.erase(it->cb_handle);
   }
@@ -1317,7 +1241,7 @@ bool BufferCore::_getParent(
     return false;
   }
 
-  CompactFrameID parent_id = frame->getParent(time, NULL);
+  CompactFrameID parent_id = frame->getParent(time, nullptr);
   if (parent_id == 0) {
     return false;
   }
@@ -1343,7 +1267,7 @@ void BufferCore::testTransformableRequests()
 {
   std::unique_lock<std::mutex> lock(transformable_requests_mutex_);
   V_TransformableRequest::iterator it = transformable_requests_.begin();
-  for (; it != transformable_requests_.end(); ) {
+  while (it != transformable_requests_.end()) {
     TransformableRequest & req = *it;
 
     // One or both of the frames may not have existed when the request was originally made.
@@ -1425,7 +1349,9 @@ std::string BufferCore::_allFramesAsDot(TimePoint current_time) const
       frame_id_num = temp.frame_id_;
     }
     std::string authority = "no recorded authority";
-    std::map<CompactFrameID, std::string>::const_iterator it = frame_authority_.find(static_cast<CompactFrameID>(counter));
+    std::map<CompactFrameID,
+      std::string>::const_iterator it =
+      frame_authority_.find(static_cast<CompactFrameID>(counter));
     if (it != frame_authority_.end()) {
       authority = it->second;
     }
@@ -1525,13 +1451,13 @@ void BufferCore::_chainAsVector(
   tf2::TF2Error retval = walkToTopParent(
     accum, source_time, fixed_id, source_id, &error_string,
     &source_frame_chain);
-  if (retval != tf2::TF2Error::NO_ERROR) {
+  if (retval != tf2::TF2Error::TF2_NO_ERROR) {
     switch (retval) {
-      case tf2::TF2Error::CONNECTIVITY_ERROR:
+      case tf2::TF2Error::TF2_CONNECTIVITY_ERROR:
         throw ConnectivityException(error_string);
-      case tf2::TF2Error::EXTRAPOLATION_ERROR:
+      case tf2::TF2Error::TF2_EXTRAPOLATION_ERROR:
         throw ExtrapolationException(error_string);
-      case tf2::TF2Error::LOOKUP_ERROR:
+      case tf2::TF2Error::TF2_LOOKUP_ERROR:
         throw LookupException(error_string);
       default:
         CONSOLE_BRIDGE_logError("Unknown error code: %d", retval);
@@ -1545,13 +1471,13 @@ void BufferCore::_chainAsVector(
       accum, target_time, target_id, fixed_id, &error_string,
       &target_frame_chain);
 
-    if (retval != tf2::TF2Error::NO_ERROR) {
+    if (retval != tf2::TF2Error::TF2_NO_ERROR) {
       switch (retval) {
-        case tf2::TF2Error::CONNECTIVITY_ERROR:
+        case tf2::TF2Error::TF2_CONNECTIVITY_ERROR:
           throw ConnectivityException(error_string);
-        case tf2::TF2Error::EXTRAPOLATION_ERROR:
+        case tf2::TF2Error::TF2_EXTRAPOLATION_ERROR:
           throw ExtrapolationException(error_string);
-        case tf2::TF2Error::LOOKUP_ERROR:
+        case tf2::TF2Error::TF2_LOOKUP_ERROR:
           throw LookupException(error_string);
         default:
           CONSOLE_BRIDGE_logError("Unknown error code: %d", retval);
