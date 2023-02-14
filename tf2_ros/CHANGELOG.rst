@@ -2,10 +2,37 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.25.2 (2023-01-10)
+0.30.0 (2023-02-14)
+-------------------
+* Fix use-after-free bug in BufferServer::cancelCB (`#579 <https://github.com/ros2/geometry2/issues/579>`_)
+* Update the demos to C++17. (`#578 <https://github.com/ros2/geometry2/issues/578>`_)
+* add constructor to static tf broadcaster accepting node interfaces (`#576 <https://github.com/ros2/geometry2/issues/576>`_)
+* Contributors: Alberto Soragna, Alexander Hans, Chris Lalancette
+
+0.29.0 (2022-11-21)
+-------------------
+* Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
+* Contributors: Audrow Nash
+
+0.28.0 (2022-11-02)
+-------------------
+* Switching from sstream to c string formatting to fix ros arg issue (`#557 <https://github.com/ros2/geometry2/issues/557>`_)
+* allow construction of tf broadcaster from node object (not a pointer) (`#555 <https://github.com/ros2/geometry2/issues/555>`_)
+* Allow to construct `TransformBroadcaster` and `TransformListener` from node interfaces (`#552 <https://github.com/ros2/geometry2/issues/552>`_)
+* Contributors: Alberto Soragna, Chris Lalancette
+
+0.27.0 (2022-09-13)
+-------------------
+* Suppress spam from calling canTransform (`#529 <https://github.com/ros2/geometry2/issues/529>`_)
+* Contributors: Gonzo
+
+0.26.2 (2022-08-15)
 -------------------
 
-0.25.1 (2022-08-05)
+0.26.1 (2022-06-24)
+-------------------
+
+0.26.0 (2022-04-29)
 -------------------
 
 0.25.0 (2022-04-05)

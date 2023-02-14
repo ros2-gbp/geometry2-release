@@ -2,13 +2,32 @@
 Changelog for package tf2_eigen_kdl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.25.2 (2023-01-10)
+0.30.0 (2023-02-14)
+-------------------
+* Update geometry2 to C++17 (`#584 <https://github.com/ros2/geometry2/issues/584>`_)
+* Contributors: Chris Lalancette
+
+0.29.0 (2022-11-21)
+-------------------
+* Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
+* Contributors: Audrow Nash
+
+0.28.0 (2022-11-02)
 -------------------
 
-0.25.1 (2022-08-05)
+0.27.0 (2022-09-13)
 -------------------
-* Use orocos_kdl_vendor and orocos-kdl target (`#548 <https://github.com/ros2/geometry2/issues/548>`_)
+
+0.26.2 (2022-08-15)
+-------------------
+
+0.26.1 (2022-06-24)
+-------------------
+* Use orocos_kdl_vendor and orocos-kdl target (`#534 <https://github.com/ros2/geometry2/issues/534>`_)
 * Contributors: Scott K Logan
+
+0.26.0 (2022-04-29)
+-------------------
 
 0.25.0 (2022-04-05)
 -------------------
