@@ -2,6 +2,9 @@
 Changelog for package examples_tf2_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.30.0 (2023-02-14)
+-------------------
+
 0.29.0 (2022-11-21)
 -------------------
 * Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
