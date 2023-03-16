@@ -27,58 +27,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef TF2_ROS__ASYNC_BUFFER_INTERFACE_H_
-#define TF2_ROS__ASYNC_BUFFER_INTERFACE_H_
+#ifndef TF2_ROS__ASYNC_BUFFER_INTERFACE_H
+#define TF2_ROS__ASYNC_BUFFER_INTERFACE_H
 
 #include <functional>
 #include <future>
-#include <string>
-#include <utility>
 
-#include "tf2_ros/visibility_control.h"
-#include "tf2/buffer_core.h"
-#include "tf2/time.h"
-#include "tf2/transform_datatypes.h"
+#include <geometry_msgs/msg/transform_stamped.hpp>
 
-#include "geometry_msgs/msg/transform_stamped.hpp"
+#include <tf2_ros/visibility_control.h>
+#include <tf2/transform_datatypes.h>
 
 namespace tf2_ros
 {
 
-class TransformStampedFuture : public std::shared_future<geometry_msgs::msg::TransformStamped>
-{
-  using BaseType = std::shared_future<geometry_msgs::msg::TransformStamped>;
-
-public:
-  /// Constructor
-  explicit TransformStampedFuture(BaseType && future) noexcept
-  : BaseType(std::move(future)) {}
-
-  /// Copy constructor
-  TransformStampedFuture(const TransformStampedFuture & ts_future) noexcept
-  : BaseType(ts_future),
-    handle_(ts_future.handle_) {}
-
-  /// Move constructor
-  TransformStampedFuture(TransformStampedFuture && ts_future) noexcept
-  : BaseType(std::move(ts_future)),
-    handle_(std::move(ts_future.handle_)) {}
-
-  void setHandle(const tf2::TransformableRequestHandle handle)
-  {
-    handle_ = handle;
-  }
-
-  tf2::TransformableRequestHandle getHandle() const
-  {
-    return handle_;
-  }
-
-private:
-  tf2::TransformableRequestHandle handle_ {};
-};
-
-using TransformReadyCallback = std::function<void (const TransformStampedFuture &)>;
+using TransformStampedFuture = std::shared_future<geometry_msgs::msg::TransformStamped>;
+using TransformReadyCallback = std::function<void(const TransformStampedFuture&)>;
 
 /**
  * \brief Abstract interface for asynchronous operations on a `tf2::BufferCoreInterface`.
@@ -91,7 +55,8 @@ public:
   virtual
   ~AsyncBufferInterface() = default;
 
-  /** \brief Wait for a transform between two frames to become available.
+  /**
+   * \brief Wait for a transform between two frames to become available.
    * \param target_frame The frame into which to transform.
    * \param source_frame The frame from which to tranform.
    * \param time The time at which to transform.
@@ -104,20 +69,13 @@ public:
   TF2_ROS_PUBLIC
   virtual TransformStampedFuture
   waitForTransform(
-    const std::string & target_frame,
-    const std::string & source_frame,
-    const tf2::TimePoint & time,
-    const tf2::Duration & timeout,
+    const std::string& target_frame,
+    const std::string& source_frame,
+    const tf2::TimePoint& time,
+    const tf2::Duration& timeout,
     TransformReadyCallback callback) = 0;
-
-  /**
-   * \brief Cancel the future to make sure the callback of requested transform is clean.
-   * \param ts_future The future to the requested transform.
-   */
-  virtual void
-  cancel(const TransformStampedFuture & ts_future) = 0;
 };  // class AsyncBufferInterface
 
 }  // namespace tf2_ros
 
-#endif  // TF2_ROS__ASYNC_BUFFER_INTERFACE_H_
+#endif // TF2_ROS__ASYNC_BUFFER_INTERFACE_H

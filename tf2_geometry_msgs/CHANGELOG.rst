@@ -2,111 +2,43 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.30.0 (2023-02-14)
--------------------
-* Update the demos to C++17. (`#578 <https://github.com/ros2/geometry2/issues/578>`_)
-* Contributors: Chris Lalancette
+0.13.14 (2023-03-16)
+--------------------
+* Drop PyKDL dependency in tf2_geometry_msgs (backport `#509 <https://github.com/ros2/geometry2/issues/509>`_ to foxy) (`#532 <https://github.com/ros2/geometry2/issues/532>`_)
+* Contributors: Charles Dawson, Florian Vahl
 
-0.29.0 (2022-11-21)
--------------------
-* Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
-* Add torque due to force offset (`#538 <https://github.com/ros2/geometry2/issues/538>`_)
-* Contributors: Audrow Nash, Paul Gesel
+0.13.13 (2022-01-31)
+--------------------
+* Fix covariance transformation in ``doTransform<PoseWithCovarianceStamped, TransformStamped>`` (`#430 <https://github.com/ros2/geometry2/issues/430>`_) (`#489 <https://github.com/ros2/geometry2/issues/489>`_)
+* Contributors: Abrar Rahman Protyasha
 
-0.28.0 (2022-11-02)
--------------------
+0.13.12 (2021-10-05)
+--------------------
 
-0.27.0 (2022-09-13)
--------------------
+0.13.11 (2021-08-31)
+--------------------
 
-0.26.2 (2022-08-15)
--------------------
+0.13.10 (2021-04-14)
+--------------------
 
-0.26.1 (2022-06-24)
--------------------
-* Use orocos_kdl_vendor and orocos-kdl target (`#534 <https://github.com/ros2/geometry2/issues/534>`_)
-* Contributors: Scott K Logan
-
-0.26.0 (2022-04-29)
+0.13.9 (2020-12-09)
 -------------------
 
-0.25.0 (2022-04-05)
--------------------
-* Make sure to find the right Python executable. (`#514 <https://github.com/ros2/geometry2/issues/514>`_)
-* Depend on orocos_kdl_vendor  (`#473 <https://github.com/ros2/geometry2/issues/473>`_)
-* Install includes to include/${PROJECT_NAME} and use modern CMake (`#493 <https://github.com/ros2/geometry2/issues/493>`_)
-* Contributors: Chris Lalancette, Jacob Perron, Shane Loretz
-
-0.24.0 (2022-03-31)
+0.13.8 (2020-12-08)
 -------------------
 
-0.23.0 (2022-03-28)
--------------------
-* Drop PyKDL dependency in tf2_geometry_msgs (`#509 <https://github.com/ros2/geometry2/issues/509>`_)
-* Contributors: Florian Vahl
-
-0.22.0 (2022-03-01)
+0.13.7 (2020-11-18)
 -------------------
 
-0.21.0 (2022-01-14)
+0.13.6 (2020-10-28)
 -------------------
-* Fix cpplint errors (`#497 <https://github.com/ros2/geometry2/issues/497>`_)
-* Export a tf2_geometry_msgs::tf2_geometry_msgs target (`#496 <https://github.com/ros2/geometry2/issues/496>`_)
-* Feature: Add doTransform for Wrench messages (`#476 <https://github.com/ros2/geometry2/issues/476>`_)
-* Contributors: Denis Štogl, Jacob Perron, Shane Loretz
+* [Foxy backport] Add PoseWithCovarianceStamped transform support (`#336 <https://github.com/ros2/geometry2/issues/336>`_)
+* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_) (`#332 <https://github.com/ros2/geometry2/issues/332>`_)
+* Don't install python tf2_geometry_msgs (`#299 <https://github.com/ros2/geometry2/issues/299>`_) (`#302 <https://github.com/ros2/geometry2/issues/302>`_)
+* Contributors: Alejandro Hernández Cordero, Nikolai Morin, Shane Loretz
 
-0.20.0 (2021-12-17)
+0.13.5 (2020-08-05)
 -------------------
-
-0.19.0 (2021-10-15)
--------------------
-* Remove some references to the ROS 1 wiki.
-* Style fixes in tf2_geometry_msgs. (`#464 <https://github.com/ros2/geometry2/issues/464>`_)
-* Fix for issue `#431 <https://github.com/ros2/geometry2/issues/431>`_ - Covariance is not transformed in do_transform_pose_with_covariance_stamped (`#453 <https://github.com/ros2/geometry2/issues/453>`_)
-* doTransform non stamped msgs (`#452 <https://github.com/ros2/geometry2/issues/452>`_)
-* `tf2_geometry_msgs`: Fixing covariance transformation in `doTransform<PoseWithCovarianceStamped, TransformStamped>` (`#430 <https://github.com/ros2/geometry2/issues/430>`_)
-* Contributors: Abrar Rahman Protyasha, Chris Lalancette, Khasreto, vineet131
-
-0.18.0 (2021-06-01)
--------------------
-* Geometry nitpicks (`#426 <https://github.com/ros2/geometry2/issues/426>`_)
-* Conversion tests for toMsg() (`#423 <https://github.com/ros2/geometry2/issues/423>`_)
-* Deprecate tf2_geometry_msgs.h (`#418 <https://github.com/ros2/geometry2/issues/418>`_)
-* Contributors: Bjar Ne, Chris Lalancette
-
-0.17.1 (2021-04-06)
--------------------
-
-0.17.0 (2021-03-19)
--------------------
-* Fix doTransform with Eigen Quaternion (`#369 <https://github.com/ros2/geometry2/issues/369>`_)
-* Contributors: Bjar Ne
-
-0.16.0 (2021-01-25)
--------------------
-
-0.15.1 (2020-12-08)
--------------------
-
-0.15.0 (2020-11-02)
--------------------
-* Update maintainers of the ros2/geometry2 fork. (`#328 <https://github.com/ros2/geometry2/issues/328>`_)
-* Contributors: Chris Lalancette
-
-0.14.1 (2020-09-21)
--------------------
-* Activate usual compiler warnings and fix errors (`#270 <https://github.com/ros2/geometry2/issues/270>`_)
-* Add PoseWithCovarianceStamped transform support (`#312 <https://github.com/ros2/geometry2/issues/312>`_)
-* Contributors: Ivan Santiago Paunovic, Joshua Whitley
-
-0.14.0 (2020-08-14)
--------------------
-* Don't install python tf2_geometry_msgs (`#299 <https://github.com/ros2/geometry2/issues/299>`_)
-  It hasn't been ported yet.
-  Closes https://github.com/ros2/geometry2/issues/285
-* Split tf2_ros in tf2_ros and tf2_ros_py (`#210 <https://github.com/ros2/geometry2/issues/210>`_)
-  * Split tf2_ros in tf2_ros and tf2_ros_py
-* Contributors: Alejandro Hernández Cordero, Shane Loretz
 
 0.13.4 (2020-06-03)
 -------------------

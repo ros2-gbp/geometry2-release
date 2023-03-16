@@ -33,7 +33,6 @@
 #ifndef ROSTEST_PERMUTER_HPP
 #define ROSTEST_PERMUTER_HPP
 
-#include <memory>
 #include <mutex>
 #include <vector>
 
