@@ -1,0 +1,12 @@
+Source: ros-foxy-tf2-geometry-msgs
+Section: misc
+Priority: optional
+Maintainer: Chris Lalancette <clalancette@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-foxy-ament-cmake-auto, ros-foxy-ament-cmake-gtest <!nocheck>, ros-foxy-ament-cmake-pytest <!nocheck>, ros-foxy-ament-lint-auto <!nocheck>, ros-foxy-ament-lint-common <!nocheck>, ros-foxy-geometry-msgs, ros-foxy-orocos-kdl, ros-foxy-rclcpp <!nocheck>, ros-foxy-tf2, ros-foxy-tf2-ros, ros-foxy-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_ros
+Standards-Version: 3.9.2
+
+Package: ros-foxy-tf2-geometry-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3-numpy, ros-foxy-geometry-msgs, ros-foxy-orocos-kdl, ros-foxy-tf2, ros-foxy-tf2-ros, ros-foxy-ros-workspace
+Description: tf2_geometry_msgs
