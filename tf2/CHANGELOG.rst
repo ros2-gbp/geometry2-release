@@ -2,10 +2,16 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.31.3 (2023-05-11)
+0.32.2 (2023-07-11)
 -------------------
-* Fix error code returned in BufferCore::walkToTopParent (`#602 <https://github.com/ros2/geometry2/issues/602>`_)
+
+0.32.1 (2023-05-11)
+-------------------
+* Fix error code returned in BufferCore::walkToTopParent (`#601 <https://github.com/ros2/geometry2/issues/601>`_)
 * Contributors: Patrick Roncagliolo
+
+0.32.0 (2023-04-27)
+-------------------
 
 0.31.2 (2023-04-13)
 -------------------
