@@ -2,6 +2,11 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.32.2 (2023-07-11)
+-------------------
+* Enable StaticTransformBroadcaster in Intra-process enabled components (`#607 <https://github.com/ros2/geometry2/issues/607>`_)
+* Contributors: Patrick Roncagliolo
+
 0.32.1 (2023-05-11)
 -------------------
 
