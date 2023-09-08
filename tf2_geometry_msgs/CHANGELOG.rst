@@ -2,21 +2,15 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.33.1 (2023-09-07)
+0.31.5 (2023-09-08)
+-------------------
+* Add doTransform support for Point32, Polygon and PolygonStamped (`#618 <https://github.com/ros2/geometry2/issues/618>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.31.4 (2023-07-14)
 -------------------
 
-0.33.0 (2023-08-21)
--------------------
-* Add doTransform support for Point32, Polygon and PolygonStamped (backport `#616 <https://github.com/ros2/geometry2/issues/616>`_) (`#619 <https://github.com/ros2/geometry2/issues/619>`_)
-* Contributors: mergify[bot]
-
-0.32.2 (2023-07-11)
--------------------
-
-0.32.1 (2023-05-11)
--------------------
-
-0.32.0 (2023-04-27)
+0.31.3 (2023-05-11)
 -------------------
 
 0.31.2 (2023-04-13)

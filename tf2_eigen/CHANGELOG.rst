@@ -2,21 +2,15 @@
 Changelog for package tf2_eigen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.33.1 (2023-09-07)
+0.31.5 (2023-09-08)
 -------------------
-
-0.33.0 (2023-08-21)
--------------------
-* Add another reference for twist transformation. Comment correction. (`#620 <https://github.com/ros2/geometry2/issues/620>`_)
+* Add another reference for twist transformation. Comment correction. (`#622 <https://github.com/ros2/geometry2/issues/622>`_)
 * Contributors: AndyZe
 
-0.32.2 (2023-07-11)
+0.31.4 (2023-07-14)
 -------------------
 
-0.32.1 (2023-05-11)
--------------------
-
-0.32.0 (2023-04-27)
+0.31.3 (2023-05-11)
 -------------------
 
 0.31.2 (2023-04-13)

@@ -2,24 +2,17 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.33.1 (2023-09-07)
+0.31.5 (2023-09-08)
 -------------------
+* Fix invalid timer handle exception (`#613 <https://github.com/ros2/geometry2/issues/613>`_)
+* Contributors: Cliff Wu
 
-0.33.0 (2023-08-21)
+0.31.4 (2023-07-14)
 -------------------
-* Fix invalid timer handle exception (`#474 <https://github.com/ros2/geometry2/issues/474>`_)
-* Fix for `#589 <https://github.com/ros2/geometry2/issues/589>`_ - Should be able to transform with default timeout (`#593 <https://github.com/ros2/geometry2/issues/593>`_)
-* Contributors: Cliff Wu, vineet131
-
-0.32.2 (2023-07-11)
--------------------
-* Enable StaticTransformBroadcaster in Intra-process enabled components (`#607 <https://github.com/ros2/geometry2/issues/607>`_)
+* Enable StaticTransformBroadcaster in Intra-process enabled components (`#611 <https://github.com/ros2/geometry2/issues/611>`_)
 * Contributors: Patrick Roncagliolo
 
-0.32.1 (2023-05-11)
--------------------
-
-0.32.0 (2023-04-27)
+0.31.3 (2023-05-11)
 -------------------
 
 0.31.2 (2023-04-13)

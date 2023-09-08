@@ -2,23 +2,15 @@
 Changelog for package tf2_ros_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.33.1 (2023-09-07)
+0.31.5 (2023-09-08)
 -------------------
-* Remove 'efficient copy' prints (`#625 <https://github.com/ros2/geometry2/issues/625>`_)
+* Remove 'efficient copy' prints (`#627 <https://github.com/ros2/geometry2/issues/627>`_)
 * Contributors: Matthijs van der Burgh
 
-0.33.0 (2023-08-21)
+0.31.4 (2023-07-14)
 -------------------
 
-0.32.2 (2023-07-11)
--------------------
-* Add time jump callback (`#608 <https://github.com/ros2/geometry2/issues/608>`_)
-* Contributors: Erich L Foster
-
-0.32.1 (2023-05-11)
--------------------
-
-0.32.0 (2023-04-27)
+0.31.3 (2023-05-11)
 -------------------
 
 0.31.2 (2023-04-13)
