@@ -2,54 +2,18 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.31.5 (2023-09-08)
+0.25.4 (2023-09-19)
 -------------------
 
-0.31.4 (2023-07-14)
+0.25.3 (2023-07-17)
 -------------------
 
-0.31.3 (2023-05-11)
+0.25.2 (2023-01-10)
 -------------------
-* Fix error code returned in BufferCore::walkToTopParent (`#602 <https://github.com/ros2/geometry2/issues/602>`_)
-* Contributors: Patrick Roncagliolo
+* Include required header Scalar.h (`#559 <https://github.com/ros2/geometry2/issues/559>`_) (`#562 <https://github.com/ros2/geometry2/issues/562>`_)
+* Contributors: mergify[bot]
 
-0.31.2 (2023-04-13)
--------------------
-
-0.31.1 (2023-04-12)
--------------------
-
-0.31.0 (2023-04-11)
--------------------
-* Depend on ament_cmake_ros to default SHARED to ON (`#591 <https://github.com/ros2/geometry2/issues/591>`_)
-* Fix a potential crash in TimeCache::findClosest (`#592 <https://github.com/ros2/geometry2/issues/592>`_)
-* Extend TimeCache API to provide rich ExtrapolationException infos (`#586 <https://github.com/ros2/geometry2/issues/586>`_)
-* Contributors: Chris Lalancette, Patrick Roncagliolo, Tyler Weaver
-
-0.30.0 (2023-02-14)
--------------------
-* Update geometry2 to C++17 (`#584 <https://github.com/ros2/geometry2/issues/584>`_)
-* Contributors: Chris Lalancette
-
-0.29.0 (2022-11-21)
--------------------
-* Include required header Scalar.h (`#559 <https://github.com/ros2/geometry2/issues/559>`_)
-* Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
-* Contributors: Audrow Nash, Shane Loretz
-
-0.28.0 (2022-11-02)
--------------------
-
-0.27.0 (2022-09-13)
--------------------
-
-0.26.2 (2022-08-15)
--------------------
-
-0.26.1 (2022-06-24)
--------------------
-
-0.26.0 (2022-04-29)
+0.25.1 (2022-08-05)
 -------------------
 
 0.25.0 (2022-04-05)
