@@ -1,3 +1,43 @@
+## geometry2 (humble) - 0.25.4-1
+
+The packages in the `geometry2` repository were released into the `humble` distro by running `/usr/bin/bloom-release -r humble -y geometry2` on `Tue, 19 Sep 2023 14:04:00 -0000`
+
+These packages were released:
+- `examples_tf2_py`
+- `geometry2`
+- `tf2`
+- `tf2_bullet`
+- `tf2_eigen`
+- `tf2_eigen_kdl`
+- `tf2_geometry_msgs`
+- `tf2_kdl`
+- `tf2_msgs`
+- `tf2_py`
+- `tf2_ros`
+- `tf2_ros_py`
+- `tf2_sensor_msgs`
+- `tf2_tools`
+
+These packages were explicitly ignored:
+- `test_tf2`
+
+Version of package(s) in repository `geometry2`:
+
+- upstream repository: https://github.com/ros2/geometry2.git
+- release repository: https://github.com/ros2-gbp/geometry2-release.git
+- rosdistro version: `0.25.3-1`
+- old version: `0.25.3-1`
+- new version: `0.25.4-1`
+
+Versions of tools used:
+
+- bloom version: `0.11.2`
+- catkin_pkg version: `0.5.2`
+- rosdep version: `0.22.2`
+- rosdistro version: `0.9.0`
+- vcstools version: `0.1.42`
+
+
 ## geometry2 (iron) - 0.31.5-1
 
 The packages in the `geometry2` repository were released into the `iron` distro by running `/usr/bin/bloom-release --rosdistro iron geometry2` on `Fri, 08 Sep 2023 05:29:46 -0000`
