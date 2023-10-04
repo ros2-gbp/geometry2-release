@@ -2,6 +2,11 @@
 Changelog for package tf2_eigen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.33.2 (2023-10-04)
+-------------------
+* Fix clang build warnings. (`#628 <https://github.com/ros2/geometry2/issues/628>`_)
+* Contributors: Chris Lalancette
+
 0.33.1 (2023-09-07)
 -------------------
 
