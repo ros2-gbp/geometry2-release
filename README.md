@@ -1,3 +1,43 @@
+## geometry2 (rolling) - 0.35.1-1
+
+The packages in the `geometry2` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --track rolling --rosdistro rolling geometry2` on `Wed, 24 Jan 2024 14:24:37 -0000`
+
+These packages were released:
+- `examples_tf2_py`
+- `geometry2`
+- `tf2`
+- `tf2_bullet`
+- `tf2_eigen`
+- `tf2_eigen_kdl`
+- `tf2_geometry_msgs`
+- `tf2_kdl`
+- `tf2_msgs`
+- `tf2_py`
+- `tf2_ros`
+- `tf2_ros_py`
+- `tf2_sensor_msgs`
+- `tf2_tools`
+
+These packages were explicitly ignored:
+- `test_tf2`
+
+Version of package(s) in repository `geometry2`:
+
+- upstream repository: https://github.com/ros2/geometry2.git
+- release repository: https://github.com/ros2-gbp/geometry2-release.git
+- rosdistro version: `0.35.0-1`
+- old version: `0.35.0-1`
+- new version: `0.35.1-1`
+
+Versions of tools used:
+
+- bloom version: `0.11.2`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.22.2`
+- rosdistro version: `0.9.0`
+- vcstools version: `0.1.42`
+
+
 ## geometry2 (rolling) - 0.35.0-1
 
 The packages in the `geometry2` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --track rolling --rosdistro rolling geometry2` on `Tue, 26 Dec 2023 17:39:14 -0000`
