@@ -72,7 +72,7 @@ TEST(tf2_ros_test_listener, transform_listener)
 
   geometry_msgs::msg::TransformStamped out_rootc = buffer.lookupTransform(
     "a", "b",
-    rclcpp::Time());
+    builtin_interfaces::msg::Time());
 
   EXPECT_EQ(1, out_rootc.transform.translation.x);
   EXPECT_EQ(2, out_rootc.transform.translation.y);
