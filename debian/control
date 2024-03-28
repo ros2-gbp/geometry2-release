@@ -1,0 +1,12 @@
+Source: ros-rolling-geometry2
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ament-cmake, ros-rolling-ros-workspace
+Homepage: http://www.ros.org/wiki/geometry2
+Standards-Version: 3.9.2
+
+Package: ros-rolling-geometry2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libtf2-bullet-dev, libtf2-dev, libtf2-eigen-dev, libtf2-geometry-msgs-dev, libtf2-kdl-dev, libtf2-msgs-dev, libtf2-ros-dev, libtf2-sensor-msgs-dev, python3-tf2, python3-tf2-geometry-msgs, python3-tf2-kdl, python3-tf2-msgs, python3-tf2-ros, python3-tf2-sensor-msgs, ros-rolling-tf2-eigen-kdl, ros-sensor-msgs, ros-tf2-msgs, tf2-tools, ros-rolling-ros-workspace
+Description: A metapackage to bring in the default packages second generation Transform Library in ros, tf2.
