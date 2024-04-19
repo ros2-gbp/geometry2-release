@@ -1,0 +1,12 @@
+Source: ros-iron-tf2-bullet
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), libbullet-dev, ros-iron-ament-cmake, ros-iron-ament-cmake-gtest <!nocheck>, ros-iron-ament-lint-auto <!nocheck>, ros-iron-ament-lint-common <!nocheck>, ros-iron-geometry-msgs, ros-iron-tf2, ros-iron-tf2-ros, ros-iron-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_bullet
+Standards-Version: 3.9.2
+
+Package: ros-iron-tf2-bullet
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libbullet-dev, ros-iron-geometry-msgs, ros-iron-tf2, ros-iron-tf2-ros, ros-iron-ros-workspace
+Description: tf2_bullet
