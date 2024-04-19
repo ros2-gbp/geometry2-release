@@ -1,0 +1,12 @@
+Source: ros-iron-tf2-geometry-msgs
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-iron-ament-cmake, ros-iron-ament-cmake-gtest <!nocheck>, ros-iron-ament-cmake-pytest <!nocheck>, ros-iron-ament-lint-auto <!nocheck>, ros-iron-ament-lint-common <!nocheck>, ros-iron-geometry-msgs, ros-iron-orocos-kdl-vendor, ros-iron-python-cmake-module, ros-iron-rclcpp <!nocheck>, ros-iron-tf2, ros-iron-tf2-ros, ros-iron-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_ros
+Standards-Version: 3.9.2
+
+Package: ros-iron-tf2-geometry-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3-numpy, ros-iron-geometry-msgs, ros-iron-orocos-kdl-vendor, ros-iron-tf2, ros-iron-tf2-ros, ros-iron-tf2-ros-py, ros-iron-ros-workspace
+Description: tf2_geometry_msgs
