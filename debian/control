@@ -1,0 +1,12 @@
+Source: ros-iron-tf2-tools
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-iron-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: http://www.ros.org/wiki/tf2_tools
+Standards-Version: 3.9.2
+
+Package: ros-iron-tf2-tools
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, graphviz, python3-yaml, ros-iron-rclpy, ros-iron-tf2-msgs, ros-iron-tf2-py, ros-iron-tf2-ros-py, ros-iron-ros-workspace
+Description: tf2_tools
