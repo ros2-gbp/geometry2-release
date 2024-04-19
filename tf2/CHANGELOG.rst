@@ -2,54 +2,21 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.36.2 (2024-04-10)
+0.31.6 (2024-04-19)
 -------------------
-* Enable Twist interpolator (`#646 <https://github.com/ros2/geometry2/issues/646>`_)
-  Co-authored-by: Tully Foote <tullyfoote@intrinsic.ai>
-* Warning Message Intervals for canTransform (`#663 <https://github.com/ros2/geometry2/issues/663>`_)
-* Contributors: Alejandro Hernández Cordero, Lucas Wendland
+* Fix constantly increasing memory in std::list (`#649 <https://github.com/ros2/geometry2/issues/649>`_)
+* Contributors: Ignacio Vizzo <ignaciovizzo@gmail.com>
 
-0.36.1 (2024-03-28)
--------------------
-* Nacho/minor fixes tf2 cache (`#658 <https://github.com/ros2/geometry2/issues/658>`_)
-* Removing console_bridge (`#655 <https://github.com/ros2/geometry2/issues/655>`_)
-* Contributors: Ignacio Vizzo, Lucas Wendland
-
-0.36.0 (2024-02-07)
+0.31.5 (2023-09-08)
 -------------------
 
-0.35.1 (2024-01-24)
--------------------
-* Fix constantly increasing memory in std::list (`#636 <https://github.com/ros2/geometry2/issues/636>`_)
-* Contributors: Ignacio Vizzo
-
-0.35.0 (2023-12-26)
--------------------
-* Update the tf2 documentation (`#638 <https://github.com/ros2/geometry2/issues/638>`_)
-* Contributors: Chris Lalancette
-
-0.34.0 (2023-11-06)
+0.31.4 (2023-07-14)
 -------------------
 
-0.33.2 (2023-10-04)
+0.31.3 (2023-05-11)
 -------------------
-
-0.33.1 (2023-09-07)
--------------------
-
-0.33.0 (2023-08-21)
--------------------
-
-0.32.2 (2023-07-11)
--------------------
-
-0.32.1 (2023-05-11)
--------------------
-* Fix error code returned in BufferCore::walkToTopParent (`#601 <https://github.com/ros2/geometry2/issues/601>`_)
+* Fix error code returned in BufferCore::walkToTopParent (`#602 <https://github.com/ros2/geometry2/issues/602>`_)
 * Contributors: Patrick Roncagliolo
-
-0.32.0 (2023-04-27)
--------------------
 
 0.31.2 (2023-04-13)
 -------------------

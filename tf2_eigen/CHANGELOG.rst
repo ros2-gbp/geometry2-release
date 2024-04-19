@@ -2,47 +2,18 @@
 Changelog for package tf2_eigen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.36.2 (2024-04-10)
+0.31.6 (2024-04-19)
 -------------------
 
-0.36.1 (2024-03-28)
+0.31.5 (2023-09-08)
 -------------------
-
-0.36.0 (2024-02-07)
--------------------
-* Removed obsolete headers (`#645 <https://github.com/ros2/geometry2/issues/645>`_)
-* normalize quaternions on tf2_eigen (`#644 <https://github.com/ros2/geometry2/issues/644>`_)
-* Contributors: Alejandro Hernández Cordero, Paul Gesel
-
-0.35.1 (2024-01-24)
--------------------
-
-0.35.0 (2023-12-26)
--------------------
-
-0.34.0 (2023-11-06)
--------------------
-
-0.33.2 (2023-10-04)
--------------------
-* Fix clang build warnings. (`#628 <https://github.com/ros2/geometry2/issues/628>`_)
-* Contributors: Chris Lalancette
-
-0.33.1 (2023-09-07)
--------------------
-
-0.33.0 (2023-08-21)
--------------------
-* Add another reference for twist transformation. Comment correction. (`#620 <https://github.com/ros2/geometry2/issues/620>`_)
+* Add another reference for twist transformation. Comment correction. (`#622 <https://github.com/ros2/geometry2/issues/622>`_)
 * Contributors: AndyZe
 
-0.32.2 (2023-07-11)
+0.31.4 (2023-07-14)
 -------------------
 
-0.32.1 (2023-05-11)
--------------------
-
-0.32.0 (2023-04-27)
+0.31.3 (2023-05-11)
 -------------------
 
 0.31.2 (2023-04-13)

@@ -247,22 +247,23 @@ CompactFrameID TimeCache::getParent(
 
 bool TimeCache::insertData(const TransformStorage & new_data)
 {
-  const TimePoint latest_time = getLatestTimestamp();
+  L_TransformStorage::iterator storage_it = storage_.begin();
 
-  // Avoid inserting data in the past that already exceeds the max_storage_time_
-  if (!storage_.empty() && new_data.stamp_ < latest_time - max_storage_time_) {
-    return false;
+  if (storage_it != storage_.end()) {
+    if (storage_it->stamp_ > new_data.stamp_ + max_storage_time_) {
+      return false;
+    }
   }
 
-  // Find the oldest element in the list before the incoming stamp.
-  auto last_transform_pos = std::find_if(
-    storage_.begin(), storage_.end(), [&](const auto & transfrom) {
-      return transfrom.stamp_ <= new_data.stamp_;
-    });
-
+  while (storage_it != storage_.end()) {
+    if (storage_it->stamp_ <= new_data.stamp_) {
+      break;
+    }
+    storage_it++;
+  }
   // Insert elements only if not already present
   if (std::find(storage_.begin(), storage_.end(), new_data) == storage_.end()) {
-    storage_.insert(last_transform_pos, new_data);
+    storage_.insert(storage_it, new_data);
   }
 
   pruneList();
@@ -309,11 +310,10 @@ TimePoint TimeCache::getOldestTimestamp()
 
 void TimeCache::pruneList()
 {
-  const TimePoint latest_time = getLatestTimestamp();
+  TimePoint latest_time = storage_.begin()->stamp_;
 
-  storage_.remove_if(
-    [&](const auto & transform) {
-      return transform.stamp_ < latest_time - max_storage_time_;
-    });
+  while (!storage_.empty() && storage_.back().stamp_ + max_storage_time_ < latest_time) {
+    storage_.pop_back();
+  }
 }
 }  // namespace tf2
