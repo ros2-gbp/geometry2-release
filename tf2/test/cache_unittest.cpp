@@ -90,7 +90,7 @@ tf2::TransformStorage makeItem(uint32_t nanosec, uint32_t frame_id)
 std::string toMakeItemString(const tf2::TransformStorage & item)
 {
   std::stringstream out;
-  auto nanosec = std::chrono::duration_cast<std::chrono::nanoseconds>(
+  std::chrono::duration nanosec = std::chrono::duration_cast<std::chrono::nanoseconds>(
     item.stamp_.time_since_epoch());
   out << "makeItem(" << nanosec.count() << ", " << item.frame_id_ << ")";
   return out.str();

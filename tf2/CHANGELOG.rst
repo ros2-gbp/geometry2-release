@@ -2,21 +2,14 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.25.8 (2024-08-29)
+0.31.8 (2024-08-29)
 -------------------
-* Enable Twist interpolator (backport `#646 <https://github.com/ros2/geometry2/issues/646>`_) (`#684 <https://github.com/ros2/geometry2/issues/684>`_)
-  * Enable Twist interpolator (`#646 <https://github.com/ros2/geometry2/issues/646>`_)
-  Co-authored-by: Tully Foote <tullyfoote@intrinsic.ai>
-  (cherry picked from commit 62322b8fa74c90d144dfe32294f6670bf6cfe786)
-  # Conflicts:
-  #	tf2/include/tf2/buffer_core.h
-  #	tf2_ros/test/test_buffer.cpp
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Enable Twist interpolator (backport `#646 <https://github.com/ros2/geometry2/issues/646>`_) (`#685 <https://github.com/ros2/geometry2/issues/685>`_)
 * Contributors: mergify[bot]
 
-0.25.7 (2024-05-29)
+0.31.7 (2024-05-29)
 -------------------
-* [TimeCache] Improve performance for insertData() and pruneList() (backport `#680 <https://github.com/ros2/geometry2/issues/680>`_) (`#693 <https://github.com/ros2/geometry2/issues/693>`_)
+* [TimeCache] Improve performance for insertData() and pruneList() (backport `#680 <https://github.com/ros2/geometry2/issues/680>`_) (`#694 <https://github.com/ros2/geometry2/issues/694>`_)
   * Nacho/minor fixes tf2 cache (`#658 <https://github.com/ros2/geometry2/issues/658>`_)
   * Remove unused parameter
   * Make use of API function to improve redability
@@ -68,34 +61,67 @@ Changelog for package tf2
   Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
   Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Add cache_benchmark (backport `#679 <https://github.com/ros2/geometry2/issues/679>`_) (`#691 <https://github.com/ros2/geometry2/issues/691>`_)
+* Add cache_benchmark (backport `#679 <https://github.com/ros2/geometry2/issues/679>`_) (`#692 <https://github.com/ros2/geometry2/issues/692>`_)
   Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
   Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* [cache_unittest] Add direct implementation testing on ordering, pruning (backport `#678 <https://github.com/ros2/geometry2/issues/678>`_) (`#688 <https://github.com/ros2/geometry2/issues/688>`_)
+* [cache_unittest] Add direct implementation testing on ordering, pruning (backport `#678 <https://github.com/ros2/geometry2/issues/678>`_) (`#689 <https://github.com/ros2/geometry2/issues/689>`_)
   Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
   Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
 * Contributors: mergify[bot]
 
-0.25.6 (2024-02-16)
+0.31.6 (2024-04-19)
 -------------------
-* Fix constantly increasing memory in std::list (`#648 <https://github.com/ros2/geometry2/issues/648>`_)
-* Contributors: Ignacio Vizzo
+* Fix constantly increasing memory in std::list (`#649 <https://github.com/ros2/geometry2/issues/649>`_)
+* Contributors: Ignacio Vizzo <ignaciovizzo@gmail.com>
 
-0.25.5 (2023-11-13)
--------------------
-
-0.25.4 (2023-09-19)
+0.31.5 (2023-09-08)
 -------------------
 
-0.25.3 (2023-07-17)
+0.31.4 (2023-07-14)
 -------------------
 
-0.25.2 (2023-01-10)
+0.31.3 (2023-05-11)
 -------------------
-* Include required header Scalar.h (`#559 <https://github.com/ros2/geometry2/issues/559>`_) (`#562 <https://github.com/ros2/geometry2/issues/562>`_)
-* Contributors: mergify[bot]
+* Fix error code returned in BufferCore::walkToTopParent (`#602 <https://github.com/ros2/geometry2/issues/602>`_)
+* Contributors: Patrick Roncagliolo
 
-0.25.1 (2022-08-05)
+0.31.2 (2023-04-13)
+-------------------
+
+0.31.1 (2023-04-12)
+-------------------
+
+0.31.0 (2023-04-11)
+-------------------
+* Depend on ament_cmake_ros to default SHARED to ON (`#591 <https://github.com/ros2/geometry2/issues/591>`_)
+* Fix a potential crash in TimeCache::findClosest (`#592 <https://github.com/ros2/geometry2/issues/592>`_)
+* Extend TimeCache API to provide rich ExtrapolationException infos (`#586 <https://github.com/ros2/geometry2/issues/586>`_)
+* Contributors: Chris Lalancette, Patrick Roncagliolo, Tyler Weaver
+
+0.30.0 (2023-02-14)
+-------------------
+* Update geometry2 to C++17 (`#584 <https://github.com/ros2/geometry2/issues/584>`_)
+* Contributors: Chris Lalancette
+
+0.29.0 (2022-11-21)
+-------------------
+* Include required header Scalar.h (`#559 <https://github.com/ros2/geometry2/issues/559>`_)
+* Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
+* Contributors: Audrow Nash, Shane Loretz
+
+0.28.0 (2022-11-02)
+-------------------
+
+0.27.0 (2022-09-13)
+-------------------
+
+0.26.2 (2022-08-15)
+-------------------
+
+0.26.1 (2022-06-24)
+-------------------
+
+0.26.0 (2022-04-29)
 -------------------
 
 0.25.0 (2022-04-05)
