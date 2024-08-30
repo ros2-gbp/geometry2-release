@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import rclpy
-from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 import rclpy.time
 from tf2_ros import LookupException
@@ -63,9 +62,10 @@ class AsyncWaitsForTransform(Node):
 
 
 def main():
+    rclpy.init()
+    node = AsyncWaitsForTransform()
     try:
-        with rclpy.init():
-            node = AsyncWaitsForTransform()
-            rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
+        rclpy.spin(node)
+    except KeyboardInterrupt:
         pass
+    rclpy.shutdown()
