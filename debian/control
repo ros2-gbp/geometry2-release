@@ -1,0 +1,12 @@
+Source: ros-iron-geometry2
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-iron-ament-cmake, ros-iron-ros-workspace
+Homepage: http://www.ros.org/wiki/geometry2
+Standards-Version: 3.9.2
+
+Package: ros-iron-geometry2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-iron-tf2, ros-iron-tf2-bullet, ros-iron-tf2-eigen, ros-iron-tf2-eigen-kdl, ros-iron-tf2-geometry-msgs, ros-iron-tf2-kdl, ros-iron-tf2-msgs, ros-iron-tf2-py, ros-iron-tf2-ros, ros-iron-tf2-sensor-msgs, ros-iron-tf2-tools, ros-iron-ros-workspace
+Description: A metapackage to bring in the default packages second generation Transform Library in ros, tf2.
