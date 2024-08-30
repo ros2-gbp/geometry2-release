@@ -1,0 +1,12 @@
+Source: ros-iron-tf2-ros-py
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest <!nocheck>, ros-iron-sensor-msgs <!nocheck>, ros-iron-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: http://www.ros.org/wiki/tf2_ros
+Standards-Version: 3.9.2
+
+Package: ros-iron-tf2-ros-py
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, ros-iron-builtin-interfaces, ros-iron-geometry-msgs, ros-iron-rclpy, ros-iron-sensor-msgs, ros-iron-std-msgs, ros-iron-tf2-msgs, ros-iron-tf2-py, ros-iron-ros-workspace
+Description: This package contains the ROS Python bindings for the tf2 library
