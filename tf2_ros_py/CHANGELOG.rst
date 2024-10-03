@@ -2,24 +2,70 @@
 Changelog for package tf2_ros_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.31.8 (2024-08-29)
+0.39.0 (2024-10-03)
 -------------------
 
-0.31.7 (2024-05-29)
+0.38.2 (2024-07-19)
+-------------------
+* Switch to using a context manager for the python examples. (`#700 <https://github.com/ros2/geometry2/issues/700>`_)
+  That way we can be sure to always clean up, but use less
+  code doing so.
+* Contributors: Chris Lalancette
+
+0.38.1 (2024-07-09)
 -------------------
 
-0.31.6 (2024-04-19)
+0.38.0 (2024-06-17)
 -------------------
 
-0.31.5 (2023-09-08)
+0.37.1 (2024-05-29)
 -------------------
-* Remove 'efficient copy' prints (`#627 <https://github.com/ros2/geometry2/issues/627>`_)
+
+0.37.0 (2024-04-26)
+-------------------
+
+0.36.2 (2024-04-10)
+-------------------
+* Transform Data Callback Python (`#664 <https://github.com/ros2/geometry2/issues/664>`_)
+* Contributors: Lucas Wendland
+
+0.36.1 (2024-03-28)
+-------------------
+
+0.36.0 (2024-02-07)
+-------------------
+
+0.35.1 (2024-01-24)
+-------------------
+
+0.35.0 (2023-12-26)
+-------------------
+
+0.34.0 (2023-11-06)
+-------------------
+* Make sure to cache transforms in tf2_ros_py. (`#634 <https://github.com/ros2/geometry2/issues/634>`_)
+* Contributors: Chris Lalancette
+
+0.33.2 (2023-10-04)
+-------------------
+
+0.33.1 (2023-09-07)
+-------------------
+* Remove 'efficient copy' prints (`#625 <https://github.com/ros2/geometry2/issues/625>`_)
 * Contributors: Matthijs van der Burgh
 
-0.31.4 (2023-07-14)
+0.33.0 (2023-08-21)
 -------------------
 
-0.31.3 (2023-05-11)
+0.32.2 (2023-07-11)
+-------------------
+* Add time jump callback (`#608 <https://github.com/ros2/geometry2/issues/608>`_)
+* Contributors: Erich L Foster
+
+0.32.1 (2023-05-11)
+-------------------
+
+0.32.0 (2023-04-27)
 -------------------
 
 0.31.2 (2023-04-13)

@@ -2,22 +2,68 @@
 Changelog for package test_tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.31.8 (2024-08-29)
+0.39.0 (2024-10-03)
 -------------------
 
-0.31.7 (2024-05-29)
+0.38.2 (2024-07-19)
+-------------------
+* Switch to using a context manager for the python examples. (`#700 <https://github.com/ros2/geometry2/issues/700>`_)
+  That way we can be sure to always clean up, but use less
+  code doing so.
+* Contributors: Chris Lalancette
+
+0.38.1 (2024-07-09)
 -------------------
 
-0.31.6 (2024-04-19)
+0.38.0 (2024-06-17)
 -------------------
 
-0.31.5 (2023-09-08)
+0.37.1 (2024-05-29)
 -------------------
 
-0.31.4 (2023-07-14)
+0.37.0 (2024-04-26)
 -------------------
 
-0.31.3 (2023-05-11)
+0.36.2 (2024-04-10)
+-------------------
+* Compile fix for upcomming changes to rclcpp::Executor (`#668 <https://github.com/ros2/geometry2/issues/668>`_)
+* Contributors: jmachowinski
+
+0.36.1 (2024-03-28)
+-------------------
+* Adding addition BUILD_TESTING requirement (`#660 <https://github.com/ros2/geometry2/issues/660>`_)
+* Contributors: Lucas Wendland
+
+0.36.0 (2024-02-07)
+-------------------
+* normalize quaternions on tf2_eigen (`#644 <https://github.com/ros2/geometry2/issues/644>`_)
+* Contributors: Paul Gesel
+
+0.35.1 (2024-01-24)
+-------------------
+
+0.35.0 (2023-12-26)
+-------------------
+
+0.34.0 (2023-11-06)
+-------------------
+
+0.33.2 (2023-10-04)
+-------------------
+
+0.33.1 (2023-09-07)
+-------------------
+
+0.33.0 (2023-08-21)
+-------------------
+
+0.32.2 (2023-07-11)
+-------------------
+
+0.32.1 (2023-05-11)
+-------------------
+
+0.32.0 (2023-04-27)
 -------------------
 
 0.31.2 (2023-04-13)

@@ -2,28 +2,84 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.31.8 (2024-08-29)
+0.39.0 (2024-10-03)
 -------------------
-* Enable Twist interpolator (backport `#646 <https://github.com/ros2/geometry2/issues/646>`_) (`#685 <https://github.com/ros2/geometry2/issues/685>`_)
-* Contributors: mergify[bot]
+* Adding static transform listener (`#673 <https://github.com/ros2/geometry2/issues/673>`_)
+* Contributors: Tom Moore
 
-0.31.7 (2024-05-29)
+0.38.2 (2024-07-19)
+-------------------
+* Updated deprecated message filter headers (`#702 <https://github.com/ros2/geometry2/issues/702>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.38.1 (2024-07-09)
 -------------------
 
-0.31.6 (2024-04-19)
+0.38.0 (2024-06-17)
+-------------------
+* Update qos for deprecation (`#695 <https://github.com/ros2/geometry2/issues/695>`_)
+* Contributors: Lucas Wendland
+
+0.37.1 (2024-05-29)
+-------------------
+* Cli tools documentation (`#653 <https://github.com/ros2/geometry2/issues/653>`_)
+* Contributors: Lucas Wendland
+
+0.37.0 (2024-04-26)
 -------------------
 
-0.31.5 (2023-09-08)
+0.36.2 (2024-04-10)
 -------------------
-* Fix invalid timer handle exception (`#613 <https://github.com/ros2/geometry2/issues/613>`_)
-* Contributors: Cliff Wu
+* Compile fix for upcomming changes to rclcpp::Executor (`#668 <https://github.com/ros2/geometry2/issues/668>`_)
+* Enable Twist interpolator (`#646 <https://github.com/ros2/geometry2/issues/646>`_)
+  Co-authored-by: Tully Foote <tullyfoote@intrinsic.ai>
+* Contributors: Alejandro Hernández Cordero, jmachowinski
 
-0.31.4 (2023-07-14)
+0.36.1 (2024-03-28)
 -------------------
-* Enable StaticTransformBroadcaster in Intra-process enabled components (`#611 <https://github.com/ros2/geometry2/issues/611>`_)
+* Adding NodeInterfaces to Buffer (`#656 <https://github.com/ros2/geometry2/issues/656>`_)
+* Reformat some code to make uncrustify happier. (`#654 <https://github.com/ros2/geometry2/issues/654>`_)
+* Contributors: Chris Lalancette, Lucas Wendland
+
+0.36.0 (2024-02-07)
+-------------------
+* Enable intra-process (`#649 <https://github.com/ros2/geometry2/issues/649>`_) (`#642 <https://github.com/ros2/geometry2/issues/642>`_)
 * Contributors: Patrick Roncagliolo
 
-0.31.3 (2023-05-11)
+0.35.1 (2024-01-24)
+-------------------
+
+0.35.0 (2023-12-26)
+-------------------
+* Avoid unecessary time conversions. (`#635 <https://github.com/ros2/geometry2/issues/635>`_)
+* Contributors: AiVerisimilitude
+
+0.34.0 (2023-11-06)
+-------------------
+* Expose TF2 listener CB (`#632 <https://github.com/ros2/geometry2/issues/632>`_)
+* Contributors: Steve Macenski
+
+0.33.2 (2023-10-04)
+-------------------
+
+0.33.1 (2023-09-07)
+-------------------
+
+0.33.0 (2023-08-21)
+-------------------
+* Fix invalid timer handle exception (`#474 <https://github.com/ros2/geometry2/issues/474>`_)
+* Fix for `#589 <https://github.com/ros2/geometry2/issues/589>`_ - Should be able to transform with default timeout (`#593 <https://github.com/ros2/geometry2/issues/593>`_)
+* Contributors: Cliff Wu, vineet131
+
+0.32.2 (2023-07-11)
+-------------------
+* Enable StaticTransformBroadcaster in Intra-process enabled components (`#607 <https://github.com/ros2/geometry2/issues/607>`_)
+* Contributors: Patrick Roncagliolo
+
+0.32.1 (2023-05-11)
+-------------------
+
+0.32.0 (2023-04-27)
 -------------------
 
 0.31.2 (2023-04-13)

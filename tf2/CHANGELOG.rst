@@ -2,88 +2,88 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.31.8 (2024-08-29)
+0.39.0 (2024-10-03)
 -------------------
-* Enable Twist interpolator (backport `#646 <https://github.com/ros2/geometry2/issues/646>`_) (`#685 <https://github.com/ros2/geometry2/issues/685>`_)
-* Contributors: mergify[bot]
 
-0.31.7 (2024-05-29)
+0.38.2 (2024-07-19)
 -------------------
-* [TimeCache] Improve performance for insertData() and pruneList() (backport `#680 <https://github.com/ros2/geometry2/issues/680>`_) (`#694 <https://github.com/ros2/geometry2/issues/694>`_)
-  * Nacho/minor fixes tf2 cache (`#658 <https://github.com/ros2/geometry2/issues/658>`_)
-  * Remove unused parameter
-  * Make use of API function to improve redability
-  ```cpp
-  TimePoint TimeCache::getLatestTimestamp()
-  {
-  return storage\_.front().stamp\_;
-  }
-  ```
-  And std::list<T>::front() is(gcclib):
-  ```cpp
-  reference
-  front() _GLIBCXX_NOEXCEPT
-  { return *begin(); }
-  ```
-  * Same argument as 321bd225afb5c
-  ```cpp
-  TimePoint TimeCache::getLatestTimestamp()
-  {
-  // empty list case
-  // ...
-  return storage\_.front().stamp\_;
-  }
-  ```
-  and std::list<T>::front():
-  ```cpp
-  reference
-  front() _GLIBCXX_NOEXCEPT
-  { return *begin(); }
-  ```
-  * Improve readbility by relying on STL functions
-  By now reading to this block I can tell that we are preventing to
-  inserting a new element in the list, that has a timestamp that is
-  actually older than the max_storage_time\_ we allow for
-  * Remove hardcoded algorithmg for STL one
-  The intent of the code is now more clear, instead of relying on raw
-  loops, we "find if" there is any element in the list that has a stamp
-  older than the incoming one. With this we find the position in the list
-  where we should insert the current timestamp: `storage_it`
-  * Remove to better express what this pointer is represetngin
-  * Replace raw loop for STL algorithm
-  Remove if any element is older thant the max_storage_time\_ allowed,
-  relative to the latest(sooner) time seems clear npw
-  * [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_)
+
+0.38.1 (2024-07-09)
+-------------------
+* Removed deprecated enuns (`#699 <https://github.com/ros2/geometry2//issues/699>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.38.0 (2024-06-17)
+-------------------
+
+0.37.1 (2024-05-29)
+-------------------
+* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_)
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  * Don't break ABI
-  ---------
-  Co-authored-by: Ignacio Vizzo <ignacio@dexory.com>
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
+* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_)
+* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_)
+  * Add cache_benchmark
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Add cache_benchmark (backport `#679 <https://github.com/ros2/geometry2/issues/679>`_) (`#692 <https://github.com/ros2/geometry2/issues/692>`_)
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* [cache_unittest] Add direct implementation testing on ordering, pruning (backport `#678 <https://github.com/ros2/geometry2/issues/678>`_) (`#689 <https://github.com/ros2/geometry2/issues/689>`_)
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Contributors: mergify[bot]
+* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_)
+  * [cache_unittest] Add direct implementation testing on ordering, pruning
+  * do getAllItems() approach
+  * Return a reference instead.
+  * mark getAllItems as internal
+  * Fix warning on Windows.
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* Contributors: Alejandro Hernández Cordero, Eric Cousineau
 
-0.31.6 (2024-04-19)
--------------------
-* Fix constantly increasing memory in std::list (`#649 <https://github.com/ros2/geometry2/issues/649>`_)
-* Contributors: Ignacio Vizzo <ignaciovizzo@gmail.com>
-
-0.31.5 (2023-09-08)
+0.37.0 (2024-04-26)
 -------------------
 
-0.31.4 (2023-07-14)
+0.36.2 (2024-04-10)
+-------------------
+* Enable Twist interpolator (`#646 <https://github.com/ros2/geometry2/issues/646>`_)
+  Co-authored-by: Tully Foote <tullyfoote@intrinsic.ai>
+* Warning Message Intervals for canTransform (`#663 <https://github.com/ros2/geometry2/issues/663>`_)
+* Contributors: Alejandro Hernández Cordero, Lucas Wendland
+
+0.36.1 (2024-03-28)
+-------------------
+* Nacho/minor fixes tf2 cache (`#658 <https://github.com/ros2/geometry2/issues/658>`_)
+* Removing console_bridge (`#655 <https://github.com/ros2/geometry2/issues/655>`_)
+* Contributors: Ignacio Vizzo, Lucas Wendland
+
+0.36.0 (2024-02-07)
 -------------------
 
-0.31.3 (2023-05-11)
+0.35.1 (2024-01-24)
 -------------------
-* Fix error code returned in BufferCore::walkToTopParent (`#602 <https://github.com/ros2/geometry2/issues/602>`_)
+* Fix constantly increasing memory in std::list (`#636 <https://github.com/ros2/geometry2/issues/636>`_)
+* Contributors: Ignacio Vizzo
+
+0.35.0 (2023-12-26)
+-------------------
+* Update the tf2 documentation (`#638 <https://github.com/ros2/geometry2/issues/638>`_)
+* Contributors: Chris Lalancette
+
+0.34.0 (2023-11-06)
+-------------------
+
+0.33.2 (2023-10-04)
+-------------------
+
+0.33.1 (2023-09-07)
+-------------------
+
+0.33.0 (2023-08-21)
+-------------------
+
+0.32.2 (2023-07-11)
+-------------------
+
+0.32.1 (2023-05-11)
+-------------------
+* Fix error code returned in BufferCore::walkToTopParent (`#601 <https://github.com/ros2/geometry2/issues/601>`_)
 * Contributors: Patrick Roncagliolo
+
+0.32.0 (2023-04-27)
+-------------------
 
 0.31.2 (2023-04-13)
 -------------------
