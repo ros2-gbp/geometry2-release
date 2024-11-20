@@ -36,7 +36,6 @@ from tf2_ros.buffer import Buffer
 from tf2_ros.transform_broadcaster import TransformBroadcaster
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
 from tf2_ros.transform_listener import TransformListener
-from tf2_ros.static_transform_listener import StaticTransformListener
 from tf2_ros import ExtrapolationException
 
 
@@ -68,22 +67,18 @@ class TestBroadcasterAndListener:
         cls.static_broadcaster = StaticTransformBroadcaster(cls.node)
         cls.listener = TransformListener(
             buffer=cls.buffer, node=cls.node, spin_thread=False)
-        cls.static_listener = StaticTransformListener(
-            buffer=cls.buffer, node=cls.node, spin_thread=False)
 
         cls.executor = rclpy.executors.SingleThreadedExecutor()
         cls.executor.add_node(cls.node)
 
     @classmethod
     def teardown_class(cls):
-        cls.executor.remove_node(cls.node)
         cls.node.destroy_node()
         rclpy.shutdown()
 
     def setup_method(self, method):
         self.buffer = Buffer()
         self.listener.buffer = self.buffer
-        self.static_listener.buffer = self.buffer
 
     def broadcast_transform(self, target_frame, source_frame, time_stamp):
         broadcast_transform = build_transform(
@@ -104,36 +99,6 @@ class TestBroadcasterAndListener:
         self.executor.spin_once()
 
         return broadcast_transform
-
-    def test_extrapolation_exception(self):
-        self.broadcast_transform(
-            target_frame='foo', source_frame='bar',
-            time_stamp=rclpy.time.Time(seconds=0.3, nanoseconds=0).to_msg())
-
-        self.broadcast_transform(
-            target_frame='foo', source_frame='bar',
-            time_stamp=rclpy.time.Time(seconds=0.2, nanoseconds=0).to_msg())
-
-        with pytest.raises(ExtrapolationException) as excinfo:
-            self.buffer.lookup_transform(
-                target_frame='foo', source_frame='bar',
-                time=rclpy.time.Time(seconds=0.1, nanoseconds=0).to_msg())
-
-        assert 'Lookup would require extrapolation into the past' in str(excinfo.value)
-
-        with pytest.raises(ExtrapolationException) as excinfo:
-            self.buffer.lookup_transform(
-                target_frame='foo', source_frame='bar',
-                time=rclpy.time.Time(seconds=0.4, nanoseconds=0).to_msg())
-
-        assert 'Lookup would require extrapolation into the future' in str(excinfo.value)
-
-    def static_transfrom_listener_rclpy_node(self):
-        node = rclpy.create_node('test_broadcaster_listener')
-        buffer = Buffer()
-
-        tfl = StaticTransformListener(buffer=buffer, node=node, spin_thread=False)
-        assert tfl == self.static_listener
 
     def test_broadcaster_and_listener(self):
         time_stamp = rclpy.time.Time(seconds=1, nanoseconds=0).to_msg()
@@ -158,6 +123,29 @@ class TestBroadcasterAndListener:
             listened_transform_async = e.value
 
         assert broadcasted_transform == listened_transform_async
+
+    def test_extrapolation_exception(self):
+        self.broadcast_transform(
+            target_frame='foo', source_frame='bar',
+            time_stamp=rclpy.time.Time(seconds=0.3, nanoseconds=0).to_msg())
+
+        self.broadcast_transform(
+            target_frame='foo', source_frame='bar',
+            time_stamp=rclpy.time.Time(seconds=0.2, nanoseconds=0).to_msg())
+
+        with pytest.raises(ExtrapolationException) as excinfo:
+            self.buffer.lookup_transform(
+                target_frame='foo', source_frame='bar',
+                time=rclpy.time.Time(seconds=0.1, nanoseconds=0).to_msg())
+
+        assert 'Lookup would require extrapolation into the past' in str(excinfo.value)
+
+        with pytest.raises(ExtrapolationException) as excinfo:
+            self.buffer.lookup_transform(
+                target_frame='foo', source_frame='bar',
+                time=rclpy.time.Time(seconds=0.4, nanoseconds=0).to_msg())
+
+        assert 'Lookup would require extrapolation into the future' in str(excinfo.value)
 
     def test_static_broadcaster_and_listener(self):
         broadcasted_transform = self.broadcast_static_transform(

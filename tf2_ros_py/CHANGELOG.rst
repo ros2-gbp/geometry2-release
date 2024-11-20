@@ -2,38 +2,19 @@
 Changelog for package tf2_ros_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.39.2 (2024-11-20)
+0.36.5 (2024-11-20)
 -------------------
-* Adding StaticTransformListener in Python (`#719 <https://github.com/ros2/geometry2/issues/719>`_)
-* Add in test_xmllint for geometry2 python packages. (`#725 <https://github.com/ros2/geometry2/issues/725>`_)
-* Contributors: Chris Lalancette, Lucas Wendland
+* Fix the time_jump_callback signature. (`#711 <https://github.com/ros2/geometry2/issues/711>`_) (`#712 <https://github.com/ros2/geometry2/issues/712>`_)
+  Because it accesses object data, the first argument
+  must be 'self'.
+  (cherry picked from commit efc784597ccbd8d246794e72b20358deab4ab114)
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* Contributors: mergify[bot]
 
-0.39.1 (2024-10-15)
--------------------
-* Add configurable TF topics (`#709 <https://github.com/ros2/geometry2//issues/709>`_)
-* Fix the time_jump_callback signature. (`#711 <https://github.com/ros2/geometry2//issues/711>`_)
-* Contributors: Chris Lalancette, Ryan
-
-0.39.0 (2024-10-03)
+0.36.4 (2024-05-29)
 -------------------
 
-0.38.2 (2024-07-19)
--------------------
-* Switch to using a context manager for the python examples. (`#700 <https://github.com/ros2/geometry2/issues/700>`_)
-  That way we can be sure to always clean up, but use less
-  code doing so.
-* Contributors: Chris Lalancette
-
-0.38.1 (2024-07-09)
--------------------
-
-0.38.0 (2024-06-17)
--------------------
-
-0.37.1 (2024-05-29)
--------------------
-
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)

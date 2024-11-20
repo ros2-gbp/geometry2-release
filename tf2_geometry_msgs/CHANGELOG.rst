@@ -2,32 +2,17 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.39.2 (2024-11-20)
+0.36.5 (2024-11-20)
 -------------------
-* Fix tf2_geometry_msgs_INCLUDE_DIRS. (`#729 <https://github.com/ros2/geometry2/issues/729>`_)
-* Contributors: rkeating-planted
+* Fix tf2_geometry_msgs_INCLUDE_DIRS. (`#729 <https://github.com/ros2/geometry2/issues/729>`_) (`#731 <https://github.com/ros2/geometry2/issues/731>`_)
+  (cherry picked from commit abea0e92e3eabfaa1079752d9ac6da352bc590d2)
+  Co-authored-by: rkeating-planted <159858498+rkeating-planted@users.noreply.github.com>
+* Contributors: mergify[bot]
 
-0.39.1 (2024-10-15)
--------------------
-* Remove use of python_cmake_module (`#651 <https://github.com/ros2/geometry2//issues/651>`_)
-* Contributors: Chris Lalancette
-
-0.39.0 (2024-10-03)
+0.36.4 (2024-05-29)
 -------------------
 
-0.38.2 (2024-07-19)
--------------------
-
-0.38.1 (2024-07-09)
--------------------
-
-0.38.0 (2024-06-17)
--------------------
-
-0.37.1 (2024-05-29)
--------------------
-
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)

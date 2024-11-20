@@ -2,46 +2,34 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.39.2 (2024-11-20)
+0.36.5 (2024-11-20)
 -------------------
 
-0.39.1 (2024-10-15)
+0.36.4 (2024-05-29)
 -------------------
-* Error String Filled (`#715 <https://github.com/ros2/geometry2//issues/715>`_)
-* Contributors: Lucas Wendland
-
-0.39.0 (2024-10-03)
--------------------
-
-0.38.2 (2024-07-19)
--------------------
-
-0.38.1 (2024-07-09)
--------------------
-* Removed deprecated enuns (`#699 <https://github.com/ros2/geometry2//issues/699>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.38.0 (2024-06-17)
--------------------
-
-0.37.1 (2024-05-29)
--------------------
-* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_)
+* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_) (`#683 <https://github.com/ros2/geometry2/issues/683>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_) (`#686 <https://github.com/ros2/geometry2/issues/686>`_)
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_)
-* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_)
+  (cherry picked from commit d700d78611ca2f2a56128ee71dd157961a1f4fb4)
+  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
+* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_) (`#690 <https://github.com/ros2/geometry2/issues/690>`_)
   * Add cache_benchmark
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_)
+  (cherry picked from commit 381d381739d008f83c2ebdf39034d46a19ea364e)
+  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
+* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_) (`#687 <https://github.com/ros2/geometry2/issues/687>`_)
   * [cache_unittest] Add direct implementation testing on ordering, pruning
   * do getAllItems() approach
   * Return a reference instead.
   * mark getAllItems as internal
   * Fix warning on Windows.
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* Contributors: Alejandro Hernández Cordero, Eric Cousineau
+  (cherry picked from commit a17a2bf8297052d2c6a404f9799bfe3b81040482)
+  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
+* Contributors: mergify[bot]
 
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)

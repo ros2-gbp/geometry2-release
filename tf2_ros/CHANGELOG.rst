@@ -2,40 +2,13 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.39.2 (2024-11-20)
--------------------
-* specified quaternion order to be xyzw (`#718 <https://github.com/ros2/geometry2/issues/718>`_)
-* Contributors: Abhishek Kashyap
-
-0.39.1 (2024-10-15)
--------------------
-* Add configurable TF topics (`#709 <https://github.com/ros2/geometry2//issues/709>`_)
-* Contributors: Ryan
-
-0.39.0 (2024-10-03)
--------------------
-* Adding static transform listener (`#673 <https://github.com/ros2/geometry2/issues/673>`_)
-* Contributors: Tom Moore
-
-0.38.2 (2024-07-19)
--------------------
-* Updated deprecated message filter headers (`#702 <https://github.com/ros2/geometry2/issues/702>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.38.1 (2024-07-09)
+0.36.5 (2024-11-20)
 -------------------
 
-0.38.0 (2024-06-17)
+0.36.4 (2024-05-29)
 -------------------
-* Update qos for deprecation (`#695 <https://github.com/ros2/geometry2/issues/695>`_)
-* Contributors: Lucas Wendland
 
-0.37.1 (2024-05-29)
--------------------
-* Cli tools documentation (`#653 <https://github.com/ros2/geometry2/issues/653>`_)
-* Contributors: Lucas Wendland
-
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)

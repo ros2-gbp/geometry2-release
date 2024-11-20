@@ -2,35 +2,18 @@
 Changelog for package tf2_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.39.2 (2024-11-20)
--------------------
-* Add in test_xmllint for geometry2 python packages. (`#725 <https://github.com/ros2/geometry2/issues/725>`_)
-* Contributors: Chris Lalancette
-
-0.39.1 (2024-10-15)
--------------------
-* Add configurable TF topics (`#709 <https://github.com/ros2/geometry2//issues/709>`_)
-* Contributors: Ryan
-
-0.39.0 (2024-10-03)
+0.36.5 (2024-11-20)
 -------------------
 
-0.38.2 (2024-07-19)
+0.36.4 (2024-05-29)
 -------------------
 
-0.38.1 (2024-07-09)
+0.36.3 (2024-05-13)
 -------------------
-
-0.38.0 (2024-06-17)
--------------------
-
-0.37.1 (2024-05-29)
--------------------
-* [view_frames] log filenames after it's been determined (`#674 <https://github.com/ros2/geometry2/issues/674>`_)
-* Contributors: Mikael Arguedas
-
-0.37.0 (2024-04-26)
--------------------
+* [view_frames] log filenames after it's been determined (`#674 <https://github.com/ros2/geometry2/issues/674>`_) (`#675 <https://github.com/ros2/geometry2/issues/675>`_)
+  (cherry picked from commit 24643fce510d8cc836fe6e5277a1d3f86a21af04)
+  Co-authored-by: Mikael Arguedas <mikael.arguedas@gmail.com>
+* Contributors: mergify[bot]
 
 0.36.2 (2024-04-10)
 -------------------
