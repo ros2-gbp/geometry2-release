@@ -1,4 +1,4 @@
-// Copyright 2008, Willow Garage, Inc. All rights reserved.
+// Copyright 2008 Willow Garage, Inc.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -10,7 +10,7 @@
 //      notice, this list of conditions and the following disclaimer in the
 //      documentation and/or other materials provided with the distribution.
 //
-//    * Neither the name of the Willow Garage nor the names of its
+//    * Neither the name of the Willow Garage, Inc. nor the names of its
 //      contributors may be used to endorse or promote products derived from
 //      this software without specific prior written permission.
 //
@@ -26,54 +26,13 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-/** \author Tully Foote */
+/** \author Wim Meeussen */
 
-#include <string>
-#include <utility>
+#ifndef TF2_BULLET__TF2_BULLET_H_
+#define TF2_BULLET__TF2_BULLET_H_
 
-#include "tf2/time_cache.h"
-#include "tf2/exceptions.h"
+#warning This header is obsolete, please include tf2_bullet/tf2_bullet.hpp instead
 
-#include "tf2/LinearMath/Transform.h"
+#include <tf2_bullet/tf2_bullet.hpp>
 
-bool tf2::StaticCache::getData(
-  tf2::TimePoint time,
-  tf2::TransformStorage & data_out, std::string * error_str)
-{
-  (void)error_str;
-  data_out = storage_;
-  data_out.stamp_ = time;
-  return true;
-}
-
-bool tf2::StaticCache::insertData(const tf2::TransformStorage & new_data)
-{
-  storage_ = new_data;
-  return true;
-}
-
-void tf2::StaticCache::clearList() {}
-
-unsigned tf2::StaticCache::getListLength() {return 1;}
-
-tf2::CompactFrameID tf2::StaticCache::getParent(tf2::TimePoint time, std::string * error_str)
-{
-  (void)time;
-  (void)error_str;
-  return storage_.frame_id_;
-}
-
-tf2::P_TimeAndFrameID tf2::StaticCache::getLatestTimeAndParent()
-{
-  return std::make_pair(TimePoint(), storage_.frame_id_);
-}
-
-tf2::TimePoint tf2::StaticCache::getLatestTimestamp()
-{
-  return tf2::TimePoint();
-}
-
-tf2::TimePoint tf2::StaticCache::getOldestTimestamp()
-{
-  return tf2::TimePoint();
-}
+#endif  // TF2_BULLET__TF2_BULLET_H_
