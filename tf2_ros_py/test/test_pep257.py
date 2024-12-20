@@ -1,4 +1,4 @@
-# Copyright 2008 Willow Garage, Inc.
+# Copyright (c) 2024 Open Source Robotics Foundation, Inc. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -10,7 +10,7 @@
 #      notice, this list of conditions and the following disclaimer in the
 #      documentation and/or other materials provided with the distribution.
 #
-#    * Neither the name of the Willow Garage, Inc. nor the names of its
+#    * Neither the name of the copyright holder nor the names of its
 #      contributors may be used to endorse or promote products derived from
 #      this software without specific prior written permission.
 #
@@ -26,4 +26,11 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from tf2_sensor_msgs import *  # noqa(E401)
+from ament_pep257.main import main
+import pytest
+
+
+@pytest.mark.linter
+@pytest.mark.pep257
+def test_pep257():
+    assert main(argv=['.', 'test']) == 0, 'Found code style errors / warnings'

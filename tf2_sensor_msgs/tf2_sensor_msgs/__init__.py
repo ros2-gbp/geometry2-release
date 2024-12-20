@@ -26,45 +26,10 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import PyKDL
-from sensor_msgs.msg import PointCloud2
-from sensor_msgs.point_cloud2 import create_cloud, read_points
-import rospy  # noqa(E401)
-import tf2_ros
+from .tf2_sensor_msgs import do_transform_cloud
+from .tf2_sensor_msgs import transform_points
 
-
-def to_msg_msg(msg):
-    return msg
-
-
-tf2_ros.ConvertRegistration().add_to_msg(PointCloud2, to_msg_msg)
-
-
-def from_msg_msg(msg):
-    return msg
-
-
-tf2_ros.ConvertRegistration().add_from_msg(PointCloud2, from_msg_msg)
-
-
-def transform_to_kdl(t):
-    return PyKDL.Frame(PyKDL.Rotation.Quaternion(
-                            t.transform.rotation.x, t.transform.rotation.y,
-                            t.transform.rotation.z, t.transform.rotation.w),
-                       PyKDL.Vector(t.transform.translation.x,
-                                    t.transform.translation.y,
-                                    t.transform.translation.z))
-
-
-# PointStamped
-def do_transform_cloud(cloud, transform):
-    t_kdl = transform_to_kdl(transform)
-    points_out = []
-    for p_in in read_points(cloud):
-        p_out = t_kdl * PyKDL.Vector(p_in[0], p_in[1], p_in[2])
-        points_out.append(p_out)
-    res = create_cloud(transform.header, cloud.fields, points_out)
-    return res
-
-
-tf2_ros.TransformRegistration().add(PointCloud2, do_transform_cloud)
+__all__ = [
+    'do_transform_cloud',
+    'transform_points',
+]

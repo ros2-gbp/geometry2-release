@@ -28,6 +28,14 @@
 #ifndef TF2__BUFFER_CORE_INTERFACE_H_
 #define TF2__BUFFER_CORE_INTERFACE_H_
 
+# define BUFFER_CORE_INTERFACE_HEADER_DEPERCATION This header is obsolete, \
+  please include "tf2/buffer_core_interface.hpp" instead
+  # ifdef _MSC_VER
+    # pragma message(BUFFER_CORE_INTERFACE_HEADER_DEPERCATION)
+  # else
+    # warning BUFFER_CORE_INTERFACE_HEADER_DEPERCATION
+  # endif
+
 #include <tf2/buffer_core_interface.hpp>
 
 #endif  // TF2__BUFFER_CORE_INTERFACE_H_

@@ -31,6 +31,14 @@
 #ifndef TF2__EXCEPTIONS_H_
 #define TF2__EXCEPTIONS_H_
 
+# define EXCEPTIONS_HEADER_DEPERCATION This header is obsolete, \
+  please include "tf2/exceptions.hpp" instead
+  # ifdef _MSC_VER
+    # pragma message(EXCEPTIONS_HEADER_DEPERCATION)
+  # else
+    # warning EXCEPTIONS_HEADER_DEPERCATION
+  # endif
+
 #include <tf2/exceptions.hpp>
 
 #endif  // TF2__EXCEPTIONS_H_

@@ -16,6 +16,13 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__QUATERNION_H_
 #define TF2__LINEARMATH__QUATERNION_H_
 
+# define QUATERNION_HEADER_DEPERCATION This header is obsolete, please include "tf2/LinearMath/Quaternion.hpp" instead
+  # ifdef _MSC_VER
+    # pragma message(QUATERNION_HEADER_DEPERCATION)
+  # else
+    # warning QUATERNION_HEADER_DEPERCATION
+  # endif
+
 #include <tf2/LinearMath/Quaternion.hpp>
 
 #endif  // TF2__LINEARMATH__QUATERNION_H_
