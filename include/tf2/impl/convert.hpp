@@ -1,4 +1,4 @@
-// Copyright 2019, Open Source Robotics Foundation, Inc. All rights reserved.
+// Copyright 2013, Open Source Robotics Foundation, Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -25,17 +25,56 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-#ifndef TF2__BUFFER_CORE_INTERFACE_H_
-#define TF2__BUFFER_CORE_INTERFACE_H_
 
-# define BUFFER_CORE_INTERFACE_HEADER_DEPERCATION This header is obsolete, \
-  please include "tf2/buffer_core_interface.hpp" instead
-  # ifdef _MSC_VER
-    # pragma message(BUFFER_CORE_INTERFACE_HEADER_DEPERCATION)
-  # else
-    # warning BUFFER_CORE_INTERFACE_HEADER_DEPERCATION
-  # endif
+#ifndef TF2__IMPL__CONVERT_HPP_
+#define TF2__IMPL__CONVERT_HPP_
 
-#include <tf2/buffer_core_interface.hpp>
+namespace tf2
+{
+namespace impl
+{
 
-#endif  // TF2__BUFFER_CORE_INTERFACE_H_
+template<bool IS_MESSAGE_A, bool IS_MESSAGE_B>
+class Converter
+{
+public:
+  template<typename A, typename B>
+  static void convert(const A & a, B & b);
+};
+
+// The case where both A and B are messages should not happen: if you have two
+// messages that are interchangeable, well, that's against the ROS purpose:
+// only use one type. Worst comes to worst, specialize the original convert
+// function for your types.
+// if B == A, the templated version of convert with only one argument will be
+// used.
+//
+template< >
+template<typename A, typename B>
+inline void Converter<true, true>::convert(const A & a, B & b);
+
+template< >
+template<typename A, typename B>
+inline void Converter<true, false>::convert(const A & a, B & b)
+{
+  fromMsg(a, b);
+}
+
+template< >
+template<typename A, typename B>
+inline void Converter<false, true>::convert(const A & a, B & b)
+{
+  b = toMsg(a);
+}
+
+template< >
+template<typename A, typename B>
+inline void Converter<false, false>::convert(const A & a, B & b)
+{
+  fromMsg(toMsg(a), b);
+}
+
+}  // namespace impl
+}  // namespace tf2
+
+#endif  // TF2__IMPL__CONVERT_HPP_
