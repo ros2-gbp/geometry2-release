@@ -16,13 +16,6 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__MINMAX_H_
 #define TF2__LINEARMATH__MINMAX_H_
 
-# define MINMAX_HEADER_DEPERCATION This header is obsolete, please include "tf2/LinearMath/MinMax.hpp" instead
-  # ifdef _MSC_VER
-    # pragma message(MINMAX_HEADER_DEPERCATION)
-  # else
-    # warning MINMAX_HEADER_DEPERCATION
-  # endif
-
 #include <tf2/LinearMath/MinMax.hpp>
 
 #endif  // TF2__LINEARMATH__MINMAX_H_

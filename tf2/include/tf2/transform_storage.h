@@ -30,14 +30,6 @@
 #ifndef TF2__TRANSFORM_STORAGE_H_
 #define TF2__TRANSFORM_STORAGE_H_
 
-# define TRANSFORM_STORAGE_HEADER_DEPERCATION This header is obsolete, \
-  please include "tf2/transform_storage.hpp" instead
-  # ifdef _MSC_VER
-    # pragma message(TRANSFORM_STORAGE_HEADER_DEPERCATION)
-  # else
-    # warning TRANSFORM_STORAGE_HEADER_DEPERCATION
-  # endif
-
 #include <tf2/transform_storage.hpp>
 
 #endif  // TF2__TRANSFORM_STORAGE_H_

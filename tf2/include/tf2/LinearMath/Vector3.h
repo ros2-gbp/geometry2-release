@@ -16,13 +16,7 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__VECTOR3_H_
 #define TF2__LINEARMATH__VECTOR3_H_
 
-# define VECTOR_HEADER_DEPERCATION This header is obsolete, please include "tf2/LinearMath/Vector3.hpp" instead
-  # ifdef _MSC_VER
-    # pragma message(VECTOR_HEADER_DEPERCATION)
-  # else
-    # warning VECTOR_HEADER_DEPERCATION
-  # endif
-
 #include <tf2/LinearMath/Vector3.hpp>
 
 #endif  // TF2__LINEARMATH__VECTOR3_H_
+

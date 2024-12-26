@@ -38,7 +38,6 @@
 #include <utility>
 
 #include "tf2/visibility_control.h"
-
 #include "tf2/transform_storage.hpp"
 #include "tf2/exceptions.hpp"
 

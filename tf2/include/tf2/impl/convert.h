@@ -29,14 +29,6 @@
 #ifndef TF2__IMPL__CONVERT_H_
 #define TF2__IMPL__CONVERT_H_
 
-# define CONVERT_HEADER_DEPERCATION This header is obsolete, \
-  please include "tf2/impl/convert.hpp" instead
-  # ifdef _MSC_VER
-    # pragma message(CONVERT_HEADER_DEPERCATION)
-  # else
-    # warning CONVERT_HEADER_DEPERCATION
-  # endif
-
 #include <tf2/impl/convert.hpp>
 
 #endif  // TF2__IMPL__CONVERT_H_

@@ -29,13 +29,6 @@
 #ifndef TF2__TIME_H_
 #define TF2__TIME_H_
 
-# define TIME_HEADER_DEPERCATION This header is obsolete, please include "tf2/time.hpp" instead
-  # ifdef _MSC_VER
-    # pragma message(TIME_HEADER_DEPERCATION)
-  # else
-    # warning TIME_HEADER_DEPERCATION
-  # endif
-
 #include <tf2/time.hpp>
 
 #endif  // TF2__TIME_H_

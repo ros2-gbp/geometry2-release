@@ -16,13 +16,6 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__SCALAR_H_
 #define TF2__LINEARMATH__SCALAR_H_
 
-# define SCALAR_HEADER_DEPERCATION This header is obsolete, please include "tf2/LinearMath/Scalar.hpp" instead
-  # ifdef _MSC_VER
-    # pragma message(SCALAR_HEADER_DEPERCATION)
-  # else
-    # warning SCALAR_HEADER_DEPERCATION
-  # endif
-
 #include <tf2/LinearMath/Scalar.hpp>
 
 #endif  // TF2__LINEARMATH__SCALAR_H_
