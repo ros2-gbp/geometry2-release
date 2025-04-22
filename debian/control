@@ -1,0 +1,12 @@
+Source: ros-kilted-tf2-bullet
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), libbullet-dev, ros-kilted-ament-cmake, ros-kilted-ament-cmake-gtest <!nocheck>, ros-kilted-ament-lint-auto <!nocheck>, ros-kilted-ament-lint-common <!nocheck>, ros-kilted-geometry-msgs, ros-kilted-tf2, ros-kilted-tf2-ros, ros-kilted-ros-workspace
+Homepage: http://www.ros.org/wiki/tf2_bullet
+Standards-Version: 3.9.2
+
+Package: ros-kilted-tf2-bullet
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libbullet-dev, ros-kilted-geometry-msgs, ros-kilted-tf2, ros-kilted-tf2-ros, ros-kilted-ros-workspace
+Description: tf2_bullet
