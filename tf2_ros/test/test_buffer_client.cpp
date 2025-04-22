@@ -195,7 +195,5 @@ TEST_F(TestBufferClient, can_transform_unavailable)
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  auto ret = RUN_ALL_TESTS();
-  rclcpp::shutdown();
-  return ret;
+  return RUN_ALL_TESTS();
 }

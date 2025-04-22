@@ -547,13 +547,10 @@ TEST(test_buffer, timer_ros_wait_for_transform_race)
   status = future.wait_for(std::chrono::milliseconds(1));
   EXPECT_EQ(status, std::future_status::ready);
   EXPECT_FALSE(callback_timeout);
-  rclcpp::shutdown();
 }
 
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  auto ret = RUN_ALL_TESTS();
-  rclcpp::shutdown();
-  return ret;
+  return RUN_ALL_TESTS();
 }
