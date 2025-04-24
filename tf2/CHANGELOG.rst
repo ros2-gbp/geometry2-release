@@ -2,6 +2,11 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.36.10 (2025-04-24)
+--------------------
+* Backport: Do not clobber callback handles when cancelling pending transformable requests (`#782 <https://github.com/ros2/geometry2/issues/782>`_)
+* Contributors: Timo Röhling
+
 0.36.9 (2025-04-02)
 -------------------
 
