@@ -31,21 +31,6 @@
 #ifndef TF2__EXCEPTIONS_H_
 #define TF2__EXCEPTIONS_H_
 
-#ifdef __GNUC__
-#define TF2_EXCEPTIONS_H_PRAGMA(X) _Pragma(#X)
-#define TF2_EXCEPTIONS_H_DEPRECATED(MSG) TF2_EXCEPTIONS_H_PRAGMA(GCC warning MSG)
-#elif defined(_MSC_VER)
-#define TF2_EXCEPTIONS_H_STRINGIZE_(MSG) #MSG
-#define TF2_EXCEPTIONS_H_STRINGIZE(MSG) TF2_EXCEPTIONS_H_STRINGIZE_(MSG)
-#define TF2_EXCEPTIONS_H_DEPRECATED(MSG) \
-  __pragma(message(__FILE__ "(" TF2_EXCEPTIONS_H_STRINGIZE(__LINE__) ") : Warning: " MSG))
-#else
-#define TF2_EXCEPTIONS_H_DEPRECATED(MSG)
-#endif
-
-TF2_EXCEPTIONS_H_DEPRECATED(  // NOLINT
-  "This header is obsolete, please include 'tf2/exceptions.hpp' instead")
-
 #include <tf2/exceptions.hpp>
 
 #endif  // TF2__EXCEPTIONS_H_
