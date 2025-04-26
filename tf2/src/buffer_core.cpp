@@ -231,11 +231,7 @@ bool BufferCore::setTransformImpl(
     error_exists = true;
   }
 
-  if (std::isnan(origin_in.x()) || std::isnan(origin_in.y()) ||
-    std::isnan(origin_in.z()) ||
-    std::isnan(rotation_in.x()) || std::isnan(rotation_in.y()) ||
-    std::isnan(rotation_in.z()) || std::isnan(rotation_in.w()))
-  {
+  if (origin_in.isnan() || rotation_in.isnan()) {
     RCUTILS_LOG_ERROR(
       "TF_NAN_INPUT: Ignoring transform for child_frame_id \"%s\" from authority \"%s\" because"
       " of a nan value in the transform (%f %f %f) (%f %f %f %f)",
@@ -1389,9 +1385,9 @@ void BufferCore::cancelTransformableRequest(TransformableRequestHandle handle)
   std::unique_lock<std::mutex> tr_lock(transformable_requests_mutex_);
   std::unique_lock<std::mutex> tc_lock(transformable_callbacks_mutex_);
 
-  V_TransformableRequest::iterator remove_it = std::remove_if(
+  V_TransformableRequest::iterator remove_it = std::stable_partition(
     transformable_requests_.begin(), transformable_requests_.end(),
-    [handle](TransformableRequest req) {return handle == req.request_handle;});
+    [handle](TransformableRequest req) {return handle != req.request_handle;});
   for (V_TransformableRequest::iterator it = remove_it; it != transformable_requests_.end(); ++it) {
     transformable_callbacks_.erase(it->cb_handle);
   }
