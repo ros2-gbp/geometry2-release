@@ -1,0 +1,12 @@
+Source: ros-kilted-tf2-tools
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest <!nocheck>, ros-kilted-ament-copyright <!nocheck>, ros-kilted-ament-flake8 <!nocheck>, ros-kilted-ament-pep257 <!nocheck>, ros-kilted-ament-xmllint <!nocheck>, ros-kilted-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: http://www.ros.org/wiki/tf2_tools
+Standards-Version: 3.9.2
+
+Package: ros-kilted-tf2-tools
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, graphviz, python3-yaml, ros-kilted-rclpy, ros-kilted-tf2-msgs, ros-kilted-tf2-py, ros-kilted-tf2-ros-py, ros-kilted-ros-workspace
+Description: tf2_tools
