@@ -34,7 +34,6 @@
 
 #include <tf2/time_cache.hpp>
 
-
 void setIdentity(tf2::TransformStorage & stor)
 {
   stor.translation_.setValue(0.0, 0.0, 0.0);
@@ -78,8 +77,6 @@ TEST(StaticCache, DuplicateEntries)
   cache.getData(tf2::TimePoint(std::chrono::nanoseconds(1)), stor);
 
   // printf(" stor is %f\n", stor.transform.translation.x);
-  EXPECT_TRUE(!(stor.translation_.isnan()));
-  EXPECT_TRUE(!(stor.rotation_.isnan()));
   EXPECT_TRUE(!std::isnan(stor.translation_.x()));
   EXPECT_TRUE(!std::isnan(stor.translation_.y()));
   EXPECT_TRUE(!std::isnan(stor.translation_.z()));
