@@ -13,8 +13,8 @@ subject to the following restrictions:
 */
 
 
-#ifndef TF2__LINEARMATH__QUADWORD_HPP
-#define TF2__LINEARMATH__QUADWORD_HPP
+#ifndef TF2__LINEARMATH__QUADWORD_HPP_
+#define TF2__LINEARMATH__QUADWORD_HPP_
 
 #include "Scalar.hpp"
 #include "MinMax.hpp"
@@ -182,4 +182,4 @@ protected:
 };
 
 }
-#endif  // TF2__LINEARMATH__QUADWORD_HPP
+#endif  // TF2__LINEARMATH__QUADWORD_HPP_
