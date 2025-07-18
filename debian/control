@@ -1,0 +1,12 @@
+Source: ros-rolling-tf2-eigen-kdl
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), libeigen3-dev, ros-rolling-ament-cmake, ros-rolling-ament-cmake-gtest <!nocheck>, ros-rolling-ament-lint-auto <!nocheck>, ros-rolling-ament-lint-common <!nocheck>, ros-rolling-orocos-kdl-vendor, ros-rolling-tf2, ros-rolling-ros-workspace
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-rolling-tf2-eigen-kdl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libeigen3-dev, ros-rolling-orocos-kdl-vendor, ros-rolling-tf2, ros-rolling-ros-workspace
+Description: Conversion functions between: - Eigen and KDL
