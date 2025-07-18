@@ -32,10 +32,10 @@
 #include <vector>
 #include <string>
 
-#include "tf2_ros/buffer.h"
-#include "tf2_ros/create_timer_interface.h"
-#include "tf2_ros/create_timer_ros.h"
-#include "tf2_ros/transform_listener.h"
+#include "tf2_ros/buffer.hpp"
+#include "tf2_ros/create_timer_interface.hpp"
+#include "tf2_ros/create_timer_ros.hpp"
+#include "tf2_ros/transform_listener.hpp"
 
 // #include "tf/LinearMath/Vector3.h"
 
@@ -541,5 +541,7 @@ TEST_F(AngularVelocitySquareTest, AngularVelocityOffsetParentFrameInZ)
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }

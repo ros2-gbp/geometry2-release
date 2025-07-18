@@ -38,8 +38,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 
-#include "tf2_ros/buffer.h"
-#include "tf2_ros/buffer_server.h"
+#include "tf2_ros/buffer.hpp"
+#include "tf2_ros/buffer_server.hpp"
 
 static const char ACTION_NAME[] = "test_tf2_buffer_action";
 
@@ -238,5 +238,7 @@ TEST_F(TestBufferServer, lookup_transform_delayed)
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }
