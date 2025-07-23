@@ -36,7 +36,6 @@ import time
 import rclpy
 from tf2_msgs.srv import FrameGraph
 import tf2_ros
-from tf2_ros.transform_listener import DEFAULT_STATIC_TF_TOPIC, DEFAULT_TF_TOPIC
 
 import yaml
 
@@ -51,19 +50,12 @@ def main():
         '--wait-time', '-t', type=float, default=5.0,
         help='Listen to the /tf topic for this many seconds before rendering the frame tree')
     parser.add_argument('-o', '--output', help='Output filename')
-    parser.add_argument('--tf_topic', help='Topic for dynamic transforms',
-                        default=DEFAULT_TF_TOPIC)
-    parser.add_argument('--tf_static_topic', help='Topic for static transforms',
-                        default=DEFAULT_STATIC_TF_TOPIC)
-
     parsed_args = parser.parse_args(args=args_without_ros[1:])
 
     node = rclpy.create_node('view_frames')
 
     buf = tf2_ros.Buffer(node=node)
-    listener = tf2_ros.TransformListener(buf, node, spin_thread=False,
-                                         tf_topic=parsed_args.tf_topic,
-                                         tf_static_topic=parsed_args.tf_static_topic)
+    listener = tf2_ros.TransformListener(buf, node, spin_thread=False)
     listener  # To quiet a flake8 warning
 
     executor = rclpy.executors.SingleThreadedExecutor()
