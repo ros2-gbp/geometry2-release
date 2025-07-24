@@ -30,35 +30,6 @@
 #ifndef TF2_ROS__STATIC_TRANSFORM_BROADCASTER_VISIBILITY_CONTROL_H_
 #define TF2_ROS__STATIC_TRANSFORM_BROADCASTER_VISIBILITY_CONTROL_H_
 
-// This logic was borrowed (then namespaced) from the examples on the gcc wiki:
-//     https://gcc.gnu.org/wiki/Visibility
-
-#if defined _WIN32 || defined __CYGWIN__
-  #ifdef __GNUC__
-    #define STATIC_TRANSFORM_BROADCASTER_EXPORT __attribute__ ((dllexport))
-    #define STATIC_TRANSFORM_BROADCASTER_IMPORT __attribute__ ((dllimport))
-  #else
-    #define STATIC_TRANSFORM_BROADCASTER_EXPORT __declspec(dllexport)
-    #define STATIC_TRANSFORM_BROADCASTER_IMPORT __declspec(dllimport)
-  #endif
-  #ifdef STATIC_TRANSFORM_BROADCASTER_BUILDING_DLL
-    #define STATIC_TRANSFORM_BROADCASTER_PUBLIC STATIC_TRANSFORM_BROADCASTER_EXPORT
-  #else
-    #define STATIC_TRANSFORM_BROADCASTER_PUBLIC STATIC_TRANSFORM_BROADCASTER_IMPORT
-  #endif
-  #define STATIC_TRANSFORM_BROADCASTER_PUBLIC_TYPE STATIC_TRANSFORM_BROADCASTER_PUBLIC
-  #define STATIC_TRANSFORM_BROADCASTER_LOCAL
-#else
-  #define STATIC_TRANSFORM_BROADCASTER_EXPORT __attribute__ ((visibility("default")))
-  #define STATIC_TRANSFORM_BROADCASTER_IMPORT
-  #if __GNUC__ >= 4
-    #define STATIC_TRANSFORM_BROADCASTER_PUBLIC __attribute__ ((visibility("default")))
-    #define STATIC_TRANSFORM_BROADCASTER_LOCAL  __attribute__ ((visibility("hidden")))
-  #else
-    #define STATIC_TRANSFORM_BROADCASTER_PUBLIC
-    #define STATIC_TRANSFORM_BROADCASTER_LOCAL
-  #endif
-  #define STATIC_TRANSFORM_BROADCASTER_PUBLIC_TYPE
-#endif
+#include <tf2_ros/static_transform_broadcaster_visibility_control.hpp>
 
 #endif  // TF2_ROS__STATIC_TRANSFORM_BROADCASTER_VISIBILITY_CONTROL_H_
