@@ -33,9 +33,9 @@
 
 #include "gtest/gtest.h"
 
-#include "message_filters/subscriber.hpp"
-#include "message_filters/simple_filter.hpp"
-#include "message_filters/message_traits.hpp"
+#include "message_filters/subscriber.h"
+#include "message_filters/simple_filter.h"
+#include "message_filters/message_traits.h"
 
 #include "tf2_ros/buffer.hpp"
 #include "tf2_ros/create_timer_ros.hpp"
@@ -127,10 +127,8 @@ TEST(tf2_ros_message_filter, multiple_frames_and_time_tolerance)
     node->get_node_base_interface(),
     node->get_node_timers_interface());
 
-  rclcpp::QoS default_qos =
-    rclcpp::QoS(rclcpp::QoSInitialization::from_rmw(rmw_qos_profile_default));
   message_filters::Subscriber<geometry_msgs::msg::PointStamped> sub;
-  sub.subscribe(node, "point", default_qos);
+  sub.subscribe(node, "point");
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer buffer(clock);
@@ -229,7 +227,5 @@ int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
   rclcpp::init(argc, argv);
-  auto ret = RUN_ALL_TESTS();
-  rclcpp::shutdown();
-  return ret;
+  return RUN_ALL_TESTS();
 }

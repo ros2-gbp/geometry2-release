@@ -82,19 +82,10 @@ get_default_transform_listener_static_sub_options()
 class TransformListener
 {
 public:
-  /** \brief Simplified constructor for transform listener.
-   *
-   * This constructor will create a new ROS 2 node under the hood.
-   * If you already have access to a ROS 2 node and you want to associate the TransformListener
-   * to it, then it's recommended to use one of the other constructors.
-   */
+  /**@brief Constructor for transform listener */
   TF2_ROS_PUBLIC
-  explicit TransformListener(
-    tf2::BufferCore & buffer,
-    bool spin_thread = true,
-    bool static_only = false);
+  explicit TransformListener(tf2::BufferCore & buffer, bool spin_thread = true);
 
-  /** \brief Node constructor */
   template<class NodeT, class AllocatorT = std::allocator<void>>
   TransformListener(
     tf2::BufferCore & buffer,
@@ -105,77 +96,28 @@ public:
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
     detail::get_default_transform_listener_sub_options<AllocatorT>(),
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options =
-    detail::get_default_transform_listener_static_sub_options<AllocatorT>(),
-    bool static_only = false)
-  : TransformListener(
-      buffer,
-      node->get_node_base_interface(),
-      node->get_node_logging_interface(),
-      node->get_node_parameters_interface(),
-      node->get_node_topics_interface(),
-      spin_thread,
-      qos,
-      static_qos,
-      options,
-      static_options,
-      static_only)
-  {}
-
-  /** \brief Node interface constructor */
-  template<class AllocatorT = std::allocator<void>>
-  TransformListener(
-    tf2::BufferCore & buffer,
-    rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base,
-    rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging,
-    rclcpp::node_interfaces::NodeParametersInterface::SharedPtr node_parameters,
-    rclcpp::node_interfaces::NodeTopicsInterface::SharedPtr node_topics,
-    bool spin_thread = true,
-    const rclcpp::QoS & qos = DynamicListenerQoS(),
-    const rclcpp::QoS & static_qos = StaticListenerQoS(),
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options =
-    detail::get_default_transform_listener_sub_options<AllocatorT>(),
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options =
-    detail::get_default_transform_listener_static_sub_options<AllocatorT>(),
-    bool static_only = false)
+    detail::get_default_transform_listener_static_sub_options<AllocatorT>())
   : buffer_(buffer)
   {
-    init(
-      node_base,
-      node_logging,
-      node_parameters,
-      node_topics,
-      spin_thread,
-      qos,
-      static_qos,
-      options,
-      static_options,
-      static_only);
+    init(node, spin_thread, qos, static_qos, options, static_options);
   }
 
   TF2_ROS_PUBLIC
   virtual ~TransformListener();
 
-  /// Callback function for ros message subscription
-  TF2_ROS_PUBLIC
-  virtual void subscription_callback(tf2_msgs::msg::TFMessage::ConstSharedPtr msg, bool is_static);
-
 private:
-  template<class AllocatorT = std::allocator<void>>
+  template<class NodeT, class AllocatorT = std::allocator<void>>
   void init(
-    rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base,
-    rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging,
-    rclcpp::node_interfaces::NodeParametersInterface::SharedPtr node_parameters,
-    rclcpp::node_interfaces::NodeTopicsInterface::SharedPtr node_topics,
+    NodeT && node,
     bool spin_thread,
     const rclcpp::QoS & qos,
     const rclcpp::QoS & static_qos,
     const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & options,
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options,
-    bool static_only = false)
+    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options)
   {
     spin_thread_ = spin_thread;
-    node_base_interface_ = node_base;
-    node_logging_interface_ = node_logging;
+    node_base_interface_ = node->get_node_base_interface();
+    node_logging_interface_ = node->get_node_logging_interface();
 
     using callback_t = std::function<void (tf2_msgs::msg::TFMessage::ConstSharedPtr)>;
     callback_t cb = std::bind(
@@ -187,26 +129,16 @@ private:
       // Create new callback group for message_subscription of tf and tf_static
       callback_group_ = node_base_interface_->create_callback_group(
         rclcpp::CallbackGroupType::MutuallyExclusive, false);
-
-      if (!static_only) {
-        // Duplicate to modify subscription options
-        rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> tf_options = options;
-        tf_options.callback_group = callback_group_;
-
-        message_subscription_tf_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
-          node_parameters, node_topics, "/tf", qos, std::move(cb), tf_options);
-      }
-
+      // Duplicate to modify option of subscription
+      rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> tf_options = options;
       rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> tf_static_options = static_options;
+      tf_options.callback_group = callback_group_;
       tf_static_options.callback_group = callback_group_;
 
+      message_subscription_tf_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
+        node, "/tf", qos, std::move(cb), tf_options);
       message_subscription_tf_static_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
-        node_parameters,
-        node_topics,
-        "/tf_static",
-        static_qos,
-        std::move(static_cb),
-        tf_static_options);
+        node, "/tf_static", static_qos, std::move(static_cb), tf_static_options);
 
       // Create executor with dedicated thread to spin.
       executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
@@ -215,107 +147,30 @@ private:
       // Tell the buffer we have a dedicated thread to enable timeouts
       buffer_.setUsingDedicatedThread(true);
     } else {
-      if (!static_only) {
-        message_subscription_tf_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
-          node_parameters, node_topics, "/tf", qos, std::move(cb), options);
-      }
+      message_subscription_tf_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
+        node, "/tf", qos, std::move(cb), options);
       message_subscription_tf_static_ = rclcpp::create_subscription<tf2_msgs::msg::TFMessage>(
-        node_parameters,
-        node_topics,
-        "/tf_static",
-        static_qos,
-        std::move(static_cb),
-        static_options);
+        node, "/tf_static", static_qos, std::move(static_cb), static_options);
     }
   }
+  /// Callback function for ros message subscriptoin
+  TF2_ROS_PUBLIC
+  void subscription_callback(tf2_msgs::msg::TFMessage::ConstSharedPtr msg, bool is_static);
 
+  // ros::CallbackQueue tf_message_callback_queue_;
   bool spin_thread_{false};
-  std::unique_ptr<std::thread> dedicated_listener_thread_ {nullptr};
-  rclcpp::Executor::SharedPtr executor_ {nullptr};
+  std::unique_ptr<std::thread> dedicated_listener_thread_;
+  rclcpp::CallbackGroup::SharedPtr callback_group_{nullptr};
+  rclcpp::executors::SingleThreadedExecutor::SharedPtr executor_;
 
-  rclcpp::Node::SharedPtr optional_default_node_ {nullptr};
-  rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr
-    message_subscription_tf_ {nullptr};
-  rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr
-    message_subscription_tf_static_ {nullptr};
+  rclcpp::Node::SharedPtr optional_default_node_ = nullptr;
+  rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr message_subscription_tf_;
+  rclcpp::Subscription<tf2_msgs::msg::TFMessage>::SharedPtr message_subscription_tf_static_;
   tf2::BufferCore & buffer_;
   tf2::TimePoint last_update_;
-  rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging_interface_ {nullptr};
-  rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface_ {nullptr};
-  rclcpp::CallbackGroup::SharedPtr callback_group_{nullptr};
+  rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging_interface_;
+  rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base_interface_;
 };
-
-/** \brief Convenience class for subscribing to static-only transforms
- *
- * While users can achieve the same thing with a normal TransformListener, the number of parameters that must be
- * provided is unwieldy.
- */
-class StaticTransformListener : public TransformListener
-{
-public:
-  /** \brief Simplified constructor for a static transform listener
-   * \see the simplified TransformListener documentation
-   */
-  TF2_ROS_PUBLIC
-  explicit StaticTransformListener(tf2::BufferCore & buffer, bool spin_thread = true)
-  : TransformListener(buffer, spin_thread, true)
-  {
-  }
-
-  /** \brief Node constructor */
-  template<class NodeT, class AllocatorT = std::allocator<void>>
-  StaticTransformListener(
-    tf2::BufferCore & buffer,
-    NodeT && node,
-    bool spin_thread = true,
-    const rclcpp::QoS & static_qos = StaticListenerQoS(),
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options =
-    detail::get_default_transform_listener_static_sub_options<AllocatorT>())
-  : TransformListener(
-      buffer,
-      node,
-      spin_thread,
-      rclcpp::QoS(1),
-      static_qos,
-      rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>(),
-      static_options,
-      true)
-  {
-  }
-
-  /** \brief Node interface constructor */
-  template<class AllocatorT = std::allocator<void>>
-  StaticTransformListener(
-    tf2::BufferCore & buffer,
-    rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base,
-    rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging,
-    rclcpp::node_interfaces::NodeParametersInterface::SharedPtr node_parameters,
-    rclcpp::node_interfaces::NodeTopicsInterface::SharedPtr node_topics,
-    bool spin_thread = true,
-    const rclcpp::QoS & static_qos = StaticListenerQoS(),
-    const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT> & static_options =
-    detail::get_default_transform_listener_static_sub_options<AllocatorT>())
-  : TransformListener(
-      buffer,
-      node_base,
-      node_logging,
-      node_parameters,
-      node_topics,
-      spin_thread,
-      rclcpp::QoS(1),
-      static_qos,
-      rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>(),
-      static_options,
-      true)
-  {
-  }
-
-  TF2_ROS_PUBLIC
-  virtual ~StaticTransformListener()
-  {
-  }
-};
-
 }  // namespace tf2_ros
 
 #endif  // TF2_ROS__TRANSFORM_LISTENER_HPP_
