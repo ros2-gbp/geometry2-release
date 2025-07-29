@@ -32,6 +32,14 @@
 #ifndef TF2_ROS__BUFFER_H_
 #define TF2_ROS__BUFFER_H_
 
+#define BUFFER_HEADER_DEPRECATION This header is obsolete, \
+  please include "tf2_ros/buffer.hpp" instead
+#ifdef _MSC_VER
+  #pragma message(BUFFER_HEADER_DEPRECATION)
+#else
+  #warning BUFFER_HEADER_DEPRECATION
+#endif
+
 #include <tf2_ros/buffer.hpp>
 
 #endif  // TF2_ROS__BUFFER_H_

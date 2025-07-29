@@ -47,9 +47,9 @@
 #include <utility>
 #include <vector>
 
-#include "message_filters/connection.h"
-#include "message_filters/message_traits.h"
-#include "message_filters/simple_filter.h"
+#include "message_filters/connection.hpp"
+#include "message_filters/message_traits.hpp"
+#include "message_filters/simple_filter.hpp"
 #include "tf2/buffer_core_interface.hpp"
 #include "tf2/time.hpp"
 #include "tf2_ros/async_buffer_interface.hpp"
@@ -167,7 +167,8 @@ public:
     const rclcpp::Node::SharedPtr & node,
     std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
     std::chrono::duration<TimeRepT, TimeT>::max())
-  : MessageFilter(buffer, target_frame, queue_size, node->get_node_logging_interface(),
+  : MessageFilter(
+      buffer, target_frame, queue_size, node->get_node_logging_interface(),
       node->get_node_clock_interface(), buffer_timeout)
   {
     static_assert(
@@ -221,7 +222,8 @@ public:
     const rclcpp::Node::SharedPtr & node,
     std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
     std::chrono::duration<TimeRepT, TimeT>::max())
-  : MessageFilter(f, buffer, target_frame, queue_size, node->get_node_logging_interface(),
+  : MessageFilter(
+      f, buffer, target_frame, queue_size, node->get_node_logging_interface(),
       node->get_node_clock_interface(), buffer_timeout)
   {
   }
@@ -308,7 +310,10 @@ public:
 
     std::stringstream ss;
     for (V_string::iterator it = target_frames_.begin(); it != target_frames_.end(); ++it) {
-      ss << *it << " ";
+      ss << *it;
+      if (std::next(it) != target_frames_.end()) {
+        ss << ", ";
+      }
     }
     target_frames_string_ = ss.str();
   }
@@ -456,7 +461,7 @@ public:
    */
   void add(const MConstPtr & message)
   {
-    builtin_interfaces::msg::Time t = node_clock_->get_clock()->now();
+    auto t = node_clock_->get_clock()->now();
     add(MEvent(message, t));
   }
 
