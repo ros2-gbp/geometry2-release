@@ -310,10 +310,7 @@ public:
 
     std::stringstream ss;
     for (V_string::iterator it = target_frames_.begin(); it != target_frames_.end(); ++it) {
-      ss << *it;
-      if (std::next(it) != target_frames_.end()) {
-        ss << ", ";
-      }
+      ss << *it << " ";
     }
     target_frames_string_ = ss.str();
   }

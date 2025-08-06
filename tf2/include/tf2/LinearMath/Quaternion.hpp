@@ -17,7 +17,6 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__QUATERNION_HPP_
 #define TF2__LINEARMATH__QUATERNION_HPP_
 
-#include <cmath>
 
 #include "Vector3.hpp"
 #include "QuadWord.hpp"
@@ -47,15 +46,6 @@ public:
 	Quaternion(const Vector3& axis, const tf2Scalar& angle) 
 	{ 
 		setRotation(axis, angle); 
-	}
-  /**@brief Constructor from fixed axis RPY
-   * @param roll Angle around X
-   * @param pitch Angle around Y
-   * @param yaw Angle around Z */
-        TF2_PUBLIC
-	Quaternion(const tf2Scalar& roll, const tf2Scalar& pitch, const tf2Scalar& yaw) 
-	{
-		setRPY(roll, pitch, yaw);
 	}
   /**@brief Set the rotation using axis angle notation 
    * @param axis The axis around which to rotate
@@ -169,10 +159,6 @@ public:
 	tf2Scalar length() const
 	{
 		return tf2Sqrt(length2());
-	}
-
-	TF2SIMD_FORCE_INLINE bool isnan() const {
-		return std::isnan(m_floats[0]) || std::isnan(m_floats[1]) || std::isnan(m_floats[2]) || std::isnan(m_floats[3]);
 	}
 
   /**@brief Normalize the quaternion 
