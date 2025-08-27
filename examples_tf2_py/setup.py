@@ -4,7 +4,7 @@ package_name = 'examples_tf2_py'
 
 setup(
     name=package_name,
-    version='0.36.14',
+    version='0.45.0',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -21,7 +21,6 @@ setup(
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
@@ -29,7 +28,11 @@ setup(
         'Has examples of using the tf2 python api.'
     ),
     license='Apache License, Version 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
     entry_points={
         'console_scripts': [
             'static_broadcaster = examples_tf2_py.static_broadcaster:main',
