@@ -2,36 +2,13 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.1 (2025-10-17)
+0.41.3 (2025-10-17)
 -------------------
 
-0.45.0 (2025-08-27)
--------------------
-* Added tf2 documentation to docs.ros.org (`#671 <https://github.com/ros2/geometry2/issues/671>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.44.0 (2025-07-29)
--------------------
-* Add RPY quaternion constructor (`#806 <https://github.com/ros2/geometry2/issues/806>`_)
-* Contributors: Alireza Moayyedi
-
-0.43.1 (2025-07-18)
+0.41.2 (2025-07-24)
 -------------------
 
-0.43.0 (2025-07-01)
--------------------
-
-0.42.2 (2025-06-19)
--------------------
-* Default initialize TransformStorage's frame_id\_ and child_frame_id\_ with UINT32_MAX (`#783 <https://github.com/ros2/geometry2/issues/783>`_)
-* Contributors: Andreas
-
-0.42.1 (2025-05-14)
--------------------
-* Removed deprecated headers tf2 (`#789 <https://github.com/ros2/geometry2/issues/789>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.42.0 (2025-04-25)
+0.41.1 (2025-06-23)
 -------------------
 
 0.41.0 (2025-04-25)

@@ -2,34 +2,13 @@
 Changelog for package tf2_ros_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.1 (2025-10-17)
+0.41.3 (2025-10-17)
 -------------------
 
-0.45.0 (2025-08-27)
--------------------
-* Fixed inconsistency of C++ and Python implementations of StaticTransformPublisher (`#820 <https://github.com/ros2/geometry2/issues/820>`_)
-* Contributors: Dominik
-
-0.44.0 (2025-07-29)
+0.41.2 (2025-07-24)
 -------------------
 
-0.43.1 (2025-07-18)
--------------------
-* Fix deprecation warning (`#804 <https://github.com/ros2/geometry2/issues/804>`_)
-* Contributors: mosfet80
-
-0.43.0 (2025-07-01)
--------------------
-
-0.42.2 (2025-06-19)
--------------------
-
-0.42.1 (2025-05-14)
--------------------
-* Remove deprecation warnings (`#790 <https://github.com/ros2/geometry2/issues/790>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.42.0 (2025-04-25)
+0.41.1 (2025-06-23)
 -------------------
 
 0.41.0 (2025-04-25)
