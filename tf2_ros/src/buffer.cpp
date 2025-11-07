@@ -33,7 +33,6 @@
 #include "tf2_ros/buffer.hpp"
 
 #include <exception>
-#include <functional>
 #include <limits>
 #include <memory>
 #include <mutex>
@@ -55,43 +54,6 @@ rclcpp::Duration
 to_rclcpp(const tf2::Duration & duration)
 {
   return rclcpp::Duration(std::chrono::nanoseconds(duration));
-}
-
-Buffer::Buffer(
-  rclcpp::Clock::SharedPtr clock,
-  tf2::Duration cache_time,
-  RequiredInterfaces node_interfaces,
-  const rclcpp::QoS & qos)
-: BufferCore(cache_time), clock_(clock), node_interfaces_(std::move(node_interfaces)),
-  timer_interface_(nullptr)
-{
-  if (nullptr == clock_) {
-    throw std::invalid_argument("clock must be a valid instance");
-  }
-
-  auto post_jump_cb = [this](const rcl_time_jump_t & jump_info) {onTimeJump(jump_info);};
-
-  rcl_jump_threshold_t jump_threshold;
-  // Disable forward jump callbacks
-  jump_threshold.min_forward.nanoseconds = 0;
-  // Anything backwards is a jump
-  jump_threshold.min_backward.nanoseconds = -1;
-  // Callback if the clock changes too
-  jump_threshold.on_clock_change = true;
-
-  jump_handler_ = clock_->create_jump_callback(nullptr, post_jump_cb, jump_threshold);
-
-  if (node_interfaces.get<NodeBaseInterface>()) {
-    auto node_base = node_interfaces_.get_node_base_interface();
-    auto node_services = node_interfaces_.get_node_services_interface();
-
-    node_logging_interface_ = node_interfaces_.get_node_logging_interface();
-
-    frames_server_ = rclcpp::create_service<tf2_msgs::srv::FrameGraph>(
-      node_base, node_services, "tf2_frames", std::bind(
-        &Buffer::getFrames, this, std::placeholders::_1,
-        std::placeholders::_2), qos, nullptr);
-  }
 }
 
 geometry_msgs::msg::TransformStamped
@@ -164,7 +126,8 @@ Buffer::canTransform(
     (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  // don't wait bag loop detected
     (rclcpp::ok()))  // Make sure we haven't been stopped (won't work for pytf)
   {
-    clock_->sleep_for(std::chrono::milliseconds(10));
+    // TODO(sloretz) sleep using clock_->sleep_for when implemented
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   bool retval = canTransform(target_frame, source_frame, time, errstr);
   rclcpp::Time current_time = clock_->now();
@@ -193,7 +156,8 @@ Buffer::canTransform(
     (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  // don't wait bag loop detected
     (rclcpp::ok()))  // Make sure we haven't been stopped (won't work for pytf)
   {
-    clock_->sleep_for(std::chrono::milliseconds(10));
+    // TODO(sloretz) sleep using clock_->sleep_for when implemented
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
   bool retval = canTransform(
     target_frame, target_time,

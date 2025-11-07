@@ -48,15 +48,6 @@ public:
 	{ 
 		setRotation(axis, angle); 
 	}
-  /**@brief Constructor from fixed axis RPY
-   * @param roll Angle around X
-   * @param pitch Angle around Y
-   * @param yaw Angle around Z */
-        TF2_PUBLIC
-	Quaternion(const tf2Scalar& roll, const tf2Scalar& pitch, const tf2Scalar& yaw) 
-	{
-		setRPY(roll, pitch, yaw);
-	}
   /**@brief Set the rotation using axis angle notation 
    * @param axis The axis around which to rotate
    * @param angle The magnitude of the rotation in Radians */
@@ -207,14 +198,6 @@ public:
 	Quaternion& operator/=(const tf2Scalar& s) 
 	{
 		tf2Assert(s != tf2Scalar(0.0));
-		if(s == tf2Scalar(0.0))
-		{
-			this->setValue(tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
-						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
-						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
-						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()));
-			return *this;
-		}
 		return *this *= tf2Scalar(1.0) / s;
 	}
 
