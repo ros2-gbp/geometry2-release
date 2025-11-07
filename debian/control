@@ -1,0 +1,12 @@
+Source: ros-kilted-examples-tf2-py
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest <!nocheck>, ros-kilted-ament-copyright <!nocheck>, ros-kilted-ament-flake8 <!nocheck>, ros-kilted-ament-pep257 <!nocheck>, ros-kilted-ament-xmllint <!nocheck>, ros-kilted-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-kilted-examples-tf2-py
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, ros-kilted-geometry-msgs, ros-kilted-launch-ros, ros-kilted-rclpy, ros-kilted-sensor-msgs, ros-kilted-tf2-ros-py, ros-kilted-ros-workspace
+Description: Has examples of using the tf2 Python API.
