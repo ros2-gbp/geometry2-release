@@ -48,6 +48,7 @@ protected:
 
   LinearVelocitySquareTest()
   {
+    auto node = rclcpp::Node::make_shared("tf2_ros_message_filter");
     rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_STEADY_TIME);
     buffer_ = std::make_shared<tf2_ros::Buffer>(clock);
 
@@ -158,6 +159,7 @@ protected:
 
   AngularVelocitySquareTest()
   {
+    auto node = rclcpp::Node::make_shared("tf2_ros_message_filter");
     rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_STEADY_TIME);
     buffer_ = std::make_shared<tf2_ros::Buffer>(clock);
 
@@ -541,5 +543,8 @@ TEST_F(AngularVelocitySquareTest, AngularVelocityOffsetParentFrameInZ)
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  rclcpp::init(argc, argv);
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }

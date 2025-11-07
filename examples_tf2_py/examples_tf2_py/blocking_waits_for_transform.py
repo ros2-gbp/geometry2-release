@@ -14,6 +14,7 @@
 
 import rclpy
 from rclpy.duration import Duration
+from rclpy.executors import ExternalShutdownException, MultiThreadedExecutor
 from rclpy.node import Node
 import rclpy.time
 from tf2_ros import LookupException
@@ -23,12 +24,12 @@ from tf2_ros.transform_listener import TransformListener
 
 class BlockingWaitsForTransform(Node):
     """
-    Wait for a transform syncronously.
+    Wait for a transform synchronously.
 
     This class is an example of waiting for transforms.
     This will block the executor if used within a callback.
     Coroutine callbacks should be used instead to avoid this.
-    See :doc:`examples_tf2_py/async_waits_for_transform.py` for an example.
+    See :py:mod:`examples_tf2_py.async_waits_for_transform` for an example.
     """
 
     def __init__(self):
@@ -55,16 +56,12 @@ class BlockingWaitsForTransform(Node):
 
 
 def main():
-    from rclpy.executors import MultiThreadedExecutor
-
-    rclpy.init()
-    node = BlockingWaitsForTransform()
-    # this node blocks in a callback, so a MultiThreadedExecutor is required
-    executor = MultiThreadedExecutor()
-    executor.add_node(node)
     try:
-        executor.spin()
-    except KeyboardInterrupt:
+        with rclpy.init():
+            node = BlockingWaitsForTransform()
+            # this node blocks in a callback, so a MultiThreadedExecutor is required
+            executor = MultiThreadedExecutor()
+            executor.add_node(node)
+            executor.spin()
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    executor.shutdown()
-    rclpy.shutdown()
