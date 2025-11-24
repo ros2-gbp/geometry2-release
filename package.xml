@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>tf2_eigen</name>
-  <version>0.45.2</version>
+  <version>0.45.3</version>
   <description>tf2_eigen</description>
 
   <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
@@ -28,5 +28,6 @@
 
   <export>
     <build_type>ament_cmake</build_type>
+    <rosdoc2>rosdoc2.yaml</rosdoc2>
   </export>
 </package>
