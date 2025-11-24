@@ -38,6 +38,14 @@
 #ifndef TF2_ROS__BUFFER_CLIENT_H_
 #define TF2_ROS__BUFFER_CLIENT_H_
 
+#define BUFFER_CLIENT_HEADER_DEPRECATION This header is obsolete, \
+  please include "tf2_ros/buffer_client.hpp" instead
+#ifdef _MSC_VER
+  #pragma message(BUFFER_CLIENT_HEADER_DEPRECATION)
+#else
+  #warning BUFFER_CLIENT_HEADER_DEPRECATION
+#endif
+
 #include <tf2_ros/buffer_client.hpp>
 
 #endif  // TF2_ROS__BUFFER_CLIENT_H_

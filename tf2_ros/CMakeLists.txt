@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2_ros)
 
 # Default to C++17
@@ -18,6 +18,7 @@ find_package(rcl_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(rcpputils REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_msgs REQUIRED)
 
@@ -40,6 +41,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   message_filters::message_filters
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action
+  rcpputils::rcpputils
   tf2::tf2
   ${tf2_msgs_TARGETS})
 
@@ -236,6 +238,7 @@ ament_export_dependencies(
   message_filters
   rclcpp
   rclcpp_action
+  rcpputils
   tf2
   tf2_msgs
 )
