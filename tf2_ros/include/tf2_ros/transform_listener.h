@@ -32,14 +32,6 @@
 #ifndef TF2_ROS__TRANSFORM_LISTENER_H_
 #define TF2_ROS__TRANSFORM_LISTENER_H_
 
-#define TRANSFORM_LISTENER_HEADER_DEPRECATION This header is obsolete, \
-  please include "tf2_ros/transform_listener.hpp" instead
-#ifdef _MSC_VER
-  #pragma message(TRANSFORM_LISTENER_HEADER_DEPRECATION)
-#else
-  #warning TRANSFORM_LISTENER_HEADER_DEPRECATION
-#endif
-
 #include <tf2_ros/transform_listener.hpp>
 
 #endif  // TF2_ROS__TRANSFORM_LISTENER_H_

@@ -2,43 +2,23 @@
 Changelog for package tf2_eigen
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.4 (2025-11-28)
+0.41.5 (2025-11-28)
 -------------------
-* Add fromMsg for converting from Accel to Eigen (`#844 <https://github.com/ros2/geometry2/issues/844>`_)
-* Contributors: Alireza Moayyedi
+* Add fromMsg for converting from Accel to Eigen (`#844 <https://github.com/ros2/geometry2/issues/844>`_) (`#858 <https://github.com/ros2/geometry2/issues/858>`_)
+* Contributors: mergify[bot]
 
-0.45.3 (2025-11-24)
--------------------
-* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (`#856 <https://github.com/ros2/geometry2/issues/856>`_)
-* Contributors: R Kent James
-
-0.45.2 (2025-11-07)
+0.41.4 (2025-11-07)
 -------------------
 
-0.45.1 (2025-10-17)
+0.41.3 (2025-10-17)
 -------------------
 
-0.45.0 (2025-08-27)
+0.41.2 (2025-07-24)
 -------------------
-
-0.44.0 (2025-07-29)
--------------------
-
-0.43.1 (2025-07-18)
--------------------
-* Change tf2_ros C to C++ headers (`#805 <https://github.com/ros2/geometry2/issues/805>`_)
+* Change tf2_ros C to C++ headers (`#808 <https://github.com/ros2/geometry2/issues/808>`_)
 * Contributors: Gary Servin
 
-0.43.0 (2025-07-01)
--------------------
-
-0.42.2 (2025-06-19)
--------------------
-
-0.42.1 (2025-05-14)
--------------------
-
-0.42.0 (2025-04-25)
+0.41.1 (2025-06-23)
 -------------------
 
 0.41.0 (2025-04-25)

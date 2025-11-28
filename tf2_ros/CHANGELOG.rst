@@ -2,56 +2,27 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.4 (2025-11-28)
+0.41.5 (2025-11-28)
 -------------------
+* Prevent log spam from tf2_ros message_filter (backport `#851 <https://github.com/ros2/geometry2/issues/851>`_) (`#852 <https://github.com/ros2/geometry2/issues/852>`_)
+* Contributors: mergify[bot]
 
-0.45.3 (2025-11-24)
+0.41.4 (2025-11-07)
 -------------------
-* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (`#856 <https://github.com/ros2/geometry2/issues/856>`_)
-* Prevent log spam from tf2_ros message_filter (`#851 <https://github.com/ros2/geometry2/issues/851>`_)
-* Contributors: R Kent James, mini-1235
+* Updated tf2_echo with some other features (`#802 <https://github.com/ros2/geometry2/issues/802>`_) (`#841 <https://github.com/ros2/geometry2/issues/841>`_)
+* Contributors: mergify[bot]
 
-0.45.2 (2025-11-07)
+0.41.3 (2025-10-17)
 -------------------
-* Updated tf2_echo with some other features (`#802 <https://github.com/ros2/geometry2/issues/802>`_) (`#840 <https://github.com/ros2/geometry2/issues/840>`_)
-* Replace std::sleep_for with rclcpp::clock::sleep_for (`#835 <https://github.com/ros2/geometry2/issues/835>`_)
-* Contributors: Alejandro Hernández Cordero, mergify[bot]
+* Ensure variable is considered volatile in message_filter_test (`#812 <https://github.com/ros2/geometry2/issues/812>`_) (`#814 <https://github.com/ros2/geometry2/issues/814>`_)
+* Contributors: mergify[bot]
 
-0.45.1 (2025-10-17)
+0.41.2 (2025-07-24)
 -------------------
-* Removed deprecation rclcpp::spin_some(node) (`#824 <https://github.com/ros2/geometry2/issues/824>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.45.0 (2025-08-27)
--------------------
-* Adding NodeInterfaces API Design (`#714 <https://github.com/ros2/geometry2/issues/714>`_)
-* ger rid of deprecated rclcpp::spin_some(). (`#821 <https://github.com/ros2/geometry2/issues/821>`_)
-* Contributors: Lucas Wendland, Tomoya Fujita
-
-0.44.0 (2025-07-29)
--------------------
-* Ensure variable is considered volatile in message_filter_test (`#812 <https://github.com/ros2/geometry2/issues/812>`_)
-* Contributors: Mirko Ferrati
-
-0.43.1 (2025-07-18)
--------------------
-* Change tf2_ros C to C++ headers (`#805 <https://github.com/ros2/geometry2/issues/805>`_)
+* Change tf2_ros C to C++ headers (`#808 <https://github.com/ros2/geometry2/issues/808>`_)
 * Contributors: Gary Servin
 
-0.43.0 (2025-07-01)
--------------------
-* Fix message filter target frames string (`#803 <https://github.com/ros2/geometry2/issues/803>`_)
-* Contributors: Sergei Zobov
-
-0.42.2 (2025-06-19)
--------------------
-
-0.42.1 (2025-05-14)
--------------------
-* Remove deprecation warnings (`#790 <https://github.com/ros2/geometry2/issues/790>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.42.0 (2025-04-25)
+0.41.1 (2025-06-23)
 -------------------
 
 0.41.0 (2025-04-25)
