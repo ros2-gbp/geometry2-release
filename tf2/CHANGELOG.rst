@@ -2,93 +2,83 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.41.5 (2025-11-28)
--------------------
-* Fix various documentation errors in tf2 (backport `#857 <https://github.com/ros2/geometry2/issues/857>`_) (`#863 <https://github.com/ros2/geometry2/issues/863>`_)
-* Fix REP url locations (`#847 <https://github.com/ros2/geometry2/issues/847>`_) (`#848 <https://github.com/ros2/geometry2/issues/848>`_)
+0.36.17 (2025-11-28)
+--------------------
+* Fix various documentation errors in tf2 (backport `#857 <https://github.com/ros2/geometry2/issues/857>`_) (`#864 <https://github.com/ros2/geometry2/issues/864>`_)
+* Fix REP url locations (`#847 <https://github.com/ros2/geometry2/issues/847>`_) (`#849 <https://github.com/ros2/geometry2/issues/849>`_)
 * Contributors: mergify[bot]
 
-0.41.4 (2025-11-07)
+0.36.16 (2025-11-07)
+--------------------
+
+0.36.15 (2025-10-17)
+--------------------
+
+0.36.14 (2025-08-06)
+--------------------
+
+0.36.13 (2025-07-23)
+--------------------
+
+0.36.12 (2025-06-23)
+--------------------
+
+0.36.11 (2025-05-14)
+--------------------
+* Overflow Issue in durationFromSec() Function when Handling Extremely Large or Small Values (`#785 <https://github.com/ros2/geometry2/issues/785>`_) (`#786 <https://github.com/ros2/geometry2/issues/786>`_)
+* Contributors: mergify[bot]
+
+0.36.10 (2025-04-24)
+--------------------
+* Backport: Do not clobber callback handles when cancelling pending transformable requests (`#782 <https://github.com/ros2/geometry2/issues/782>`_)
+* Contributors: Timo Röhling
+
+0.36.9 (2025-04-02)
 -------------------
 
-0.41.3 (2025-10-17)
+0.36.8 (2025-01-15)
 -------------------
 
-0.41.2 (2025-07-24)
+0.36.7 (2024-12-27)
 -------------------
-
-0.41.1 (2025-06-23)
--------------------
-
-0.41.0 (2025-04-25)
--------------------
-* Add isnan support (`#780 <https://github.com/ros2/geometry2/issues/780>`_)
-* Overflow Issue in durationFromSec() Function when Handling Extremely Large or Small Values (`#785 <https://github.com/ros2/geometry2/issues/785>`_)
-* Do not clobber callback handles when cancelling pending transformable requests (`#779 <https://github.com/ros2/geometry2/issues/779>`_)
-* Uniform cmake min version (`#764 <https://github.com/ros2/geometry2/issues/764>`_)
-* Contributors: Michael Carlstrom, Timo Röhling, cramke, mosfet80
-
-0.40.1 (2025-01-15)
--------------------
-* Remove many extra conversions from Matrix3x3 to Quaternion (`#741 <https://github.com/ros2/geometry2/issues/741>`_)
-  Co-authored-by: jmachowinski <jmachowinski@users.noreply.github.com>
-  Co-authored-by: Katherine Scott <katherineAScott@gmail.com>
-* Cleanup deprecation warnings. (`#744 <https://github.com/ros2/geometry2/issues/744>`_)
-  The deprecation warnings were not printing out properly on
-  GCC, at least; it would warn that #warning was not standard,
-  and it would also not print out the actual warning.  Also
-  "deprecated" was spelled wrong.  Fix all of these issues here.
-* Contributors: Chris Lalancette, kyle-basis
-
-0.40.0 (2024-12-20)
--------------------
-* Deprecate C Headers (`#720 <https://github.com/ros2/geometry2/issues/720>`_)
-* Removed unused var in tf2 (`#735 <https://github.com/ros2/geometry2/issues/735>`_)
-* Contributors: Alejandro Hernández Cordero, Lucas Wendland
-
-0.39.3 (2024-11-25)
--------------------
-
-0.39.2 (2024-11-20)
--------------------
-
-0.39.1 (2024-10-15)
--------------------
-* Error String Filled (`#715 <https://github.com/ros2/geometry2//issues/715>`_)
+* Jazzy "Backport" of `#720 <https://github.com/ros2/geometry2/issues/720>`_ (`#723 <https://github.com/ros2/geometry2/issues/723>`_)
 * Contributors: Lucas Wendland
 
-0.39.0 (2024-10-03)
+0.36.6 (2024-12-18)
+-------------------
+* Removed unused var in tf2 (`#735 <https://github.com/ros2/geometry2/issues/735>`_) (`#736 <https://github.com/ros2/geometry2/issues/736>`_)
+  (cherry picked from commit e791b58f8826a31d8ea11f45b7bf3026f26eab8a)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Contributors: mergify[bot]
+
+0.36.5 (2024-11-20)
 -------------------
 
-0.38.2 (2024-07-19)
+0.36.4 (2024-05-29)
 -------------------
-
-0.38.1 (2024-07-09)
--------------------
-* Removed deprecated enuns (`#699 <https://github.com/ros2/geometry2//issues/699>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.38.0 (2024-06-17)
--------------------
-
-0.37.1 (2024-05-29)
--------------------
-* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_)
+* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_) (`#683 <https://github.com/ros2/geometry2/issues/683>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_) (`#686 <https://github.com/ros2/geometry2/issues/686>`_)
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_)
-* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_)
+  (cherry picked from commit d700d78611ca2f2a56128ee71dd157961a1f4fb4)
+  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
+* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_) (`#690 <https://github.com/ros2/geometry2/issues/690>`_)
   * Add cache_benchmark
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_)
+  (cherry picked from commit 381d381739d008f83c2ebdf39034d46a19ea364e)
+  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
+* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_) (`#687 <https://github.com/ros2/geometry2/issues/687>`_)
   * [cache_unittest] Add direct implementation testing on ordering, pruning
   * do getAllItems() approach
   * Return a reference instead.
   * mark getAllItems as internal
   * Fix warning on Windows.
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-* Contributors: Alejandro Hernández Cordero, Eric Cousineau
+  (cherry picked from commit a17a2bf8297052d2c6a404f9799bfe3b81040482)
+  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
+* Contributors: mergify[bot]
 
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)

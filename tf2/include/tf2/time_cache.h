@@ -1,4 +1,4 @@
-// Copyright 2008, Willow Garage, Inc. All rights reserved.
+// Copyright 2015-2016, Open Source Robotics Foundation, Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -10,7 +10,7 @@
 //      notice, this list of conditions and the following disclaimer in the
 //      documentation and/or other materials provided with the distribution.
 //
-//    * Neither the name of the Willow Garage nor the names of its
+//    * Neither the name of the Open Source Robotics Foundation nor the names of its
 //      contributors may be used to endorse or promote products derived from
 //      this software without specific prior written permission.
 //
@@ -25,25 +25,9 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
-/** \author Tully Foote */
 
 #ifndef TF2__TIME_CACHE_H_
 #define TF2__TIME_CACHE_H_
-
-#ifdef __GNUC__
-#define TF2_TIME_CACHE_H_PRAGMA(X) _Pragma(#X)
-#define TF2_TIME_CACHE_H_DEPRECATED(MSG) TF2_TIME_CACHE_H_PRAGMA(GCC warning MSG)
-#elif defined(_MSC_VER)
-#define TF2_TIME_CACHE_H_STRINGIZE_(MSG) #MSG
-#define TF2_TIME_CACHE_H_STRINGIZE(MSG) TF2_TIME_CACHE_H_STRINGIZE_(MSG)
-#define TF2_TIME_CACHE_H_DEPRECATED(MSG) \
-  __pragma(message(__FILE__ "(" TF2_TIME_CACHE_H_STRINGIZE(__LINE__) ") : Warning: " MSG))
-#else
-#define TF2_TIME_CACHE_H_DEPRECATED(MSG)
-#endif
-
-TF2_TIME_CACHE_H_DEPRECATED(  // NOLINT
-  "This header is obsolete, please include 'tf2/time_cache.hpp' instead")
 
 #include <tf2/time_cache.hpp>
 

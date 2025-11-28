@@ -2,65 +2,55 @@
 Changelog for package tf2_sensor_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.41.5 (2025-11-28)
--------------------
+0.36.17 (2025-11-28)
+--------------------
 
-0.41.4 (2025-11-07)
--------------------
+0.36.16 (2025-11-07)
+--------------------
 
-0.41.3 (2025-10-17)
--------------------
+0.36.15 (2025-10-17)
+--------------------
 
-0.41.2 (2025-07-24)
--------------------
-* Change tf2_ros C to C++ headers (`#808 <https://github.com/ros2/geometry2/issues/808>`_)
+0.36.14 (2025-08-06)
+--------------------
+
+0.36.13 (2025-07-23)
+--------------------
+* Change tf2_ros C to C++ headers (`#807 <https://github.com/ros2/geometry2/issues/807>`_)
 * Contributors: Gary Servin
 
-0.41.1 (2025-06-23)
--------------------
-* Add normals rotation in `PointCloud2` `doTransform` (`#792 <https://github.com/ros2/geometry2/issues/792>`_) (`#793 <https://github.com/ros2/geometry2/issues/793>`_)
+0.36.12 (2025-06-23)
+--------------------
+* Add normals rotation in `PointCloud2` `doTransform` (`#792 <https://github.com/ros2/geometry2/issues/792>`_) (`#794 <https://github.com/ros2/geometry2/issues/794>`_)
 * Contributors: mergify[bot]
 
-0.41.0 (2025-04-25)
+0.36.11 (2025-05-14)
+--------------------
+
+0.36.10 (2025-04-24)
+--------------------
+
+0.36.9 (2025-04-02)
 -------------------
 
-0.40.1 (2025-01-15)
+0.36.8 (2025-01-15)
 -------------------
 
-0.40.0 (2024-12-20)
+0.36.7 (2024-12-27)
 -------------------
-* Deprecate C Headers (`#720 <https://github.com/ros2/geometry2/issues/720>`_)
+* Jazzy "Backport" of `#720 <https://github.com/ros2/geometry2/issues/720>`_ (`#723 <https://github.com/ros2/geometry2/issues/723>`_)
 * Contributors: Lucas Wendland
 
-0.39.3 (2024-11-25)
--------------------
-* Add a python3-dev dependency to tf2_py. (`#733 <https://github.com/ros2/geometry2/issues/733>`_)
-* Contributors: Chris Lalancette
-
-0.39.2 (2024-11-20)
+0.36.6 (2024-12-18)
 -------------------
 
-0.39.1 (2024-10-15)
--------------------
-* Remove use of python_cmake_module (`#651 <https://github.com/ros2/geometry2//issues/651>`_)
-* Contributors: Chris Lalancette
-
-0.39.0 (2024-10-03)
+0.36.5 (2024-11-20)
 -------------------
 
-0.38.2 (2024-07-19)
+0.36.4 (2024-05-29)
 -------------------
 
-0.38.1 (2024-07-09)
--------------------
-
-0.38.0 (2024-06-17)
--------------------
-
-0.37.1 (2024-05-29)
--------------------
-
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)

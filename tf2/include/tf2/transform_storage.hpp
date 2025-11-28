@@ -31,7 +31,6 @@
 #define TF2__TRANSFORM_STORAGE_HPP_
 
 #include "tf2/visibility_control.h"
-
 #include "tf2/LinearMath/Vector3.hpp"
 #include "tf2/LinearMath/Quaternion.hpp"
 #include "tf2/time.hpp"
