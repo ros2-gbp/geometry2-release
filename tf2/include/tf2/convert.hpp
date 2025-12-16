@@ -26,7 +26,9 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-/** \author Tully Foote */
+/** \file
+ *  \brief Author: Tully Foote
+ */
 
 #ifndef TF2__CONVERT_HPP_
 #define TF2__CONVERT_HPP_
@@ -48,9 +50,9 @@ namespace tf2
 /**\brief The templated function expected to be able to do a transform
  *
  * This is the method which tf2 will use to try to apply a transform for any given datatype.
- * \param data_in[in] The data to be transformed.
- * \param data_out[inout] A reference to the output data. Note this can point to data in and the method should be mutation safe.
- * \param transform[in] The transform to apply to data_in to fill data_out.
+ * \param[in] data_in The data to be transformed.
+ * \param[in,out] data_out A reference to the output data. Note this can point to data in and the method should be mutation safe.
+ * \param[in] transform The transform to apply to data_in to fill data_out.
  *
  * This method needs to be implemented by client library developers
  */
@@ -110,7 +112,7 @@ std::string getFrameId(const tf2::Stamped<P> & t)
  *
  * An implementation for WithCovarianceStamped<P> datatypes.
  *
- * \param[in] c The data input.
+ * \param[in] t The data input.
  * \return The covariance matrix associated with the data.
  */
 template<class P>
@@ -135,7 +137,7 @@ B toMsg(const A & a);
  * \param b the object to convert to
  */
 template<typename A, typename B>
-void fromMsg(const A &, B & b);
+void fromMsg(const A & a, B & b);
 
 /**\brief Function that converts any type to any type (messages or not).
  * Matching toMsg and from Msg conversion functions need to exist.

@@ -27,7 +27,9 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 
-/** \author Wim Meeussen */
+/** \file
+ *  \brief Author: Wim Meeussen
+ */
 
 #ifndef TF2_GEOMETRY_MSGS__TF2_GEOMETRY_MSGS_HPP_
 #define TF2_GEOMETRY_MSGS__TF2_GEOMETRY_MSGS_HPP_
@@ -853,10 +855,11 @@ geometry_msgs::msg::PoseWithCovarianceStamped toMsg(
   out.header.stamp = tf2_ros::toMsg(in.stamp_);
   out.header.frame_id = in.frame_id_;
   out.pose.covariance = covarianceNestedToRowMajor(in.cov_mat_);
-  out.pose.pose.orientation.x = in.getRotation().getX();
-  out.pose.pose.orientation.y = in.getRotation().getY();
-  out.pose.pose.orientation.z = in.getRotation().getZ();
-  out.pose.pose.orientation.w = in.getRotation().getW();
+  const tf2::Quaternion rotation = in.getRotation();
+  out.pose.pose.orientation.x = rotation.getX();
+  out.pose.pose.orientation.y = rotation.getY();
+  out.pose.pose.orientation.z = rotation.getZ();
+  out.pose.pose.orientation.w = rotation.getW();
   out.pose.pose.position.x = in.getOrigin().getX();
   out.pose.pose.position.y = in.getOrigin().getY();
   out.pose.pose.position.z = in.getOrigin().getZ();

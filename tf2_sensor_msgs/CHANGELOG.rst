@@ -2,68 +2,176 @@
 Changelog for package tf2_sensor_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.25.18 (2025-11-28)
---------------------
+0.45.5 (2025-12-16)
+-------------------
+* Modernize conf.py files to only include modified Copyright, eliminati… (`#865 <https://github.com/ros2/geometry2/issues/865>`_)
+* Contributors: R Kent James
 
-0.25.17 (2025-10-17)
---------------------
+0.45.4 (2025-11-28)
+-------------------
 
-0.25.16 (2025-07-25)
---------------------
-* Change tf2_ros C to C++ headers (backport `#807 <https://github.com/ros2/geometry2/issues/807>`_) (`#810 <https://github.com/ros2/geometry2/issues/810>`_)
-  Co-authored-by: Alejandro Hernandez Cordero <ahcorde@gmail.com>
-* Contributors: mergify[bot]
+0.45.3 (2025-11-24)
+-------------------
 
-0.25.15 (2025-07-16)
---------------------
+0.45.2 (2025-11-07)
+-------------------
+* Solved TODO with copyright in tf2_sensor_msgs (`#836 <https://github.com/ros2/geometry2/issues/836>`_)
+* Contributors: Alejandro Hernández Cordero
 
-0.25.14 (2025-05-14)
---------------------
-* Add normals rotation in `PointCloud2` `doTransform` (`#792 <https://github.com/ros2/geometry2/issues/792>`_) (`#795 <https://github.com/ros2/geometry2/issues/795>`_)
-* Contributors: mergify[bot]
+0.45.1 (2025-10-17)
+-------------------
+* Removed orocos kdl vendor dependency (`#826 <https://github.com/ros2/geometry2/issues/826>`_)
+* Contributors: Alejandro Hernández Cordero
 
-0.25.13 (2025-05-14)
---------------------
-* Backport: "Port point cloud transformation to numpy" (`#507 <https://github.com/ros2/geometry2/issues/507>`_, `#520 <https://github.com/ros2/geometry2/issues/520>`_) (`#778 <https://github.com/ros2/geometry2/issues/778>`_)
-* Contributors: Gilbert Tanner
+0.45.0 (2025-08-27)
+-------------------
 
-0.25.12 (2025-01-17)
---------------------
+0.44.0 (2025-07-29)
+-------------------
+* Add imu & mag support in `tf2_sensor_msgs` (`#800 <https://github.com/ros2/geometry2/issues/800>`_) (`#813 <https://github.com/ros2/geometry2/issues/813>`_)
+* Contributors: Patrick Roncagliolo
 
-0.25.11 (2025-01-14)
---------------------
+0.43.1 (2025-07-18)
+-------------------
+* Change tf2_ros C to C++ headers (`#805 <https://github.com/ros2/geometry2/issues/805>`_)
+* Contributors: Gary Servin
 
-0.25.10 (2024-12-19)
---------------------
-* Humble "Backport" of `#720 <https://github.com/ros2/geometry2/issues/720>`_ (`#722 <https://github.com/ros2/geometry2/issues/722>`_)
+0.43.0 (2025-07-01)
+-------------------
+
+0.42.2 (2025-06-19)
+-------------------
+* Add normals rotation in `PointCloud2` `doTransform` (`#792 <https://github.com/ros2/geometry2/issues/792>`_)
+* Contributors: Patrick Roncagliolo
+
+0.42.1 (2025-05-14)
+-------------------
+
+0.42.0 (2025-04-25)
+-------------------
+
+0.41.0 (2025-04-25)
+-------------------
+
+0.40.1 (2025-01-15)
+-------------------
+
+0.40.0 (2024-12-20)
+-------------------
+* Deprecate C Headers (`#720 <https://github.com/ros2/geometry2/issues/720>`_)
 * Contributors: Lucas Wendland
 
-0.25.9 (2024-11-20)
+0.39.3 (2024-11-25)
+-------------------
+* Add a python3-dev dependency to tf2_py. (`#733 <https://github.com/ros2/geometry2/issues/733>`_)
+* Contributors: Chris Lalancette
+
+0.39.2 (2024-11-20)
 -------------------
 
-0.25.8 (2024-08-29)
+0.39.1 (2024-10-15)
+-------------------
+* Remove use of python_cmake_module (`#651 <https://github.com/ros2/geometry2//issues/651>`_)
+* Contributors: Chris Lalancette
+
+0.39.0 (2024-10-03)
 -------------------
 
-0.25.7 (2024-05-29)
+0.38.2 (2024-07-19)
 -------------------
 
-0.25.6 (2024-02-16)
+0.38.1 (2024-07-09)
 -------------------
 
-0.25.5 (2023-11-13)
+0.38.0 (2024-06-17)
 -------------------
 
-0.25.4 (2023-09-19)
+0.37.1 (2024-05-29)
 -------------------
 
-0.25.3 (2023-07-17)
+0.37.0 (2024-04-26)
 -------------------
 
-0.25.2 (2023-01-10)
+0.36.2 (2024-04-10)
 -------------------
 
-0.25.1 (2022-08-05)
+0.36.1 (2024-03-28)
 -------------------
+
+0.36.0 (2024-02-07)
+-------------------
+* Removed obsolete headers (`#645 <https://github.com/ros2/geometry2/issues/645>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.35.1 (2024-01-24)
+-------------------
+
+0.35.0 (2023-12-26)
+-------------------
+
+0.34.0 (2023-11-06)
+-------------------
+
+0.33.2 (2023-10-04)
+-------------------
+* Fix clang build warnings. (`#628 <https://github.com/ros2/geometry2/issues/628>`_)
+* Contributors: Chris Lalancette
+
+0.33.1 (2023-09-07)
+-------------------
+
+0.33.0 (2023-08-21)
+-------------------
+
+0.32.2 (2023-07-11)
+-------------------
+
+0.32.1 (2023-05-11)
+-------------------
+
+0.32.0 (2023-04-27)
+-------------------
+
+0.31.2 (2023-04-13)
+-------------------
+
+0.31.1 (2023-04-12)
+-------------------
+
+0.31.0 (2023-04-11)
+-------------------
+
+0.30.0 (2023-02-14)
+-------------------
+* Update the demos to C++17. (`#578 <https://github.com/ros2/geometry2/issues/578>`_)
+* Contributors: Chris Lalancette
+
+0.29.0 (2022-11-21)
+-------------------
+* Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
+* Contributors: Audrow Nash
+
+0.28.0 (2022-11-02)
+-------------------
+
+0.27.0 (2022-09-13)
+-------------------
+
+0.26.2 (2022-08-15)
+-------------------
+* feat: export tf2 sensor msgs target (`#536 <https://github.com/ros2/geometry2/issues/536>`_)
+* Contributors: Daisuke Nishimatsu
+
+0.26.1 (2022-06-24)
+-------------------
+* tf2_sensor_msgs find the right Python executable. (`#525 <https://github.com/ros2/geometry2/issues/525>`_)
+* Contributors: Jorge Perez
+
+0.26.0 (2022-04-29)
+-------------------
+* Add missing ament_cmake_pytest package needed because of newly-enabled test (`#520 <https://github.com/ros2/geometry2/issues/520>`_)
+* Port point cloud transformation to numpy (`#507 <https://github.com/ros2/geometry2/issues/507>`_)
+* Contributors: Florian Vahl, Michael Jeronimo
 
 0.25.0 (2022-04-05)
 -------------------

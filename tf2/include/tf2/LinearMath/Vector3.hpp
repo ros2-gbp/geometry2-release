@@ -17,6 +17,7 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__VECTOR3_HPP_
 #define TF2__LINEARMATH__VECTOR3_HPP_
 
+#include <cmath>
 
 #include "Scalar.hpp"
 #include "MinMax.hpp"
@@ -87,7 +88,7 @@ public:
 	}
 
 /**@brief Add a vector to this one 
- * @param The vector to add to this one */
+ * @param v The vector to add to this one */
 	TF2SIMD_FORCE_INLINE Vector3& operator+=(const Vector3& v)
 	{
 
@@ -96,8 +97,8 @@ public:
 	}
 
 
-  /**@brief Sutf2ract a vector from this one
-   * @param The vector to sutf2ract */
+  /**@brief Subtract a vector from this one
+   * @param v The vector to subtract */
 	TF2SIMD_FORCE_INLINE Vector3& operator-=(const Vector3& v) 
 	{
 		m_floats[0] -= v.m_floats[0]; m_floats[1] -= v.m_floats[1];m_floats[2] -= v.m_floats[2];
@@ -139,11 +140,11 @@ public:
 	}
 
   /**@brief Return the distance squared between the ends of this and another vector
-   * This is symantically treating the vector like a point */
+   * This is semantically treating the vector like a point */
 	TF2SIMD_FORCE_INLINE tf2Scalar distance2(const Vector3& v) const;
 
   /**@brief Return the distance between the ends of this and another vector
-   * This is symantically treating the vector like a point */
+   * This is semantically treating the vector like a point */
 	TF2SIMD_FORCE_INLINE tf2Scalar distance(const Vector3& v) const;
 
   /**@brief Normalize this vector 
@@ -336,6 +337,10 @@ public:
 		TF2SIMD_FORCE_INLINE bool fuzzyZero() const 
 		{
 			return length2() < TF2SIMD_EPSILON;
+		}
+
+		TF2SIMD_FORCE_INLINE bool isnan() const {
+			return std::isnan(m_floats[0]) || std::isnan(m_floats[1]) || std::isnan(m_floats[2]);
 		}
 
 		TF2SIMD_FORCE_INLINE	void	serialize(struct	Vector3Data& dataOut) const;
@@ -586,23 +591,7 @@ public:
 		return absolute4().maxAxis4();
 	}
 
-	
- 
 
-  /**@brief Set x,y,z and zero w 
-   * @param x Value of x
-   * @param y Value of y
-   * @param z Value of z
-   */
-		
-
-/*		void getValue(tf2Scalar *m) const 
-		{
-			m[0] = m_floats[0];
-			m[1] = m_floats[1];
-			m[2] =m_floats[2];
-		}
-*/
 /**@brief Set the values 
    * @param x Value of x
    * @param y Value of y

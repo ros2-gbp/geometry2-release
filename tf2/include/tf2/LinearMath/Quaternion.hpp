@@ -17,6 +17,7 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__QUATERNION_HPP_
 #define TF2__LINEARMATH__QUATERNION_HPP_
 
+#include <cmath>
 
 #include "Vector3.hpp"
 #include "QuadWord.hpp"
@@ -46,6 +47,15 @@ public:
 	Quaternion(const Vector3& axis, const tf2Scalar& angle) 
 	{ 
 		setRotation(axis, angle); 
+	}
+  /**@brief Constructor from fixed axis RPY
+   * @param roll Angle around X
+   * @param pitch Angle around Y
+   * @param yaw Angle around Z */
+        TF2_PUBLIC
+	Quaternion(const tf2Scalar& roll, const tf2Scalar& pitch, const tf2Scalar& yaw) 
+	{
+		setRPY(roll, pitch, yaw);
 	}
   /**@brief Set the rotation using axis angle notation 
    * @param axis The axis around which to rotate
@@ -161,6 +171,10 @@ public:
 		return tf2Sqrt(length2());
 	}
 
+	TF2SIMD_FORCE_INLINE bool isnan() const {
+		return std::isnan(m_floats[0]) || std::isnan(m_floats[1]) || std::isnan(m_floats[2]) || std::isnan(m_floats[3]);
+	}
+
   /**@brief Normalize the quaternion 
    * Such that x^2 + y^2 + z^2 +w^2 = 1 */
         TF2_PUBLIC
@@ -193,6 +207,14 @@ public:
 	Quaternion& operator/=(const tf2Scalar& s) 
 	{
 		tf2Assert(s != tf2Scalar(0.0));
+		if(s == tf2Scalar(0.0))
+		{
+			this->setValue(tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
+						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
+						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
+						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()));
+			return *this;
+		}
 		return *this *= tf2Scalar(1.0) / s;
 	}
 
@@ -347,6 +369,45 @@ public:
 		static const Quaternion identityQuat(tf2Scalar(0.),tf2Scalar(0.),tf2Scalar(0.),tf2Scalar(1.));
 		return identityQuat;
 	}
+
+  /**@brief Creates a quaternion using fixed axis RPY
+   * @param roll Angle around X
+   * @param pitch Angle around Y
+   * @param yaw Angle around Z
+   * @return new created quaternion */
+        TF2_PUBLIC
+  static Quaternion createFromRPY(const tf2Scalar& roll, const tf2Scalar& pitch, const tf2Scalar& yaw)
+	{
+		Quaternion q;
+		q.setRPY(roll, pitch, yaw);
+		return q;
+	}
+
+  /**@brief Creates a quaternion using Euler angles
+   * @param yaw Angle around Y
+   * @param pitch Angle around X
+   * @param roll Angle around Z
+   * @return new created quaternion */
+        TF2_PUBLIC
+  static Quaternion createFromEuler(const tf2Scalar& roll, const tf2Scalar& pitch, const tf2Scalar& yaw)
+	{
+		Quaternion q;
+		q.setEuler(roll, pitch, yaw);
+		return q;
+	}
+	
+  /**@brief Creates a quaternion using axis angle notation
+   * @param axis The axis around which to rotate
+   * @param angle The magnitude of the rotation in Radians
+   * @return new created quaternion */
+        TF2_PUBLIC
+	static Quaternion createFromRotation(const Vector3& axis, const tf2Scalar& angle)
+	{
+		Quaternion q;
+		q.setRotation(axis, angle);
+		return q;
+	}
+
 
 	TF2SIMD_FORCE_INLINE const tf2Scalar& getW() const { return m_floats[3]; }
 

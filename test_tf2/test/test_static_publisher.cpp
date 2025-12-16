@@ -54,13 +54,15 @@ TEST(StaticTransformPublisher, a_b_different_times)
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer mB(clock);
-  tf2_ros::TransformListener tfl(mB, node, false);
+  tf2_ros::TransformListener tfl(mB, *node, false);
 
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node);
   // Start spinning in a thread
   std::thread spin_thread = std::thread(
-    std::bind(&rclcpp::executors::SingleThreadedExecutor::spin, &executor));
+    [&executor]() {
+      executor.spin();
+    });
 
   int attempts = 0;
 
@@ -87,13 +89,15 @@ TEST(StaticTransformPublisher, a_c_different_times)
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer mB(clock);
-  tf2_ros::TransformListener tfl(mB, node, false);
+  tf2_ros::TransformListener tfl(mB, *node, false);
 
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node);
   // Start spinning in a thread
   std::thread spin_thread = std::thread(
-    std::bind(&rclcpp::executors::SingleThreadedExecutor::spin, &executor));
+    [&executor]() {
+      executor.spin();
+    });
 
   int attempts = 0;
   while (!mB.canTransform("a", "c", tf2::timeFromSec(0))) {
@@ -119,13 +123,15 @@ TEST(StaticTransformPublisher, a_d_different_times)
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer mB(clock);
-  tf2_ros::TransformListener tfl(mB, node, false);
+  tf2_ros::TransformListener tfl(mB, *node, false);
 
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node);
   // Start spinning in a thread
   std::thread spin_thread = std::thread(
-    std::bind(&rclcpp::executors::SingleThreadedExecutor::spin, &executor));
+    [&executor]() {
+      executor.spin();
+    });
 
   int attempts = 0;
 
@@ -168,13 +174,15 @@ TEST(StaticTransformPublisher, multiple_parent_test)
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer mB(clock);
-  tf2_ros::TransformListener tfl(mB, node, false);
+  tf2_ros::TransformListener tfl(mB, *node, false);
 
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node);
   // Start spinning in a thread
   std::thread spin_thread = std::thread(
-    std::bind(&rclcpp::executors::SingleThreadedExecutor::spin, &executor));
+    [&executor]() {
+      executor.spin();
+    });
 
   int attempts = 0;
 
@@ -186,7 +194,7 @@ TEST(StaticTransformPublisher, multiple_parent_test)
     }
   }
 
-  tf2_ros::StaticTransformBroadcaster stb(node);
+  tf2_ros::StaticTransformBroadcaster stb(*node);
   geometry_msgs::msg::TransformStamped ts;
   ts.transform.rotation.w = 1;
   ts.header.frame_id = "c";
@@ -250,9 +258,11 @@ TEST(StaticTransformPublisher, multiple_parent_test)
 //   node.reset();
 // }
 
-int main(int argc, char **argv)
+int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
   rclcpp::init(argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }

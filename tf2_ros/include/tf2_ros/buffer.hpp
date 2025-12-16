@@ -27,7 +27,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** \author Wim Meeussen */
+/** \file
+ *  \brief Author: Wim Meeussen
+ */
 
 #ifndef TF2_ROS__BUFFER_HPP_
 #define TF2_ROS__BUFFER_HPP_
@@ -36,6 +38,8 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <type_traits>
+#include <utility>
 #include <unordered_map>
 
 #include "tf2_ros/async_buffer_interface.hpp"
@@ -47,6 +51,13 @@
 
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "tf2_msgs/srv/frame_graph.hpp"
+#include "rclcpp/node_interfaces/get_node_base_interface.hpp"
+#include "rclcpp/node_interfaces/get_node_services_interface.hpp"
+#include "rclcpp/node_interfaces/get_node_logging_interface.hpp"
+#include "rclcpp/node_interfaces/node_base_interface.hpp"
+#include "rclcpp/node_interfaces/node_services_interface.hpp"
+#include "rclcpp/node_interfaces/node_logging_interface.hpp"
+#include "rclcpp/node_interfaces/node_interfaces.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 namespace tf2_ros
@@ -65,15 +76,42 @@ public:
   using tf2::BufferCore::canTransform;
   using SharedPtr = std::shared_ptr<tf2_ros::Buffer>;
 
+  using NodeBaseInterface = rclcpp::node_interfaces::NodeBaseInterface;
+  using NodeLoggingInterface = rclcpp::node_interfaces::NodeLoggingInterface;
+  using NodeServicesInterface = rclcpp::node_interfaces::NodeServicesInterface;
+  using RequiredInterfaces = rclcpp::node_interfaces::NodeInterfaces<NodeBaseInterface,
+      NodeLoggingInterface, NodeServicesInterface>;
+
+  /** \brief  Constructor for a Buffer object
+   * \param clock A clock to use for time and sleeping
+   * \param cache_time How long to keep a history of transforms
+   * \param interfaces If passed advertise the view_frames service that exposes debugging information from the buffer, based on a set of node interfaces
+   * \param  qos If passed change the quality of service of the frames_server_ service
+   */
+  TF2_ROS_PUBLIC
+  Buffer(
+    rclcpp::Clock::SharedPtr clock,
+    tf2::Duration cache_time = tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME),
+    RequiredInterfaces node_interfaces = RequiredInterfaces(),
+    const rclcpp::QoS & qos = rclcpp::ServicesQoS());
+
   /** \brief  Constructor for a Buffer object
    * \param clock A clock to use for time and sleeping
    * \param cache_time How long to keep a history of transforms
    * \param node If passed advertise the view_frames service that exposes debugging information from the buffer
+   * \param  qos If passed change the quality of service of the frames_server_ service
    */
-  TF2_ROS_PUBLIC Buffer(
+  template<class NodeT = rclcpp::Node::SharedPtr, class AllocatorT = std::allocator<void>,
+    std::enable_if_t<rcpputils::is_pointer<NodeT>::value, bool> = true>
+  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of NoteT")]]
+  Buffer(
     rclcpp::Clock::SharedPtr clock,
     tf2::Duration cache_time = tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME),
-    rclcpp::Node::SharedPtr node = rclcpp::Node::SharedPtr());
+    NodeT && node = NodeT(),
+    const rclcpp::QoS & qos = rclcpp::ServicesQoS())
+  : Buffer(clock, cache_time, *node, qos)
+  {
+  }
 
   /** \brief Get the transform between two frames by frame ID.
    * \param target_frame The frame to which data should be transformed
@@ -275,10 +313,12 @@ private:
     TransformStampedFuture future,
     TransformReadyCallback callback);
 
+  TF2_ROS_PUBLIC
   bool getFrames(
     const tf2_msgs::srv::FrameGraph::Request::SharedPtr req,
     tf2_msgs::srv::FrameGraph::Response::SharedPtr res);
 
+  TF2_ROS_PUBLIC
   void onTimeJump(const rcl_time_jump_t & jump);
 
   // conditionally error if dedicated_thread unset.
@@ -293,8 +333,11 @@ private:
   /// \brief A clock to use for time and sleeping
   rclcpp::Clock::SharedPtr clock_;
 
-  /// \brief A node to advertise the view_frames service
-  rclcpp::Node::SharedPtr node_;
+  /// \brief A set of interface to access the buffer's node
+  RequiredInterfaces node_interfaces_;
+
+  /// \brief A node logging interface to access the buffer node's logger
+  NodeLoggingInterface::SharedPtr node_logging_interface_;
 
   /// \brief Interface for creating timers
   CreateTimerInterface::SharedPtr timer_interface_;

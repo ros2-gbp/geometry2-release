@@ -24,7 +24,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** \author Koji Terada */
+/** \file
+ *  \brief Author: Koji Terada
+ */
 
 #ifndef TF2_EIGEN__TF2_EIGEN_HPP_
 #define TF2_EIGEN__TF2_EIGEN_HPP_
@@ -53,9 +55,11 @@ namespace tf2
 inline
 Eigen::Isometry3d transformToEigen(const geometry_msgs::msg::Transform & t)
 {
+  Eigen::Quaterniond quat(t.rotation.w, t.rotation.x, t.rotation.y, t.rotation.z);
+  quat.normalize();
   return Eigen::Isometry3d(
     Eigen::Translation3d(t.translation.x, t.translation.y, t.translation.z) *
-    Eigen::Quaterniond(t.rotation.w, t.rotation.x, t.rotation.y, t.rotation.z));
+    quat);
 }
 
 /** \brief Convert a timestamped transform to the equivalent Eigen data type.
@@ -80,7 +84,8 @@ geometry_msgs::msg::TransformStamped eigenToTransform(const Eigen::Affine3d & T)
   t.transform.translation.y = T.translation().y();
   t.transform.translation.z = T.translation().z();
 
-  Eigen::Quaterniond q(T.linear());  // assuming that upper 3x3 matrix is orthonormal
+  Eigen::Quaterniond q(T.linear());
+  q.normalize();
   t.transform.rotation.x = q.x();
   t.transform.rotation.y = q.y();
   t.transform.rotation.z = q.z();
@@ -331,6 +336,7 @@ inline
 void fromMsg(const geometry_msgs::msg::Quaternion & msg, Eigen::Quaterniond & out)
 {
   out = Eigen::Quaterniond(msg.w, msg.x, msg.y, msg.z);
+  out.normalize();
 }
 
 /** \brief Apply a geometry_msgs TransformStamped to an Eigen-specific Quaterniond type.
@@ -467,13 +473,15 @@ geometry_msgs::msg::Vector3 toMsg2(const Eigen::Vector3d & in)
 inline
 void fromMsg(const geometry_msgs::msg::Pose & msg, Eigen::Affine3d & out)
 {
+  Eigen::Quaterniond quat(
+    msg.orientation.w,
+    msg.orientation.x,
+    msg.orientation.y,
+    msg.orientation.z);
+  quat.normalize();
   out = Eigen::Affine3d(
     Eigen::Translation3d(msg.position.x, msg.position.y, msg.position.z) *
-    Eigen::Quaterniond(
-      msg.orientation.w,
-      msg.orientation.x,
-      msg.orientation.y,
-      msg.orientation.z));
+    quat);
 }
 
 /** \brief Convert a Pose message transform type to a Eigen Isometry3d.
@@ -484,13 +492,15 @@ void fromMsg(const geometry_msgs::msg::Pose & msg, Eigen::Affine3d & out)
 inline
 void fromMsg(const geometry_msgs::msg::Pose & msg, Eigen::Isometry3d & out)
 {
+  Eigen::Quaterniond quat(
+    msg.orientation.w,
+    msg.orientation.x,
+    msg.orientation.y,
+    msg.orientation.z);
+  quat.normalize();
   out = Eigen::Isometry3d(
     Eigen::Translation3d(msg.position.x, msg.position.y, msg.position.z) *
-    Eigen::Quaterniond(
-      msg.orientation.w,
-      msg.orientation.x,
-      msg.orientation.y,
-      msg.orientation.z));
+    quat);
 }
 
 /** \brief Convert a Eigen 6x1 Matrix type to a Twist message.

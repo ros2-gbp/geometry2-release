@@ -2,140 +2,220 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.25.18 (2025-11-28)
---------------------
+0.45.5 (2025-12-16)
+-------------------
+* static function to crate quaternions directly from rotation added (`#881 <https://github.com/ros2/geometry2/issues/881>`_)
+* Expose Doxygen output in tf2, showing former Doxygen front page also as README.md (`#871 <https://github.com/ros2/geometry2/issues/871>`_)
+* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_)
+* Modernize conf.py files to only include modified Copyright, eliminati… (`#865 <https://github.com/ros2/geometry2/issues/865>`_)
+* Contributors: Markus Bader, R Kent James
 
-0.25.17 (2025-10-17)
---------------------
+0.45.4 (2025-11-28)
+-------------------
+* Fix various documentation errors in tf2 (`#857 <https://github.com/ros2/geometry2/issues/857>`_)
+* Contributors: R Kent James
 
-0.25.16 (2025-07-25)
---------------------
+0.45.3 (2025-11-24)
+-------------------
+* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (`#856 <https://github.com/ros2/geometry2/issues/856>`_)
+* Fix REP url locations (`#847 <https://github.com/ros2/geometry2/issues/847>`_)
+* Contributors: R Kent James, Tim Clephas
 
-0.25.15 (2025-07-16)
---------------------
+0.45.2 (2025-11-07)
+-------------------
+* Adding explicit handling for normalization of zero-quaternions (`#839 <https://github.com/ros2/geometry2/issues/839>`_)
+* Cleanup TF2 dependencies (`#843 <https://github.com/ros2/geometry2/issues/843>`_)
+* Contributors: Chris Lalancette, Simon Jusner
 
-0.25.14 (2025-05-14)
---------------------
+0.45.1 (2025-10-17)
+-------------------
 
-0.25.13 (2025-05-14)
---------------------
-* Overflow Issue in durationFromSec() Function when Handling Extremely Large or Small Values (`#785 <https://github.com/ros2/geometry2/issues/785>`_) (`#787 <https://github.com/ros2/geometry2/issues/787>`_)
-* Backport: Do not clobber callback handles when cancelling pending transformable requests (`#781 <https://github.com/ros2/geometry2/issues/781>`_)
-* Contributors: Timo Röhling, mergify[bot]
+0.45.0 (2025-08-27)
+-------------------
+* Added tf2 documentation to docs.ros.org (`#671 <https://github.com/ros2/geometry2/issues/671>`_)
+* Contributors: Alejandro Hernández Cordero
 
-0.25.12 (2025-01-17)
---------------------
-* Fixing Scalar Header Guards (`#755 <https://github.com/ros2/geometry2/issues/755>`_)
+0.44.0 (2025-07-29)
+-------------------
+* Add RPY quaternion constructor (`#806 <https://github.com/ros2/geometry2/issues/806>`_)
+* Contributors: Alireza Moayyedi
+
+0.43.1 (2025-07-18)
+-------------------
+
+0.43.0 (2025-07-01)
+-------------------
+
+0.42.2 (2025-06-19)
+-------------------
+* Default initialize TransformStorage's frame_id\_ and child_frame_id\_ with UINT32_MAX (`#783 <https://github.com/ros2/geometry2/issues/783>`_)
+* Contributors: Andreas
+
+0.42.1 (2025-05-14)
+-------------------
+* Removed deprecated headers tf2 (`#789 <https://github.com/ros2/geometry2/issues/789>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.42.0 (2025-04-25)
+-------------------
+
+0.41.0 (2025-04-25)
+-------------------
+* Add isnan support (`#780 <https://github.com/ros2/geometry2/issues/780>`_)
+* Overflow Issue in durationFromSec() Function when Handling Extremely Large or Small Values (`#785 <https://github.com/ros2/geometry2/issues/785>`_)
+* Do not clobber callback handles when cancelling pending transformable requests (`#779 <https://github.com/ros2/geometry2/issues/779>`_)
+* Uniform cmake min version (`#764 <https://github.com/ros2/geometry2/issues/764>`_)
+* Contributors: Michael Carlstrom, Timo Röhling, cramke, mosfet80
+
+0.40.1 (2025-01-15)
+-------------------
+* Remove many extra conversions from Matrix3x3 to Quaternion (`#741 <https://github.com/ros2/geometry2/issues/741>`_)
+  Co-authored-by: jmachowinski <jmachowinski@users.noreply.github.com>
+  Co-authored-by: Katherine Scott <katherineAScott@gmail.com>
+* Cleanup deprecation warnings. (`#744 <https://github.com/ros2/geometry2/issues/744>`_)
+  The deprecation warnings were not printing out properly on
+  GCC, at least; it would warn that #warning was not standard,
+  and it would also not print out the actual warning.  Also
+  "deprecated" was spelled wrong.  Fix all of these issues here.
+* Contributors: Chris Lalancette, kyle-basis
+
+0.40.0 (2024-12-20)
+-------------------
+* Deprecate C Headers (`#720 <https://github.com/ros2/geometry2/issues/720>`_)
+* Removed unused var in tf2 (`#735 <https://github.com/ros2/geometry2/issues/735>`_)
+* Contributors: Alejandro Hernández Cordero, Lucas Wendland
+
+0.39.3 (2024-11-25)
+-------------------
+
+0.39.2 (2024-11-20)
+-------------------
+
+0.39.1 (2024-10-15)
+-------------------
+* Error String Filled (`#715 <https://github.com/ros2/geometry2//issues/715>`_)
 * Contributors: Lucas Wendland
 
-0.25.11 (2025-01-14)
---------------------
-
-0.25.10 (2024-12-19)
---------------------
-* Humble "Backport" of `#720 <https://github.com/ros2/geometry2/issues/720>`_ (`#722 <https://github.com/ros2/geometry2/issues/722>`_)
-* Removed unused var in tf2 (`#735 <https://github.com/ros2/geometry2/issues/735>`_) (`#737 <https://github.com/ros2/geometry2/issues/737>`_)
-  (cherry picked from commit e791b58f8826a31d8ea11f45b7bf3026f26eab8a)
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Contributors: Lucas Wendland, mergify[bot]
-
-0.25.9 (2024-11-20)
+0.39.0 (2024-10-03)
 -------------------
 
-0.25.8 (2024-08-29)
+0.38.2 (2024-07-19)
 -------------------
-* Enable Twist interpolator (backport `#646 <https://github.com/ros2/geometry2/issues/646>`_) (`#684 <https://github.com/ros2/geometry2/issues/684>`_)
-  * Enable Twist interpolator (`#646 <https://github.com/ros2/geometry2/issues/646>`_)
+
+0.38.1 (2024-07-09)
+-------------------
+* Removed deprecated enuns (`#699 <https://github.com/ros2/geometry2//issues/699>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.38.0 (2024-06-17)
+-------------------
+
+0.37.1 (2024-05-29)
+-------------------
+* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_)
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_)
+* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_)
+  * Add cache_benchmark
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_)
+  * [cache_unittest] Add direct implementation testing on ordering, pruning
+  * do getAllItems() approach
+  * Return a reference instead.
+  * mark getAllItems as internal
+  * Fix warning on Windows.
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* Contributors: Alejandro Hernández Cordero, Eric Cousineau
+
+0.37.0 (2024-04-26)
+-------------------
+
+0.36.2 (2024-04-10)
+-------------------
+* Enable Twist interpolator (`#646 <https://github.com/ros2/geometry2/issues/646>`_)
   Co-authored-by: Tully Foote <tullyfoote@intrinsic.ai>
-  (cherry picked from commit 62322b8fa74c90d144dfe32294f6670bf6cfe786)
-  # Conflicts:
-  #	tf2/include/tf2/buffer_core.h
-  #	tf2_ros/test/test_buffer.cpp
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Contributors: mergify[bot]
+* Warning Message Intervals for canTransform (`#663 <https://github.com/ros2/geometry2/issues/663>`_)
+* Contributors: Alejandro Hernández Cordero, Lucas Wendland
 
-0.25.7 (2024-05-29)
+0.36.1 (2024-03-28)
 -------------------
-* [TimeCache] Improve performance for insertData() and pruneList() (backport `#680 <https://github.com/ros2/geometry2/issues/680>`_) (`#693 <https://github.com/ros2/geometry2/issues/693>`_)
-  * Nacho/minor fixes tf2 cache (`#658 <https://github.com/ros2/geometry2/issues/658>`_)
-  * Remove unused parameter
-  * Make use of API function to improve redability
-  ```cpp
-  TimePoint TimeCache::getLatestTimestamp()
-  {
-  return storage\_.front().stamp\_;
-  }
-  ```
-  And std::list<T>::front() is(gcclib):
-  ```cpp
-  reference
-  front() _GLIBCXX_NOEXCEPT
-  { return *begin(); }
-  ```
-  * Same argument as 321bd225afb5c
-  ```cpp
-  TimePoint TimeCache::getLatestTimestamp()
-  {
-  // empty list case
-  // ...
-  return storage\_.front().stamp\_;
-  }
-  ```
-  and std::list<T>::front():
-  ```cpp
-  reference
-  front() _GLIBCXX_NOEXCEPT
-  { return *begin(); }
-  ```
-  * Improve readbility by relying on STL functions
-  By now reading to this block I can tell that we are preventing to
-  inserting a new element in the list, that has a timestamp that is
-  actually older than the max_storage_time\_ we allow for
-  * Remove hardcoded algorithmg for STL one
-  The intent of the code is now more clear, instead of relying on raw
-  loops, we "find if" there is any element in the list that has a stamp
-  older than the incoming one. With this we find the position in the list
-  where we should insert the current timestamp: `storage_it`
-  * Remove to better express what this pointer is represetngin
-  * Replace raw loop for STL algorithm
-  Remove if any element is older thant the max_storage_time\_ allowed,
-  relative to the latest(sooner) time seems clear npw
-  * [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_)
-  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  * Don't break ABI
-  ---------
-  Co-authored-by: Ignacio Vizzo <ignacio@dexory.com>
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Add cache_benchmark (backport `#679 <https://github.com/ros2/geometry2/issues/679>`_) (`#691 <https://github.com/ros2/geometry2/issues/691>`_)
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* [cache_unittest] Add direct implementation testing on ordering, pruning (backport `#678 <https://github.com/ros2/geometry2/issues/678>`_) (`#688 <https://github.com/ros2/geometry2/issues/688>`_)
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Contributors: mergify[bot]
+* Nacho/minor fixes tf2 cache (`#658 <https://github.com/ros2/geometry2/issues/658>`_)
+* Removing console_bridge (`#655 <https://github.com/ros2/geometry2/issues/655>`_)
+* Contributors: Ignacio Vizzo, Lucas Wendland
 
-0.25.6 (2024-02-16)
+0.36.0 (2024-02-07)
 -------------------
-* Fix constantly increasing memory in std::list (`#648 <https://github.com/ros2/geometry2/issues/648>`_)
+
+0.35.1 (2024-01-24)
+-------------------
+* Fix constantly increasing memory in std::list (`#636 <https://github.com/ros2/geometry2/issues/636>`_)
 * Contributors: Ignacio Vizzo
 
-0.25.5 (2023-11-13)
+0.35.0 (2023-12-26)
+-------------------
+* Update the tf2 documentation (`#638 <https://github.com/ros2/geometry2/issues/638>`_)
+* Contributors: Chris Lalancette
+
+0.34.0 (2023-11-06)
 -------------------
 
-0.25.4 (2023-09-19)
+0.33.2 (2023-10-04)
 -------------------
 
-0.25.3 (2023-07-17)
+0.33.1 (2023-09-07)
 -------------------
 
-0.25.2 (2023-01-10)
+0.33.0 (2023-08-21)
 -------------------
-* Include required header Scalar.h (`#559 <https://github.com/ros2/geometry2/issues/559>`_) (`#562 <https://github.com/ros2/geometry2/issues/562>`_)
-* Contributors: mergify[bot]
 
-0.25.1 (2022-08-05)
+0.32.2 (2023-07-11)
+-------------------
+
+0.32.1 (2023-05-11)
+-------------------
+* Fix error code returned in BufferCore::walkToTopParent (`#601 <https://github.com/ros2/geometry2/issues/601>`_)
+* Contributors: Patrick Roncagliolo
+
+0.32.0 (2023-04-27)
+-------------------
+
+0.31.2 (2023-04-13)
+-------------------
+
+0.31.1 (2023-04-12)
+-------------------
+
+0.31.0 (2023-04-11)
+-------------------
+* Depend on ament_cmake_ros to default SHARED to ON (`#591 <https://github.com/ros2/geometry2/issues/591>`_)
+* Fix a potential crash in TimeCache::findClosest (`#592 <https://github.com/ros2/geometry2/issues/592>`_)
+* Extend TimeCache API to provide rich ExtrapolationException infos (`#586 <https://github.com/ros2/geometry2/issues/586>`_)
+* Contributors: Chris Lalancette, Patrick Roncagliolo, Tyler Weaver
+
+0.30.0 (2023-02-14)
+-------------------
+* Update geometry2 to C++17 (`#584 <https://github.com/ros2/geometry2/issues/584>`_)
+* Contributors: Chris Lalancette
+
+0.29.0 (2022-11-21)
+-------------------
+* Include required header Scalar.h (`#559 <https://github.com/ros2/geometry2/issues/559>`_)
+* Update maintainers (`#560 <https://github.com/ros2/geometry2/issues/560>`_)
+* Contributors: Audrow Nash, Shane Loretz
+
+0.28.0 (2022-11-02)
+-------------------
+
+0.27.0 (2022-09-13)
+-------------------
+
+0.26.2 (2022-08-15)
+-------------------
+
+0.26.1 (2022-06-24)
+-------------------
+
+0.26.0 (2022-04-29)
 -------------------
 
 0.25.0 (2022-04-05)

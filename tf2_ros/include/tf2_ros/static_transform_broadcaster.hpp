@@ -28,17 +28,24 @@
  */
 
 
-/** \author Tully Foote */
+/** \file
+ *  \brief Author: Tully Foote
+ */
 
 #ifndef TF2_ROS__STATIC_TRANSFORM_BROADCASTER_HPP_
 #define TF2_ROS__STATIC_TRANSFORM_BROADCASTER_HPP_
 
 #include <memory>
+#include <type_traits>
 #include <vector>
 
 #include "tf2_ros/visibility_control.hpp"
 
+#include "rclcpp/node_interfaces/node_interfaces.hpp"
+#include "rclcpp/node_interfaces/get_node_parameters_interface.hpp"
+#include "rclcpp/node_interfaces/get_node_topics_interface.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "rcpputils/pointer_traits.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "tf2_ros/qos.hpp"
@@ -49,12 +56,39 @@ namespace tf2_ros
 /** \brief This class provides an easy way to publish coordinate frame transform information.
  * It will handle all the messaging and stuffing of messages.  And the function prototypes lay out all the
  * necessary data needed for each message.  */
-
 class StaticTransformBroadcaster
 {
 public:
-  /** \brief Node interface constructor */
-  template<class NodeT, class AllocatorT = std::allocator<void>>
+  using NodeParametersInterface = rclcpp::node_interfaces::NodeParametersInterface;
+  using NodeTopicsInterface = rclcpp::node_interfaces::NodeTopicsInterface;
+  using RequiredInterfaces = rclcpp::node_interfaces::NodeInterfaces<NodeParametersInterface,
+      NodeTopicsInterface>;
+
+  /** \brief NodeInterfaces constructor */
+  template<class AllocatorT = std::allocator<void>>
+  StaticTransformBroadcaster(
+    RequiredInterfaces node_interfaces,
+    const rclcpp::QoS & qos = StaticBroadcasterQoS(),
+    const rclcpp::PublisherOptionsWithAllocator<AllocatorT> & options = [] () {
+      rclcpp::PublisherOptionsWithAllocator<AllocatorT> options;
+      options.qos_overriding_options = rclcpp::QosOverridingOptions{
+        rclcpp::QosPolicyKind::Depth,
+        rclcpp::QosPolicyKind::History,
+        rclcpp::QosPolicyKind::Reliability};
+      return options;
+    } ())
+  {
+    auto node_parameters = node_interfaces.get_node_parameters_interface();
+    auto node_topics = node_interfaces.get_node_topics_interface();
+
+    publisher_ = rclcpp::create_publisher<tf2_msgs::msg::TFMessage>(
+      node_parameters, node_topics, "/tf_static", qos, options);
+  }
+
+  /** \brief Node constructor */
+  template<class NodeT, class AllocatorT = std::allocator<void>,
+    std::enable_if_t<rcpputils::is_pointer<NodeT>::value, bool> = true>
+  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of NodeT")]]
   StaticTransformBroadcaster(
     NodeT && node,
     const rclcpp::QoS & qos = StaticBroadcasterQoS(),
@@ -64,20 +98,32 @@ public:
         rclcpp::QosPolicyKind::Depth,
         rclcpp::QosPolicyKind::History,
         rclcpp::QosPolicyKind::Reliability};
-      /*
-        This flag disables intra-process communication while publishing to
-        /tf_static topic, when the StaticTransformBroadcaster is constructed
-        using an existing node handle which happens to be a component
-        (in rclcpp terminology).
-        Required until rclcpp intra-process communication supports
-        transient_local QoS durability.
-      */
-      options.use_intra_process_comm = rclcpp::IntraProcessSetting::Disable;
       return options;
     } ())
+    : StaticTransformBroadcaster(
+      RequiredInterfaces(node->get_node_parameters_interface(),
+      node->get_node_topics_interface()), qos, options)
   {
-    publisher_ = rclcpp::create_publisher<tf2_msgs::msg::TFMessage>(
-      node, "/tf_static", qos, options);
+  }
+
+  /** \brief Node interfaces constructor */
+  template<class AllocatorT = std::allocator<void>>
+  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of multiple interfaces")]]
+  StaticTransformBroadcaster(
+    NodeParametersInterface::SharedPtr node_parameters,
+    NodeTopicsInterface::SharedPtr node_topics,
+    const rclcpp::QoS & qos = StaticBroadcasterQoS(),
+    const rclcpp::PublisherOptionsWithAllocator<AllocatorT> & options = [] () {
+      rclcpp::PublisherOptionsWithAllocator<AllocatorT> options;
+      options.qos_overriding_options = rclcpp::QosOverridingOptions{
+        rclcpp::QosPolicyKind::Depth,
+        rclcpp::QosPolicyKind::History,
+        rclcpp::QosPolicyKind::Reliability};
+      return options;
+    } ())
+    : StaticTransformBroadcaster(
+      RequiredInterfaces(node_parameters, node_topics), qos, options)
+  {
   }
 
   /** \brief Send a TransformStamped message

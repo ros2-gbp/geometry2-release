@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2_py)
 
-# Default to C++14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -20,28 +21,26 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   add_compile_options(-Wno-cast-function-type)
 endif()
 
-# Figure out Python3 debug/release before anything else can find_package it
-if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-  find_package(python_cmake_module REQUIRED)
-  find_package(PythonExtra REQUIRED)
-  # Force FindPython3 to use the debug interpretter where ROS 2 expects it
-  set(Python3_EXECUTABLE "${PYTHON_EXECUTABLE_DEBUG}")
-elseif(NOT WIN32 AND NOT Python3_EXECUTABLE)
-  # We expect that Python dependencies are met for whatever Python interpreter
-  # is invoked by the "python3" executable, however this may not be the latest
-  # Python version installed on the system. The default behavior of
-  # find_package(Python3) is to use the latest version (e.x. python3.12), so we
-  # specifically look for a "python3" executable and if found, instruct
-  # find_package(Python3) to use that.
-  # On Windows, the find_package(Python3) logic is different and doesn't
-  # appear to prefer specific versions (e.x. python3.12) over plain
-  # "python.exe" so this extra logic is unnecessary there.
-  find_program(Python3_EXECUTABLE python3)
-endif()
+# By default, without the settings below, find_package(Python3) will attempt
+# to find the newest python version it can, and additionally will find the
+# most specific version.  For instance, on a system that has
+# /usr/bin/python3.10, /usr/bin/python3.11, and /usr/bin/python3, it will find
+# /usr/bin/python3.11, even if /usr/bin/python3 points to /usr/bin/python3.10.
+# The behavior we want is to prefer the "system" installed version unless the
+# user specifically tells us othewise through the Python3_EXECUTABLE hint.
+# Setting CMP0094 to NEW means that the search will stop after the first
+# python version is found.  Setting Python3_FIND_UNVERSIONED_NAMES means that
+# the search will prefer /usr/bin/python3 over /usr/bin/python3.11.  And that
+# latter functionality is only available in CMake 3.20 or later, so we need
+# at least that version.
+cmake_policy(SET CMP0094 NEW)
+set(Python3_FIND_UNVERSIONED_NAMES FIRST)
+
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 
@@ -51,7 +50,7 @@ python3_add_library(_tf2_py src/tf2_py.cpp)
 
 if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   # python3_add_library should really take care of this for us, but it doesn't
-  set_property(TARGET _tf2_py PROPERTY SUFFIX "_d.pyd")
+  set_target_properties(_tf2_py PROPERTIES DEBUG_POSTFIX "_d")
 endif()
 
 # Set output directories to import module from the build directory
@@ -63,6 +62,7 @@ set_target_properties(_tf2_py PROPERTIES
 )
 
 target_link_libraries(_tf2_py PRIVATE
+  ${builtin_interfaces_TARGETS}
   ${geometry_msgs_TARGETS}
   tf2::tf2
 )
