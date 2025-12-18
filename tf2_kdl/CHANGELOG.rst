@@ -2,50 +2,27 @@
 Changelog for package tf2_kdl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.5 (2025-12-16)
+0.41.6 (2025-12-18)
 -------------------
-* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_)
-* Documentation fixes for tf2_kdl (`#869 <https://github.com/ros2/geometry2/issues/869>`_)
-* Modernize conf.py files to only include modified Copyright, eliminati… (`#865 <https://github.com/ros2/geometry2/issues/865>`_)
-* Contributors: R Kent James
+* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (manual kilted backport of `#856 <https://github.com/ros2/geometry2/issues/856>`_) (`#885 <https://github.com/ros2/geometry2/issues/885>`_)
+* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_) (`#875 <https://github.com/ros2/geometry2/issues/875>`_)
+* Contributors: R Kent James, mergify[bot]
 
-0.45.4 (2025-11-28)
--------------------
-
-0.45.3 (2025-11-24)
--------------------
-* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (`#856 <https://github.com/ros2/geometry2/issues/856>`_)
-* Contributors: R Kent James
-
-0.45.2 (2025-11-07)
+0.41.5 (2025-11-28)
 -------------------
 
-0.45.1 (2025-10-17)
--------------------
-* Removed orocos kdl vendor dependency (`#826 <https://github.com/ros2/geometry2/issues/826>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.45.0 (2025-08-27)
+0.41.4 (2025-11-07)
 -------------------
 
-0.44.0 (2025-07-29)
+0.41.3 (2025-10-17)
 -------------------
 
-0.43.1 (2025-07-18)
+0.41.2 (2025-07-24)
 -------------------
-* Change tf2_ros C to C++ headers (`#805 <https://github.com/ros2/geometry2/issues/805>`_)
+* Change tf2_ros C to C++ headers (`#808 <https://github.com/ros2/geometry2/issues/808>`_)
 * Contributors: Gary Servin
 
-0.43.0 (2025-07-01)
--------------------
-
-0.42.2 (2025-06-19)
--------------------
-
-0.42.1 (2025-05-14)
--------------------
-
-0.42.0 (2025-04-25)
+0.41.1 (2025-06-23)
 -------------------
 
 0.41.0 (2025-04-25)

@@ -40,7 +40,6 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
-find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 
@@ -62,7 +61,6 @@ set_target_properties(_tf2_py PROPERTIES
 )
 
 target_link_libraries(_tf2_py PRIVATE
-  ${builtin_interfaces_TARGETS}
   ${geometry_msgs_TARGETS}
   tf2::tf2
 )

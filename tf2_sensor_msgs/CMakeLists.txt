@@ -61,6 +61,10 @@ if(BUILD_TESTING)
   find_package(rclcpp REQUIRED)
   find_package(tf2_geometry_msgs REQUIRED)
 
+  # TODO(ros2/geometry2#259) Remove once headers
+  # are renamed to .hpp
+  set(ament_cmake_uncrustify_ADDITIONAL_ARGS --language CPP)
+  set(ament_cmake_cppcheck_LANGUAGE c++)
   ament_lint_auto_find_test_dependencies()
 
   find_package(ament_cmake_pytest REQUIRED)
@@ -89,7 +93,6 @@ if(BUILD_TESTING)
   target_link_libraries(test_imu_transforms
     ${geometry_msgs_TARGETS}
     ${sensor_msgs_TARGETS}
-    Eigen3::Eigen
     tf2::tf2
     tf2_geometry_msgs::tf2_geometry_msgs
     tf2_ros::tf2_ros

@@ -2,53 +2,29 @@
 Changelog for package tf2_sensor_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.5 (2025-12-16)
+0.41.6 (2025-12-18)
 -------------------
-* Modernize conf.py files to only include modified Copyright, eliminati… (`#865 <https://github.com/ros2/geometry2/issues/865>`_)
-* Contributors: R Kent James
+* Add imu & mag support in `tf2_sensor_msgs` (`#800 <https://github.com/ros2/geometry2/issues/800>`_) (`#813 <https://github.com/ros2/geometry2/issues/813>`_) (`#867 <https://github.com/ros2/geometry2/issues/867>`_)
+* Contributors: mergify[bot]
 
-0.45.4 (2025-11-28)
--------------------
-
-0.45.3 (2025-11-24)
+0.41.5 (2025-11-28)
 -------------------
 
-0.45.2 (2025-11-07)
--------------------
-* Solved TODO with copyright in tf2_sensor_msgs (`#836 <https://github.com/ros2/geometry2/issues/836>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.45.1 (2025-10-17)
--------------------
-* Removed orocos kdl vendor dependency (`#826 <https://github.com/ros2/geometry2/issues/826>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.45.0 (2025-08-27)
+0.41.4 (2025-11-07)
 -------------------
 
-0.44.0 (2025-07-29)
+0.41.3 (2025-10-17)
 -------------------
-* Add imu & mag support in `tf2_sensor_msgs` (`#800 <https://github.com/ros2/geometry2/issues/800>`_) (`#813 <https://github.com/ros2/geometry2/issues/813>`_)
-* Contributors: Patrick Roncagliolo
 
-0.43.1 (2025-07-18)
+0.41.2 (2025-07-24)
 -------------------
-* Change tf2_ros C to C++ headers (`#805 <https://github.com/ros2/geometry2/issues/805>`_)
+* Change tf2_ros C to C++ headers (`#808 <https://github.com/ros2/geometry2/issues/808>`_)
 * Contributors: Gary Servin
 
-0.43.0 (2025-07-01)
+0.41.1 (2025-06-23)
 -------------------
-
-0.42.2 (2025-06-19)
--------------------
-* Add normals rotation in `PointCloud2` `doTransform` (`#792 <https://github.com/ros2/geometry2/issues/792>`_)
-* Contributors: Patrick Roncagliolo
-
-0.42.1 (2025-05-14)
--------------------
-
-0.42.0 (2025-04-25)
--------------------
+* Add normals rotation in `PointCloud2` `doTransform` (`#792 <https://github.com/ros2/geometry2/issues/792>`_) (`#793 <https://github.com/ros2/geometry2/issues/793>`_)
+* Contributors: mergify[bot]
 
 0.41.0 (2025-04-25)
 -------------------
