@@ -15,7 +15,6 @@
 import threading
 
 import rclpy
-from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 import rclpy.time
 from tf2_ros import LookupException
@@ -74,9 +73,10 @@ class WaitsForTransform(Node):
 
 
 def main():
+    rclpy.init()
+    node = WaitsForTransform()
     try:
-        with rclpy.init():
-            node = WaitsForTransform()
-            rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
+        rclpy.spin(node)
+    except KeyboardInterrupt:
         pass
+    rclpy.shutdown()

@@ -2,74 +2,65 @@
 Changelog for package tf2_ros_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.41.6 (2025-12-18)
--------------------
-* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (manual kilted backport of `#856 <https://github.com/ros2/geometry2/issues/856>`_) (`#885 <https://github.com/ros2/geometry2/issues/885>`_)
+0.36.18 (2025-12-18)
+--------------------
+* Jazzy disable tagfiles (`#886 <https://github.com/ros2/geometry2/issues/886>`_)
 * Contributors: R Kent James
 
-0.41.5 (2025-11-28)
+0.36.17 (2025-11-28)
+--------------------
+
+0.36.16 (2025-11-07)
+--------------------
+
+0.36.15 (2025-10-17)
+--------------------
+
+0.36.14 (2025-08-06)
+--------------------
+
+0.36.13 (2025-07-23)
+--------------------
+
+0.36.12 (2025-06-23)
+--------------------
+
+0.36.11 (2025-05-14)
+--------------------
+
+0.36.10 (2025-04-24)
+--------------------
+
+0.36.9 (2025-04-02)
+-------------------
+* Fix external docs mappings  (backport `#757 <https://github.com/ros2/geometry2/issues/757>`_) (`#759 <https://github.com/ros2/geometry2/issues/759>`_)
+  (cherry picked from commit 00e182217b3d0f668adb639923b6cc4e2ddfda59)
+  Co-authored-by: Emmanuel <EmmanuelMess@users.noreply.github.com>
+  Co-authored-by: Christophe Bedard <christophe.bedard@apex.ai>
+* Contributors: mergify[bot]
+
+0.36.8 (2025-01-15)
 -------------------
 
-0.41.4 (2025-11-07)
+0.36.7 (2024-12-27)
 -------------------
 
-0.41.3 (2025-10-17)
+0.36.6 (2024-12-18)
 -------------------
 
-0.41.2 (2025-07-24)
+0.36.5 (2024-11-20)
+-------------------
+* Fix the time_jump_callback signature. (`#711 <https://github.com/ros2/geometry2/issues/711>`_) (`#712 <https://github.com/ros2/geometry2/issues/712>`_)
+  Because it accesses object data, the first argument
+  must be 'self'.
+  (cherry picked from commit efc784597ccbd8d246794e72b20358deab4ab114)
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* Contributors: mergify[bot]
+
+0.36.4 (2024-05-29)
 -------------------
 
-0.41.1 (2025-06-23)
--------------------
-
-0.41.0 (2025-04-25)
--------------------
-* Fix external docs mappings (`#757 <https://github.com/ros2/geometry2/issues/757>`_)
-* Contributors: Emmanuel
-
-0.40.1 (2025-01-15)
--------------------
-
-0.40.0 (2024-12-20)
--------------------
-* Add in the linters for tf2_ros_py. (`#740 <https://github.com/ros2/geometry2/issues/740>`_)
-* Contributors: Chris Lalancette
-
-0.39.3 (2024-11-25)
--------------------
-
-0.39.2 (2024-11-20)
--------------------
-* Adding StaticTransformListener in Python (`#719 <https://github.com/ros2/geometry2/issues/719>`_)
-* Add in test_xmllint for geometry2 python packages. (`#725 <https://github.com/ros2/geometry2/issues/725>`_)
-* Contributors: Chris Lalancette, Lucas Wendland
-
-0.39.1 (2024-10-15)
--------------------
-* Add configurable TF topics (`#709 <https://github.com/ros2/geometry2//issues/709>`_)
-* Fix the time_jump_callback signature. (`#711 <https://github.com/ros2/geometry2//issues/711>`_)
-* Contributors: Chris Lalancette, Ryan
-
-0.39.0 (2024-10-03)
--------------------
-
-0.38.2 (2024-07-19)
--------------------
-* Switch to using a context manager for the python examples. (`#700 <https://github.com/ros2/geometry2/issues/700>`_)
-  That way we can be sure to always clean up, but use less
-  code doing so.
-* Contributors: Chris Lalancette
-
-0.38.1 (2024-07-09)
--------------------
-
-0.38.0 (2024-06-17)
--------------------
-
-0.37.1 (2024-05-29)
--------------------
-
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)

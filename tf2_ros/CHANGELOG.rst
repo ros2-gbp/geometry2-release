@@ -2,87 +2,75 @@
 Changelog for package tf2_ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.41.6 (2025-12-18)
--------------------
-* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (manual kilted backport of `#856 <https://github.com/ros2/geometry2/issues/856>`_) (`#885 <https://github.com/ros2/geometry2/issues/885>`_)
-* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_) (`#875 <https://github.com/ros2/geometry2/issues/875>`_)
+0.36.18 (2025-12-18)
+--------------------
+* Jazzy disable tagfiles (`#886 <https://github.com/ros2/geometry2/issues/886>`_)
+* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_) (`#876 <https://github.com/ros2/geometry2/issues/876>`_)
 * Contributors: R Kent James, mergify[bot]
 
-0.41.5 (2025-11-28)
--------------------
-* Prevent log spam from tf2_ros message_filter (backport `#851 <https://github.com/ros2/geometry2/issues/851>`_) (`#852 <https://github.com/ros2/geometry2/issues/852>`_)
+0.36.17 (2025-11-28)
+--------------------
+* Prevent log spam from tf2_ros message_filter (backport `#851 <https://github.com/ros2/geometry2/issues/851>`_) (`#853 <https://github.com/ros2/geometry2/issues/853>`_)
 * Contributors: mergify[bot]
 
-0.41.4 (2025-11-07)
--------------------
-* Updated tf2_echo with some other features (`#802 <https://github.com/ros2/geometry2/issues/802>`_) (`#841 <https://github.com/ros2/geometry2/issues/841>`_)
+0.36.16 (2025-11-07)
+--------------------
+* Updated tf2_echo with some other features (`#802 <https://github.com/ros2/geometry2/issues/802>`_) (`#842 <https://github.com/ros2/geometry2/issues/842>`_)
 * Contributors: mergify[bot]
 
-0.41.3 (2025-10-17)
--------------------
-* Ensure variable is considered volatile in message_filter_test (`#812 <https://github.com/ros2/geometry2/issues/812>`_) (`#814 <https://github.com/ros2/geometry2/issues/814>`_)
+0.36.15 (2025-10-17)
+--------------------
+
+0.36.14 (2025-08-06)
+--------------------
+* Ensure variable is considered volatile in message_filter_test (`#812 <https://github.com/ros2/geometry2/issues/812>`_) (`#815 <https://github.com/ros2/geometry2/issues/815>`_)
+  (cherry picked from commit effa539126beb465a4d17fd93d8076180d1a27b2)
+  Co-authored-by: Mirko Ferrati <mirko.ferrati@gmail.com>
 * Contributors: mergify[bot]
 
-0.41.2 (2025-07-24)
--------------------
-* Change tf2_ros C to C++ headers (`#808 <https://github.com/ros2/geometry2/issues/808>`_)
+0.36.13 (2025-07-23)
+--------------------
+* Change tf2_ros C to C++ headers (`#807 <https://github.com/ros2/geometry2/issues/807>`_)
 * Contributors: Gary Servin
 
-0.41.1 (2025-06-23)
+0.36.12 (2025-06-23)
+--------------------
+
+0.36.11 (2025-05-14)
+--------------------
+
+0.36.10 (2025-04-24)
+--------------------
+
+0.36.9 (2025-04-02)
+-------------------
+* fix: add `rclcpp::shutdown` (`#762 <https://github.com/ros2/geometry2/issues/762>`_) (`#763 <https://github.com/ros2/geometry2/issues/763>`_)
+  (cherry picked from commit 4ec4f9684d03a903da951ab6d4d08cbc87de49ee)
+  Co-authored-by: Yuyuan Yuan <az6980522@gmail.com>
+* Fix external docs mappings  (backport `#757 <https://github.com/ros2/geometry2/issues/757>`_) (`#759 <https://github.com/ros2/geometry2/issues/759>`_)
+  (cherry picked from commit 00e182217b3d0f668adb639923b6cc4e2ddfda59)
+  Co-authored-by: Emmanuel <EmmanuelMess@users.noreply.github.com>
+  Co-authored-by: Christophe Bedard <christophe.bedard@apex.ai>
+* Contributors: mergify[bot]
+
+0.36.8 (2025-01-15)
 -------------------
 
-0.41.0 (2025-04-25)
+0.36.7 (2024-12-27)
 -------------------
-* Uniform cmake min version (`#764 <https://github.com/ros2/geometry2/issues/764>`_)
-* Add `rclcpp::shutdown` (`#762 <https://github.com/ros2/geometry2/issues/762>`_)
-* Fix external docs mappings (`#757 <https://github.com/ros2/geometry2/issues/757>`_)
-* Contributors: Emmanuel, Yuyuan Yuan, mosfet80
-
-0.40.1 (2025-01-15)
--------------------
-
-0.40.0 (2024-12-20)
--------------------
-* Deprecate C Headers (`#720 <https://github.com/ros2/geometry2/issues/720>`_)
+* Jazzy "Backport" of `#720 <https://github.com/ros2/geometry2/issues/720>`_ (`#723 <https://github.com/ros2/geometry2/issues/723>`_)
 * Contributors: Lucas Wendland
 
-0.39.3 (2024-11-25)
+0.36.6 (2024-12-18)
 -------------------
 
-0.39.2 (2024-11-20)
--------------------
-* specified quaternion order to be xyzw (`#718 <https://github.com/ros2/geometry2/issues/718>`_)
-* Contributors: Abhishek Kashyap
-
-0.39.1 (2024-10-15)
--------------------
-* Add configurable TF topics (`#709 <https://github.com/ros2/geometry2//issues/709>`_)
-* Contributors: Ryan
-
-0.39.0 (2024-10-03)
--------------------
-* Adding static transform listener (`#673 <https://github.com/ros2/geometry2/issues/673>`_)
-* Contributors: Tom Moore
-
-0.38.2 (2024-07-19)
--------------------
-* Updated deprecated message filter headers (`#702 <https://github.com/ros2/geometry2/issues/702>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.38.1 (2024-07-09)
+0.36.5 (2024-11-20)
 -------------------
 
-0.38.0 (2024-06-17)
+0.36.4 (2024-05-29)
 -------------------
-* Update qos for deprecation (`#695 <https://github.com/ros2/geometry2/issues/695>`_)
-* Contributors: Lucas Wendland
 
-0.37.1 (2024-05-29)
--------------------
-* Cli tools documentation (`#653 <https://github.com/ros2/geometry2/issues/653>`_)
-* Contributors: Lucas Wendland
-
-0.37.0 (2024-04-26)
+0.36.3 (2024-05-13)
 -------------------
 
 0.36.2 (2024-04-10)
