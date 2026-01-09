@@ -49,7 +49,6 @@
 #include "LinearMath/Transform.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "geometry_msgs/msg/velocity_stamped.hpp"
-#include "rcutils/logging_macros.h"
 #include "tf2/buffer_core_interface.hpp"
 #include "tf2/exceptions.hpp"
 #include "tf2/transform_storage.hpp"
@@ -387,12 +386,16 @@ private:
   std::string allFramesAsStringNoLock() const;
 
   bool setTransformImpl(
-    const tf2::Transform & transform_in, const std::string frame_id,
-    const std::string child_frame_id, const TimePoint stamp,
+    const tf2::Vector3 & origin_in, const tf2::Quaternion & rotation_in,
+    const std::string & frame_id, const std::string & child_frame_id, const TimePoint stamp,
     const std::string & authority, bool is_static);
   void lookupTransformImpl(
     const std::string & target_frame, const std::string & source_frame,
-    const TimePoint & time_in, tf2::Transform & transform, TimePoint & time_out) const;
+    const TimePoint & time_in, tf2::Transform & transform_out, TimePoint & time_out) const;
+  void lookupTransformImpl(
+    const std::string & target_frame, const std::string & source_frame,
+    const TimePoint & time_in, tf2::Vector3 & origin_out, tf2::Quaternion & rotation_out,
+    TimePoint & time_out) const;
 
   void lookupTransformImpl(
     const std::string & target_frame, const TimePoint & target_time,

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2_eigen_kdl)
 
 # Default to C++17
@@ -16,7 +16,6 @@ find_package(Eigen3 QUIET NO_MODULE)
 if(NOT Eigen3_FOUND)
   find_package(Eigen3 REQUIRED)
 endif()
-find_package(orocos_kdl_vendor REQUIRED)
 find_package(orocos_kdl REQUIRED)
 find_package(tf2 REQUIRED)
 
@@ -50,7 +49,6 @@ install(TARGETS ${PROJECT_NAME}
 
 ament_export_dependencies(
   Eigen3
-  orocos_kdl_vendor
   orocos_kdl
   tf2
 )

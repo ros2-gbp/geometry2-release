@@ -2,90 +2,135 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.36.18 (2025-12-18)
---------------------
-* Jazzy disable tagfiles (`#886 <https://github.com/ros2/geometry2/issues/886>`_)
-* static function to crate quaternions directly from rotation added (`#881 <https://github.com/ros2/geometry2/issues/881>`_) (`#883 <https://github.com/ros2/geometry2/issues/883>`_)
-* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_) (`#876 <https://github.com/ros2/geometry2/issues/876>`_)
-* Contributors: R Kent James, mergify[bot]
-
-0.36.17 (2025-11-28)
---------------------
-* Fix various documentation errors in tf2 (backport `#857 <https://github.com/ros2/geometry2/issues/857>`_) (`#864 <https://github.com/ros2/geometry2/issues/864>`_)
-* Fix REP url locations (`#847 <https://github.com/ros2/geometry2/issues/847>`_) (`#849 <https://github.com/ros2/geometry2/issues/849>`_)
-* Contributors: mergify[bot]
-
-0.36.16 (2025-11-07)
---------------------
-
-0.36.15 (2025-10-17)
---------------------
-
-0.36.14 (2025-08-06)
---------------------
-
-0.36.13 (2025-07-23)
---------------------
-
-0.36.12 (2025-06-23)
---------------------
-
-0.36.11 (2025-05-14)
---------------------
-* Overflow Issue in durationFromSec() Function when Handling Extremely Large or Small Values (`#785 <https://github.com/ros2/geometry2/issues/785>`_) (`#786 <https://github.com/ros2/geometry2/issues/786>`_)
-* Contributors: mergify[bot]
-
-0.36.10 (2025-04-24)
---------------------
-* Backport: Do not clobber callback handles when cancelling pending transformable requests (`#782 <https://github.com/ros2/geometry2/issues/782>`_)
-* Contributors: Timo Röhling
-
-0.36.9 (2025-04-02)
+0.45.6 (2026-01-09)
 -------------------
 
-0.36.8 (2025-01-15)
+0.45.5 (2025-12-16)
+-------------------
+* static function to crate quaternions directly from rotation added (`#881 <https://github.com/ros2/geometry2/issues/881>`_)
+* Expose Doxygen output in tf2, showing former Doxygen front page also as README.md (`#871 <https://github.com/ros2/geometry2/issues/871>`_)
+* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_)
+* Modernize conf.py files to only include modified Copyright, eliminati… (`#865 <https://github.com/ros2/geometry2/issues/865>`_)
+* Contributors: Markus Bader, R Kent James
+
+0.45.4 (2025-11-28)
+-------------------
+* Fix various documentation errors in tf2 (`#857 <https://github.com/ros2/geometry2/issues/857>`_)
+* Contributors: R Kent James
+
+0.45.3 (2025-11-24)
+-------------------
+* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (`#856 <https://github.com/ros2/geometry2/issues/856>`_)
+* Fix REP url locations (`#847 <https://github.com/ros2/geometry2/issues/847>`_)
+* Contributors: R Kent James, Tim Clephas
+
+0.45.2 (2025-11-07)
+-------------------
+* Adding explicit handling for normalization of zero-quaternions (`#839 <https://github.com/ros2/geometry2/issues/839>`_)
+* Cleanup TF2 dependencies (`#843 <https://github.com/ros2/geometry2/issues/843>`_)
+* Contributors: Chris Lalancette, Simon Jusner
+
+0.45.1 (2025-10-17)
 -------------------
 
-0.36.7 (2024-12-27)
+0.45.0 (2025-08-27)
 -------------------
-* Jazzy "Backport" of `#720 <https://github.com/ros2/geometry2/issues/720>`_ (`#723 <https://github.com/ros2/geometry2/issues/723>`_)
+* Added tf2 documentation to docs.ros.org (`#671 <https://github.com/ros2/geometry2/issues/671>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.44.0 (2025-07-29)
+-------------------
+* Add RPY quaternion constructor (`#806 <https://github.com/ros2/geometry2/issues/806>`_)
+* Contributors: Alireza Moayyedi
+
+0.43.1 (2025-07-18)
+-------------------
+
+0.43.0 (2025-07-01)
+-------------------
+
+0.42.2 (2025-06-19)
+-------------------
+* Default initialize TransformStorage's frame_id\_ and child_frame_id\_ with UINT32_MAX (`#783 <https://github.com/ros2/geometry2/issues/783>`_)
+* Contributors: Andreas
+
+0.42.1 (2025-05-14)
+-------------------
+* Removed deprecated headers tf2 (`#789 <https://github.com/ros2/geometry2/issues/789>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.42.0 (2025-04-25)
+-------------------
+
+0.41.0 (2025-04-25)
+-------------------
+* Add isnan support (`#780 <https://github.com/ros2/geometry2/issues/780>`_)
+* Overflow Issue in durationFromSec() Function when Handling Extremely Large or Small Values (`#785 <https://github.com/ros2/geometry2/issues/785>`_)
+* Do not clobber callback handles when cancelling pending transformable requests (`#779 <https://github.com/ros2/geometry2/issues/779>`_)
+* Uniform cmake min version (`#764 <https://github.com/ros2/geometry2/issues/764>`_)
+* Contributors: Michael Carlstrom, Timo Röhling, cramke, mosfet80
+
+0.40.1 (2025-01-15)
+-------------------
+* Remove many extra conversions from Matrix3x3 to Quaternion (`#741 <https://github.com/ros2/geometry2/issues/741>`_)
+  Co-authored-by: jmachowinski <jmachowinski@users.noreply.github.com>
+  Co-authored-by: Katherine Scott <katherineAScott@gmail.com>
+* Cleanup deprecation warnings. (`#744 <https://github.com/ros2/geometry2/issues/744>`_)
+  The deprecation warnings were not printing out properly on
+  GCC, at least; it would warn that #warning was not standard,
+  and it would also not print out the actual warning.  Also
+  "deprecated" was spelled wrong.  Fix all of these issues here.
+* Contributors: Chris Lalancette, kyle-basis
+
+0.40.0 (2024-12-20)
+-------------------
+* Deprecate C Headers (`#720 <https://github.com/ros2/geometry2/issues/720>`_)
+* Removed unused var in tf2 (`#735 <https://github.com/ros2/geometry2/issues/735>`_)
+* Contributors: Alejandro Hernández Cordero, Lucas Wendland
+
+0.39.3 (2024-11-25)
+-------------------
+
+0.39.2 (2024-11-20)
+-------------------
+
+0.39.1 (2024-10-15)
+-------------------
+* Error String Filled (`#715 <https://github.com/ros2/geometry2//issues/715>`_)
 * Contributors: Lucas Wendland
 
-0.36.6 (2024-12-18)
--------------------
-* Removed unused var in tf2 (`#735 <https://github.com/ros2/geometry2/issues/735>`_) (`#736 <https://github.com/ros2/geometry2/issues/736>`_)
-  (cherry picked from commit e791b58f8826a31d8ea11f45b7bf3026f26eab8a)
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Contributors: mergify[bot]
-
-0.36.5 (2024-11-20)
+0.39.0 (2024-10-03)
 -------------------
 
-0.36.4 (2024-05-29)
+0.38.2 (2024-07-19)
 -------------------
-* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_) (`#683 <https://github.com/ros2/geometry2/issues/683>`_)
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_) (`#686 <https://github.com/ros2/geometry2/issues/686>`_)
+
+0.38.1 (2024-07-09)
+-------------------
+* Removed deprecated enuns (`#699 <https://github.com/ros2/geometry2//issues/699>`_)
+* Contributors: Alejandro Hernández Cordero
+
+0.38.0 (2024-06-17)
+-------------------
+
+0.37.1 (2024-05-29)
+-------------------
+* [TimeCache] Improve performance for insertData() and pruneList() (`#680 <https://github.com/ros2/geometry2/issues/680>`_)
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  (cherry picked from commit d700d78611ca2f2a56128ee71dd157961a1f4fb4)
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_) (`#690 <https://github.com/ros2/geometry2/issues/690>`_)
+* Removed warning (`#682 <https://github.com/ros2/geometry2/issues/682>`_)
+* Add cache_benchmark (`#679 <https://github.com/ros2/geometry2/issues/679>`_)
   * Add cache_benchmark
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  (cherry picked from commit 381d381739d008f83c2ebdf39034d46a19ea364e)
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_) (`#687 <https://github.com/ros2/geometry2/issues/687>`_)
+* [cache_unittest] Add direct implementation testing on ordering, pruning (`#678 <https://github.com/ros2/geometry2/issues/678>`_)
   * [cache_unittest] Add direct implementation testing on ordering, pruning
   * do getAllItems() approach
   * Return a reference instead.
   * mark getAllItems as internal
   * Fix warning on Windows.
   Co-authored-by: Chris Lalancette <clalancette@gmail.com>
-  (cherry picked from commit a17a2bf8297052d2c6a404f9799bfe3b81040482)
-  Co-authored-by: Eric Cousineau <eric.cousineau@tri.global>
-* Contributors: mergify[bot]
+* Contributors: Alejandro Hernández Cordero, Eric Cousineau
 
-0.36.3 (2024-05-13)
+0.37.0 (2024-04-26)
 -------------------
 
 0.36.2 (2024-04-10)
