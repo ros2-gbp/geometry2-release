@@ -30,14 +30,6 @@
 #ifndef TF2_ROS__STATIC_TRANSFORM_BROADCASTER_VISIBILITY_CONTROL_H_
 #define TF2_ROS__STATIC_TRANSFORM_BROADCASTER_VISIBILITY_CONTROL_H_
 
-#define STATIC_TF_BROADCASTER_VISIBILITY_CONTROL_HEADER_DEPRECATION This header is obsolete, \
-  please include "tf2_ros/static_transform_broadcaster_visibility_control.hpp" instead
-#ifdef _MSC_VER
-  #pragma message(STATIC_TF_BROADCASTER_VISIBILITY_CONTROL_HEADER_DEPRECATION)
-#else
-  #warning STATIC_TF_BROADCASTER_VISIBILITY_CONTROL_HEADER_DEPRECATION
-#endif
-
 #include <tf2_ros/static_transform_broadcaster_visibility_control.hpp>
 
 #endif  // TF2_ROS__STATIC_TRANSFORM_BROADCASTER_VISIBILITY_CONTROL_H_
