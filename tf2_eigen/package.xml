@@ -1,16 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>tf2_eigen</name>
-  <version>0.36.19</version>
+  <version>0.25.19</version>
   <description>tf2_eigen</description>
-
-  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
   <maintainer email="clalancette@openrobotics.org">Chris Lalancette</maintainer>
-
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
   <license>BSD</license>
-
-  <author>Koji Terada</author>
   <author email="tfoote@osrfoundation.org">Tully Foote</author>
+  <author>Koji Terada</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
@@ -28,6 +25,5 @@
 
   <export>
     <build_type>ament_cmake</build_type>
-    <rosdoc2>rosdoc2.yaml</rosdoc2>
   </export>
 </package>

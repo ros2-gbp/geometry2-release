@@ -1,16 +1,13 @@
 <package format="2">
   <name>tf2_kdl</name>
-  <version>0.36.19</version>
+  <version>0.25.19</version>
   <description>
     KDL binding for tf2
   </description>
-
-  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
   <maintainer email="clalancette@openrobotics.org">Chris Lalancette</maintainer>
-
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
   <license>BSD</license>
   <url type="website">http://ros.org/wiki/tf2</url>
-
   <author email="tfoote@osrfoundation.org">Tully Foote</author>
   <author>Wim Meeussen</author>
 
@@ -30,7 +27,6 @@
 
   <export>
     <build_type>ament_cmake</build_type>
-    <rosdoc2>rosdoc2.yaml</rosdoc2>
   </export>
 
 </package>
