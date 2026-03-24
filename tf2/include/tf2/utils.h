@@ -15,20 +15,6 @@
 #ifndef TF2__UTILS_H_
 #define TF2__UTILS_H_
 
-#ifdef __GNUC__
-#define TF2_UTILS_H_PRAGMA(X) _Pragma(#X)
-#define TF2_UTILS_H_DEPRECATED(MSG) TF2_UTILS_H_PRAGMA(GCC warning MSG)
-#elif defined(_MSC_VER)
-#define TF2_UTILS_H_STRINGIZE_(MSG) #MSG
-#define TF2_UTILS_H_STRINGIZE(MSG) TF2_UTILS_H_STRINGIZE_(MSG)
-#define TF2_UTILS_H_DEPRECATED(MSG) \
-  __pragma(message(__FILE__ "(" TF2_UTILS_H_STRINGIZE(__LINE__) ") : Warning: " MSG))
-#else
-#define TF2_UTILS_H_DEPRECATED(MSG)
-#endif
-
-TF2_UTILS_H_DEPRECATED("This header is obsolete, please include 'tf2/utils.hpp' instead")  // NOLINT
-
 #include <tf2/utils.hpp>
 
 #endif  // TF2__UTILS_H_

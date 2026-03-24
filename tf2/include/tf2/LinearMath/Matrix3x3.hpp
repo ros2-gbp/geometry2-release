@@ -13,8 +13,8 @@ subject to the following restrictions:
 */
 
 
-#ifndef	TF2__LINEARMATH__MATRIX3x3_HPP
-#define TF2__LINEARMATH__MATRIX3x3_HPP
+#ifndef	TF2__LINEARMATH__MATRIX3X3_HPP_
+#define TF2__LINEARMATH__MATRIX3X3_HPP_
 
 #include "Vector3.hpp"
 #include "Quaternion.hpp"
@@ -701,4 +701,4 @@ TF2SIMD_FORCE_INLINE	void	Matrix3x3::deSerializeDouble(const struct	Matrix3x3Dou
 }
 
 }
-#endif  // TF2__LINEARMATH__MATRIX3x3_HPP
+#endif  // TF2__LINEARMATH__MATRIX3X3_HPP_

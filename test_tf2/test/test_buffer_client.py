@@ -59,9 +59,6 @@ class TestBufferClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.executor.remove_node(cls.node)
-        cls.node.destroy_node()
-        cls.executor.shutdown()
         rclpy.shutdown(context=cls.context)
 
     def setUp(self):
