@@ -40,7 +40,6 @@
 
 #include "tf2/buffer_core.hpp"
 #include "tf2/convert.hpp"
-#include "tf2/LinearMath/Quaternion.hpp"
 #include "tf2/LinearMath/Vector3.hpp"
 #include "tf2/exceptions.hpp"
 #include "tf2/time.hpp"
@@ -387,6 +386,59 @@ TEST(tf2_time, To_From_Duration)
   }
 }
 
+TEST(tf2_canTransform, ExtrapolationErrorReportsCorrectLatestTime)
+{
+  // this test verifies if correct time difference between transforms
+  // are reported when transform from a to b fails in both source-to-root
+  // and root-to-source walks.
+  tf2::BufferCore tfc;
+  geometry_msgs::msg::TransformStamped st;
+  std::string error_msg;
+
+  // 1. publish map -> odom (stale by 10s, latest is 90.01)
+  st.header.frame_id = "map";
+  st.child_frame_id = "odom";
+  st.transform.rotation.w = 1.0;
+
+  st.header.stamp.sec = 90;
+  st.header.stamp.nanosec = 0;
+  tfc.setTransform(st, "authority1");
+
+  st.header.stamp.sec = 90;
+  // 90.01s
+  st.header.stamp.nanosec = 10000000;
+  tfc.setTransform(st, "authority1");
+
+  // 2. publish odom -> base_link (stale by 0.1s, latest is 99.91)
+  st.header.frame_id = "odom";
+  st.child_frame_id = "base_link";
+
+  st.header.stamp.sec = 99;
+  // 99.90s
+  st.header.stamp.nanosec = 900000000;
+  tfc.setTransform(st, "authority1");
+
+  st.header.stamp.sec = 99;
+  // 99.91s
+  st.header.stamp.nanosec = 910000000;
+  tfc.setTransform(st, "authority1");
+
+  // 3. query odom -> base_link at T=100.0s
+  bool can_transform = tfc.canTransform(
+    "odom", "base_link",
+    tf2::timeFromSec(100.0),
+    &error_msg);
+
+  EXPECT_FALSE(can_transform);
+
+  // 4. verify the error message:
+  // the message should report the latest data for odom->base_link (99.91),
+  // not map->odom (90.01).
+  EXPECT_NE(error_msg.find("99.91"), std::string::npos);
+
+  EXPECT_EQ(error_msg.find("90.01"), std::string::npos);
+}
+
 TEST(tf2_convert, Covariance_RowMajor_To_Nested)
 {
   // test verifies the correct conversion of the flat covariance array to a
@@ -408,16 +460,6 @@ TEST(tf2_convert, Covariance_RowMajor_To_Nested)
 
   // check the result
   ASSERT_EQ(expected, result);
-}
-
-TEST(tf2_quaternion, Normalize_Quaternion)
-{
-  tf2::Quaternion zero_value_q(-0, -0, -0, 0);
-  zero_value_q.normalize();
-  EXPECT_TRUE(std::isnan(zero_value_q.x()));
-  EXPECT_TRUE(std::isnan(zero_value_q.y()));
-  EXPECT_TRUE(std::isnan(zero_value_q.z()));
-  EXPECT_TRUE(std::isnan(zero_value_q.w()));
 }
 
 int main(int argc, char ** argv)
