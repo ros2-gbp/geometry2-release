@@ -16,7 +16,7 @@ endif()
 # /usr/bin/python3.10, /usr/bin/python3.11, and /usr/bin/python3, it will find
 # /usr/bin/python3.11, even if /usr/bin/python3 points to /usr/bin/python3.10.
 # The behavior we want is to prefer the "system" installed version unless the
-# user specifically tells us othewise through the Python3_EXECUTABLE hint.
+# user specifically tells us otherwise through the Python3_EXECUTABLE hint.
 # Setting CMP0094 to NEW means that the search will stop after the first
 # python version is found.  Setting Python3_FIND_UNVERSIONED_NAMES means that
 # the search will prefer /usr/bin/python3 over /usr/bin/python3.11.  And that
@@ -42,8 +42,8 @@ target_include_directories(${PROJECT_NAME} INTERFACE
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
 )
 target_link_libraries(${PROJECT_NAME} INTERFACE
-  ${geometry_msgs_TARGETS}
-  ${sensor_msgs_TARGETS}
+  geometry_msgs::geometry_msgs
+  sensor_msgs::sensor_msgs
   tf2::tf2
   tf2_ros::tf2_ros
 )
@@ -70,8 +70,8 @@ if(BUILD_TESTING)
   if(TARGET test_tf2_sensor_msgs_cpp)
     target_include_directories(test_tf2_sensor_msgs_cpp PUBLIC include)
     target_link_libraries(test_tf2_sensor_msgs_cpp
-      ${geometry_msgs_TARGETS}
-      ${sensor_msgs_TARGETS}
+      geometry_msgs::geometry_msgs
+      sensor_msgs::sensor_msgs
       rclcpp::rclcpp
       tf2::tf2
       tf2_ros::tf2_ros
@@ -87,8 +87,8 @@ if(BUILD_TESTING)
   ament_add_gtest(test_imu_transforms test/test_imu_transforms.cpp)
   target_include_directories(test_imu_transforms PUBLIC include)
   target_link_libraries(test_imu_transforms
-    ${geometry_msgs_TARGETS}
-    ${sensor_msgs_TARGETS}
+    geometry_msgs::geometry_msgs
+    sensor_msgs::sensor_msgs
     Eigen3::Eigen
     tf2::tf2
     tf2_geometry_msgs::tf2_geometry_msgs
