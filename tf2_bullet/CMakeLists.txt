@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2_bullet)
 
-# Default to C14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -25,7 +26,7 @@ target_include_directories(tf2_bullet INTERFACE
 target_link_libraries(tf2_bullet INTERFACE
   tf2_bullet::Bullet
   tf2::tf2
-  ${geometry_msgs_TARGETS}
+  geometry_msgs::geometry_msgs
   tf2_ros::tf2_ros)
 
 install(TARGETS tf2_bullet EXPORT export_tf2_bullet)

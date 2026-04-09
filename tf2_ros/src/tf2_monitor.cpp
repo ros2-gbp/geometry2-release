@@ -126,7 +126,7 @@ public:
     using_specific_chain_(using_specific_chain),
     node_(node),
     clock_(node->get_clock()),
-    buffer_(clock_, tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME), node)
+    buffer_(clock_, tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME), *node)
   {
     tf_ = std::make_shared<tf2_ros::TransformListener>(buffer_);
 
@@ -139,7 +139,7 @@ public:
           node_->get_logger(), *clock_, 1000,
           "Waiting for transform %s ->  %s: %s", framea_.c_str(), frameb_.c_str(),
           warning_msg.c_str());
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        clock_->sleep_for(std::chrono::milliseconds(500));
       }
 
       try {
@@ -202,7 +202,7 @@ public:
           max_diff = diff;
         }
       }
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      clock_->sleep_for(std::chrono::milliseconds(500));
       if (counter > 20) {
         counter = 0;
 
@@ -282,7 +282,7 @@ int main(int argc, char ** argv)
   }
 
   // TODO(tfoote) restore simtime logic
-  // //Make sure we don't start before recieving time when in simtime
+  // //Make sure we don't start before receiving time when in simtime
   // int iterations = 0;
   // while (ros::Time::now() == ros::Time())
   // {
@@ -297,7 +297,7 @@ int main(int argc, char ** argv)
   // This lambda is required because `std::thread` cannot infer the correct
   // rclcpp::spin, since there are more than one versions of it (overloaded).
   // see: http://stackoverflow.com/a/27389714/671658
-  // I (wjwwood) chose to use the lamda rather than the static cast solution.
+  // I (wjwwood) chose to use the lambda rather than the static cast solution.
   auto run_func = [](rclcpp::Node::SharedPtr node) {
       return rclcpp::spin(node);
     };

@@ -40,6 +40,7 @@
 
 #include "tf2/buffer_core.hpp"
 #include "tf2/convert.hpp"
+#include "tf2/LinearMath/Quaternion.hpp"
 #include "tf2/LinearMath/Vector3.hpp"
 #include "tf2/exceptions.hpp"
 #include "tf2/time.hpp"
@@ -224,6 +225,54 @@ TEST(tf2_lookupTransform, LookupException_One_Exists)
           1))), tf2::LookupException);
 }
 
+TEST(tf2_lookupTransform, TransformException_Backward_Forward)
+{
+  tf2::BufferCore tfc;
+  geometry_msgs::msg::TransformStamped st;
+  st.header.frame_id = "foo";
+  st.header.stamp = builtin_interfaces::msg::Time();
+  st.header.stamp.sec = 2;
+  st.header.stamp.nanosec = 0;
+  st.child_frame_id = "bar";
+  st.transform.rotation.w = 1;
+  EXPECT_TRUE(tfc.setTransform(st, "authority1"));
+  EXPECT_NO_THROW(
+    tfc.lookupTransform(
+      "foo", "bar", tf2::TimePoint(
+        std::chrono::seconds(
+          2))));
+  EXPECT_THROW(
+    tfc.lookupTransform(
+      "foo", "bar", tf2::TimePoint(
+        std::chrono::seconds(
+          4))), tf2::TransformException);
+  EXPECT_THROW(
+    tfc.lookupTransform(
+      "foo", "bar", tf2::TimePoint(
+        std::chrono::seconds(
+          4))), tf2::ExtrapolationException);
+  EXPECT_THROW(
+    tfc.lookupTransform(
+      "foo", "bar", tf2::TimePoint(
+        std::chrono::seconds(
+          4))), tf2::NoDataForExtrapolationException);
+
+  st.header.stamp.sec = 3;
+  EXPECT_TRUE(tfc.setTransform(st, "authority1"));
+
+  EXPECT_THROW(
+    tfc.lookupTransform(
+      "foo", "bar", tf2::TimePoint(
+        std::chrono::seconds(
+          1))), tf2::BackwardExtrapolationException);
+
+  EXPECT_THROW(
+    tfc.lookupTransform(
+      "foo", "bar", tf2::TimePoint(
+        std::chrono::seconds(
+          4))), tf2::ForwardExtrapolationException);
+}
+
 TEST(tf2_canTransform, One_Exists)
 {
   tf2::BufferCore tfc;
@@ -238,7 +287,7 @@ TEST(tf2_canTransform, One_Exists)
   EXPECT_FALSE(tfc.canTransform("foo", "bar", tf2::TimePoint(std::chrono::seconds(1))));
 }
 
-TEST(tf2_clear, LookUp_Static_Transfrom_Succeed)
+TEST(tf2_clear, LookUp_Static_Transform_Succeed)
 {
   tf2::BufferCore tfc;
   geometry_msgs::msg::TransformStamped st;
@@ -255,7 +304,7 @@ TEST(tf2_clear, LookUp_Static_Transfrom_Succeed)
   );
 }
 
-TEST(tf2_clear, LookUp_Static_Transfrom_Fail)
+TEST(tf2_clear, LookUp_Static_Transform_Fail)
 {
   tf2::BufferCore tfc;
   geometry_msgs::msg::TransformStamped st;
@@ -412,6 +461,16 @@ TEST(tf2_convert, Covariance_RowMajor_To_Nested)
 
   // check the result
   ASSERT_EQ(expected, result);
+}
+
+TEST(tf2_quaternion, Normalize_Quaternion)
+{
+  tf2::Quaternion zero_value_q(-0, -0, -0, 0);
+  zero_value_q.normalize();
+  EXPECT_TRUE(std::isnan(zero_value_q.x()));
+  EXPECT_TRUE(std::isnan(zero_value_q.y()));
+  EXPECT_TRUE(std::isnan(zero_value_q.z()));
+  EXPECT_TRUE(std::isnan(zero_value_q.w()));
 }
 
 int main(int argc, char ** argv)

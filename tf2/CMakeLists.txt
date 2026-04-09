@@ -1,18 +1,17 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2)
 
-# Default to C++14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
 endif()
 
-find_package(ament_cmake)
-find_package(console_bridge_vendor REQUIRED) # Provides console_bridge 0.4.0 on platforms without it.
-find_package(console_bridge REQUIRED)
+find_package(ament_cmake_ros REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(rcutils REQUIRED)
@@ -21,15 +20,14 @@ find_package(rosidl_runtime_cpp REQUIRED)
 # export user definitions
 
 #CPP Libraries
-add_library(tf2 SHARED src/cache.cpp src/buffer_core.cpp src/static_cache.cpp src/time.cpp)
+add_library(tf2 src/cache.cpp src/buffer_core.cpp src/static_cache.cpp src/time.cpp)
 target_include_directories(tf2 PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 target_link_libraries(tf2 PUBLIC
-  ${geometry_msgs_TARGETS})
+  geometry_msgs::geometry_msgs)
 target_link_libraries(tf2 PRIVATE
-  ${builtin_interfaces_TARGETS}
-  console_bridge::console_bridge
+  builtin_interfaces::builtin_interfaces
   rcutils::rcutils)
 
 # Causes the visibility macros to use dllexport rather than dllimport,
@@ -106,10 +104,10 @@ if(BUILD_TESTING)
   ament_add_gtest(test_simple_tf2_core test/simple_tf2_core.cpp)
   if(TARGET test_simple_tf2_core)
     target_link_libraries(test_simple_tf2_core
-      ${builtin_interfaces_TARGETS}
+      builtin_interfaces::builtin_interfaces
       tf2
       # Used, but not linked to test tf2's exports:
-      #   ${geometry_msgs_TARGETS}
+      #   geometry_msgs::geometry_msgs
     )
   endif()
 
@@ -124,7 +122,7 @@ if(BUILD_TESTING)
   endif()
 endif()
 
-ament_export_dependencies(console_bridge geometry_msgs rcutils rosidl_runtime_cpp)
+ament_export_dependencies(geometry_msgs rosidl_runtime_cpp)
 
 # Export old-style CMake variables
 ament_export_include_directories("include/${PROJECT_NAME}")

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 import rclpy.time
 from tf2_ros import LookupException
@@ -22,7 +23,7 @@ from tf2_ros.transform_listener import TransformListener
 
 class AsyncWaitsForTransform(Node):
     """
-    Wait for a transform asyncronously using coroutines.
+    Wait for a transform asynchronously using coroutines.
 
     This class is an example of waiting for transforms inside a callback
     without blocking the executor.
@@ -62,10 +63,9 @@ class AsyncWaitsForTransform(Node):
 
 
 def main():
-    rclpy.init()
-    node = AsyncWaitsForTransform()
     try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
+        with rclpy.init():
+            node = AsyncWaitsForTransform()
+            rclpy.spin(node)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    rclpy.shutdown()

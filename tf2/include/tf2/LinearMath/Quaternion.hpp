@@ -17,6 +17,7 @@ subject to the following restrictions:
 #ifndef TF2__LINEARMATH__QUATERNION_HPP_
 #define TF2__LINEARMATH__QUATERNION_HPP_
 
+#include <cmath>
 
 #include "Vector3.hpp"
 #include "QuadWord.hpp"
@@ -46,6 +47,15 @@ public:
 	Quaternion(const Vector3& axis, const tf2Scalar& angle) 
 	{ 
 		setRotation(axis, angle); 
+	}
+  /**@brief Constructor from fixed axis RPY
+   * @param roll Angle around X
+   * @param pitch Angle around Y
+   * @param yaw Angle around Z */
+        TF2_PUBLIC
+	Quaternion(const tf2Scalar& roll, const tf2Scalar& pitch, const tf2Scalar& yaw) 
+	{
+		setRPY(roll, pitch, yaw);
 	}
   /**@brief Set the rotation using axis angle notation 
    * @param axis The axis around which to rotate
@@ -129,7 +139,7 @@ public:
 
   /**@brief Multiply this quaternion by q on the right
    * @param q The other quaternion 
-   * Equivilant to this = this * q */
+   * Equivalent to this = this * q */
         TF2_PUBLIC
 	Quaternion& operator*=(const Quaternion& q)
 	{
@@ -159,6 +169,10 @@ public:
 	tf2Scalar length() const
 	{
 		return tf2Sqrt(length2());
+	}
+
+	TF2SIMD_FORCE_INLINE bool isnan() const {
+		return std::isnan(m_floats[0]) || std::isnan(m_floats[1]) || std::isnan(m_floats[2]) || std::isnan(m_floats[3]);
 	}
 
   /**@brief Normalize the quaternion 
@@ -193,6 +207,14 @@ public:
 	Quaternion& operator/=(const tf2Scalar& s) 
 	{
 		tf2Assert(s != tf2Scalar(0.0));
+		if(s == tf2Scalar(0.0))
+		{
+			this->setValue(tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
+						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
+						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()),
+						   tf2Scalar(std::numeric_limits<tf2Scalar>::quiet_NaN()));
+			return *this;
+		}
 		return *this *= tf2Scalar(1.0) / s;
 	}
 
@@ -465,7 +487,7 @@ inverse(const Quaternion& q)
 	return q.inverse();
 }
 
-/**@brief Return the result of spherical linear interpolation betwen two quaternions 
+/**@brief Return the result of spherical linear interpolation between two quaternions 
  * @param q1 The first quaternion
  * @param q2 The second quaternion 
  * @param t The ration between q1 and q2.  t = 0 return q1, t=1 returns q2 
