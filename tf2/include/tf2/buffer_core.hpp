@@ -10,7 +10,7 @@
 //      notice, this list of conditions and the following disclaimer in the
 //      documentation and/or other materials provided with the distribution.
 //
-//    * Neither the name of the {copyright_holder} nor the names of its
+//    * Neither the name of the Willow Garage nor the names of its
 //      contributors may be used to endorse or promote products derived from
 //      this software without specific prior written permission.
 //
@@ -46,7 +46,7 @@
 #include <utility>
 #include <vector>
 
-#include "LinearMath/Transform.hpp"
+#include "tf2/LinearMath/Transform.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "geometry_msgs/msg/velocity_stamped.hpp"
 #include "tf2/buffer_core_interface.hpp"
@@ -116,7 +116,7 @@ public:
    * \param transform The transform to store
    * \param authority The source of the information for this transform
    * \param is_static Record this transform as a static transform.  It will be good across all time.  (This cannot be changed after the first call.)
-   * \return True unless an error occured
+   * \return True unless an error occurred
    */
   TF2_PUBLIC
   bool setTransform(
@@ -159,23 +159,34 @@ public:
     const std::string & source_frame, const TimePoint & source_time,
     const std::string & fixed_frame) const override;
 
+  /** \brief Lookup the velocity of the tracking_frame with respect to the observation frame.
+   * The reference frame and reference point default to the observation frame origin.
+   * \param tracking_frame The frame whose velocity is computed
+   * \param observation_frame The frame relative to which velocity is measured
+   * \param time The time at which to get the velocity
+   * \param averaging_interval The period over which to average the velocity
+   * \return The velocity output
+   *
+   * Possible exceptions tf2::TransformException (if averaging_interval is zero or too small),
+   * tf2::LookupException, tf2::ConnectivityException, tf2::ExtrapolationException
+   */
   TF2_PUBLIC
   geometry_msgs::msg::VelocityStamped lookupVelocity(
     const std::string & tracking_frame, const std::string & observation_frame,
     const TimePoint & time, const tf2::Duration & averaging_interval) const;
 
   /** \brief Lookup the velocity of the tracking_frame with respect to the observation frame in the reference_frame using the reference point.
-   * \param tracking_frame The frame in which to track
-   * \param observation_frame The frame to track
+   * \param tracking_frame The frame whose velocity is computed
+   * \param observation_frame The frame relative to which velocity is measured
    * \param reference_frame The frame in which to express the velocity
    * \param reference_point The point in the reference_frame at which to compute the velocity
    * \param reference_point_frame The frame in which the reference_point is expressed
    * \param time The time at which to get the velocity
-   * \param duration The period over which to average
+   * \param duration The period over which to average the velocity
    * \return The velocity output
    *
-   * Possible exceptions TransformReference::LookupException, TransformReference::ConnectivityException,
-   * TransformReference::MaxDepthException
+   * Possible exceptions tf2::TransformException (if averaging_interval is zero or too small),
+   * tf2::LookupException, tf2::ConnectivityException, tf2::ExtrapolationException
    */
   TF2_PUBLIC
   geometry_msgs::msg::VelocityStamped lookupVelocity(
@@ -259,7 +270,7 @@ public:
   bool isUsingDedicatedThread() const {return using_dedicated_thread_;}
 
 
-  /* Backwards compatability section for tf::Transformer you should not use these
+  /* Backwards compatibility section for tf::Transformer you should not use these
    */
 
   /**@brief Check if a frame exists in the tree
@@ -312,7 +323,7 @@ public:
   TF2_PUBLIC
   tf2::Duration getCacheLength() {return cache_time_;}
 
-  /** \brief Backwards compatabilityA way to see what frames have been cached
+  /** \brief Backwards compatibilityA way to see what frames have been cached
    * Useful for debugging
    */
   TF2_PUBLIC
@@ -320,7 +331,7 @@ public:
   TF2_PUBLIC
   std::string _allFramesAsDot() const;
 
-  /** \brief Backwards compatabilityA way to see what frames are in a chain
+  /** \brief Backwards compatibilityA way to see what frames are in a chain
    * Useful for debugging
    */
   TF2_PUBLIC
