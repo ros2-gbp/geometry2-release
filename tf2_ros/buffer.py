@@ -157,7 +157,7 @@ class Buffer(tf2.BufferCore, BufferInterface):
         time: Time
     ) -> TransformStamped:
         """
-        Get the transform from the source frame to the target frame asyncronously.
+        Get the transform from the source frame to the target frame asynchronously.
 
         :param target_frame: Name of the frame to transform into.
         :param source_frame: Name of the input frame.
@@ -201,7 +201,7 @@ class Buffer(tf2.BufferCore, BufferInterface):
         fixed_frame: str
     ) -> TransformStamped:
         """
-        Get transform from source frame to target frame using the advanced API asyncronously.
+        Get transform from source frame to target frame using the advanced API asynchronously.
 
         :param target_frame: Name of the frame to transform into.
         :param target_time: The time to transform to (0 will get the latest).
@@ -230,7 +230,7 @@ class Buffer(tf2.BufferCore, BufferInterface):
         :param source_frame: Name of the input frame.
         :param time: The time at which to get the transform (0 will get the latest).
         :param timeout: Time to wait for the target frame to become available.
-        :param return_debug_type: If true, return a tuple representing debug information.
+        :param return_debug_tuple: If true, return a tuple representing debug information.
         :return: The information of the transform being waited on.
         """
         clock = rclpy.clock.Clock()
@@ -272,7 +272,7 @@ class Buffer(tf2.BufferCore, BufferInterface):
         :param source_time: The time at which source_frame will be evaluated (0 gets the latest).
         :param fixed_frame: Name of the frame to consider constant in time.
         :param timeout: Time to wait for the target frame to become available.
-        :param return_debug_type: If true, return a tuple representing debug information.
+        :param return_debug_tuple: If true, return a tuple representing debug information.
         :return: The information of the transform being waited on.
         """
         clock = rclpy.clock.Clock()
