@@ -1,1 +1,1 @@
-{"base": "41f8ae019f0b", "parent": "debian/rolling/tf2_msgs", "previous": "782f7065ddb6", "trim": "", "trimbase": ""}
+{"base": "edafb30d3", "parent": "debian/lyrical/tf2_msgs", "previous": "fab948c44", "trim": "", "trimbase": ""}
