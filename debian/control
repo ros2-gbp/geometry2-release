@@ -1,0 +1,12 @@
+Source: ros-lyrical-tf2-tools
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest <!nocheck>, ros-lyrical-ament-copyright <!nocheck>, ros-lyrical-ament-flake8 <!nocheck>, ros-lyrical-ament-pep257 <!nocheck>, ros-lyrical-ament-xmllint <!nocheck>, ros-lyrical-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: http://www.ros.org/wiki/tf2_tools
+Standards-Version: 3.9.2
+
+Package: ros-lyrical-tf2-tools
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, graphviz, python3-yaml, ros-lyrical-rclpy, ros-lyrical-tf2-msgs, ros-lyrical-tf2-py, ros-lyrical-tf2-ros-py, ros-lyrical-ros-workspace
+Description: tf2_tools
