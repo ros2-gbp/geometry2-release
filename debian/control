@@ -1,0 +1,12 @@
+Source: ros-lyrical-tf2-py
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), python3-dev, ros-lyrical-ament-cmake, ros-lyrical-ament-cmake-pytest <!nocheck>, ros-lyrical-ament-cmake-python, ros-lyrical-ament-lint-auto <!nocheck>, ros-lyrical-ament-lint-common <!nocheck>, ros-lyrical-builtin-interfaces, ros-lyrical-geometry-msgs, ros-lyrical-tf2, ros-lyrical-ros-workspace
+Homepage: http://index.ros.org/p/tf2_py
+Standards-Version: 3.9.2
+
+Package: ros-lyrical-tf2-py
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-lyrical-builtin-interfaces, ros-lyrical-geometry-msgs, ros-lyrical-rclpy, ros-lyrical-rpyutils, ros-lyrical-tf2, ros-lyrical-ros-workspace
+Description: Python bindings for the tf2 library
