@@ -1,0 +1,12 @@
+Source: ros-lyrical-geometry2
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-lyrical-ament-cmake, ros-lyrical-ros-workspace
+Homepage: http://www.ros.org/wiki/geometry2
+Standards-Version: 3.9.2
+
+Package: ros-lyrical-geometry2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-lyrical-tf2, ros-lyrical-tf2-bullet, ros-lyrical-tf2-eigen, ros-lyrical-tf2-eigen-kdl, ros-lyrical-tf2-geometry-msgs, ros-lyrical-tf2-kdl, ros-lyrical-tf2-msgs, ros-lyrical-tf2-py, ros-lyrical-tf2-ros, ros-lyrical-tf2-sensor-msgs, ros-lyrical-tf2-tools, ros-lyrical-ros-workspace
+Description: A metapackage to bring in the default packages second generation Transform Library in ros, tf2.
