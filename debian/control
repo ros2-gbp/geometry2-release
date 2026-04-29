@@ -1,0 +1,12 @@
+Source: ros-lyrical-tf2-msgs
+Section: misc
+Priority: optional
+Maintainer: Alejandro Hernandez Cordero <alejandro@openrobotics.org>
+Build-Depends: debhelper (>= 9.0.0), ros-lyrical-ament-cmake, ros-lyrical-ament-lint-common <!nocheck>, ros-lyrical-builtin-interfaces, ros-lyrical-geometry-msgs, ros-lyrical-rosidl-default-generators, ros-lyrical-ros-workspace, ros-lyrical-rosidl-typesupport-fastrtps-c, ros-lyrical-rosidl-typesupport-fastrtps-cpp
+Homepage: http://www.ros.org/wiki/tf2_msgs
+Standards-Version: 3.9.2
+
+Package: ros-lyrical-tf2-msgs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-lyrical-builtin-interfaces, ros-lyrical-geometry-msgs, ros-lyrical-rosidl-default-runtime, ros-lyrical-ros-workspace
+Description: tf2_msgs
