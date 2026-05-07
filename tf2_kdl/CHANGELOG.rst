@@ -2,6 +2,9 @@
 Changelog for package tf2_kdl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.46.0 (2026-05-07)
+-------------------
+
 0.45.7 (2026-04-09)
 -------------------
 * Use new ROSIDL aggregate CMake target (`#907 <https://github.com/ros2/geometry2/issues/907>`_)
