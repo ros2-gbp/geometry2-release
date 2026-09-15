@@ -30,21 +30,6 @@
 #ifndef TF2__TRANSFORM_STORAGE_H_
 #define TF2__TRANSFORM_STORAGE_H_
 
-#ifdef __GNUC__
-#define TF2_TRANSFORM_STORAGE_H_PRAGMA(X) _Pragma(#X)
-#define TF2_TRANSFORM_STORAGE_H_DEPRECATED(MSG) TF2_TRANSFORM_STORAGE_H_PRAGMA(GCC warning MSG)
-#elif defined(_MSC_VER)
-#define TF2_TRANSFORM_STORAGE_H_STRINGIZE_(MSG) #MSG
-#define TF2_TRANSFORM_STORAGE_H_STRINGIZE(MSG) TF2_TRANSFORM_STORAGE_H_STRINGIZE_(MSG)
-#define TF2_TRANSFORM_STORAGE_H_DEPRECATED(MSG) \
-  __pragma(message(__FILE__ "(" TF2_TRANSFORM_STORAGE_H_STRINGIZE(__LINE__) ") : Warning: " MSG))
-#else
-#define TF2_TRANSFORM_STORAGE_H_DEPRECATED(MSG)
-#endif
-
-TF2_TRANSFORM_STORAGE_H_DEPRECATED(  // NOLINT
-  "This header is obsolete, please include 'tf2/transform_storage.hpp' instead")
-
 #include <tf2/transform_storage.hpp>
 
 #endif  // TF2__TRANSFORM_STORAGE_H_

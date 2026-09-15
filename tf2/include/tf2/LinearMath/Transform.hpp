@@ -14,8 +14,8 @@ subject to the following restrictions:
 
 
 
-#ifndef TF2__LINEARMATH__TRANSFORM_HPP
-#define TF2__LINEARMATH__TRANSFORM_HPP
+#ifndef TF2__LINEARMATH__TRANSFORM_HPP_
+#define TF2__LINEARMATH__TRANSFORM_HPP_
 
 
 #include "Matrix3x3.hpp"
@@ -312,4 +312,4 @@ TF2SIMD_FORCE_INLINE	void	Transform::deSerializeDouble(const TransformDoubleData
 
 }
 
-#endif  // TF2__LINEARMATH__TRANSFORM_HPP
+#endif  // TF2__LINEARMATH__TRANSFORM_HPP_

@@ -14,7 +14,6 @@
 
 import rclpy
 from rclpy.duration import Duration
-from rclpy.executors import ExternalShutdownException, MultiThreadedExecutor
 from rclpy.node import Node
 import rclpy.time
 from tf2_ros import LookupException
@@ -56,12 +55,16 @@ class BlockingWaitsForTransform(Node):
 
 
 def main():
+    from rclpy.executors import MultiThreadedExecutor
+
+    rclpy.init()
+    node = BlockingWaitsForTransform()
+    # this node blocks in a callback, so a MultiThreadedExecutor is required
+    executor = MultiThreadedExecutor()
+    executor.add_node(node)
     try:
-        with rclpy.init():
-            node = BlockingWaitsForTransform()
-            # this node blocks in a callback, so a MultiThreadedExecutor is required
-            executor = MultiThreadedExecutor()
-            executor.add_node(node)
-            executor.spin()
-    except (KeyboardInterrupt, ExternalShutdownException):
+        executor.spin()
+    except KeyboardInterrupt:
         pass
+    executor.shutdown()
+    rclpy.shutdown()
