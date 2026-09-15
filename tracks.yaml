@@ -302,7 +302,7 @@ tracks:
     - git-bloom-generate -y rosdynrpm --prefix release/:{ros_distro} :{ros_distro}
       -i :{release_inc} --require-os fedora rhel
     devel_branch: lyrical
-    last_version: 0.45.9
+    last_version: 0.45.10
     name: geometry2
     patches: null
     release_inc: '1'
