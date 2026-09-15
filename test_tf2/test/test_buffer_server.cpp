@@ -37,10 +37,13 @@
 #include <tf2_ros/buffer.hpp>
 #include <tf2_ros/buffer_server.hpp>
 #include <tf2_ros/transform_listener.hpp>
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/clock.hpp>
+#include <rclcpp/executors.hpp>
+#include <rclcpp/node.hpp>
+#include <rclcpp/utilities.hpp>
 #include <memory>
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 
@@ -48,8 +51,11 @@ int main(int argc, char** argv)
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
   tf2_ros::Buffer buffer(clock);
-  tf2_ros::TransformListener tfl(buffer, node, false);
-  std::unique_ptr<tf2_ros::BufferServer> server = std::make_unique<tf2_ros::BufferServer>(buffer, node, "tf_action");
+  tf2_ros::TransformListener tfl(buffer, *node, false);
+  std::unique_ptr<tf2_ros::BufferServer> server = std::make_unique<tf2_ros::BufferServer>(
+    buffer,
+    node,
+    "tf_action");
 
   rclcpp::spin(node);
 }

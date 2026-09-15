@@ -1,10 +1,6 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2_eigen)
 
-# Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
 endif()
@@ -22,7 +18,7 @@ endif()
 
 add_library(tf2_eigen INTERFACE)
 target_link_libraries(tf2_eigen INTERFACE
-  ${geometry_msgs_TARGETS}
+  geometry_msgs::geometry_msgs
   tf2::tf2
   tf2_ros::tf2_ros)
 target_include_directories(tf2_eigen INTERFACE
@@ -50,14 +46,16 @@ if(BUILD_TESTING)
   ament_uncrustify(LANGUAGE "c++")
 
   find_package(ament_cmake_gtest REQUIRED)
+  find_package(ament_cmake_ros_core REQUIRED)
 
   ament_add_gtest(tf2_eigen-test test/tf2_eigen-test.cpp)
   if(TARGET tf2_eigen-test)
     target_link_libraries(tf2_eigen-test
+      ament_cmake_ros_core::ament_ros_defaults
       tf2_eigen
       # Used, but not linked to test tf2_eigen's exports:
       #   Eigen3::Eigen
-      #   ${geometry_msgs_TARGETS}
+      #   geometry_msgs::geometry_msgs
       #   tf2::tf2
       #   tf2_ros::tf2_ros
     )

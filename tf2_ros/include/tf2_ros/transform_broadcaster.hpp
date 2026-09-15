@@ -40,7 +40,15 @@
 
 #include "tf2_ros/visibility_control.hpp"
 
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/node_interfaces/node_interfaces.hpp"
+#include "rclcpp/node_interfaces/get_node_parameters_interface.hpp"
+#include "rclcpp/node_interfaces/get_node_topics_interface.hpp"
+#include "rclcpp/create_publisher.hpp"
+#include "rclcpp/publisher.hpp"
+#include "rclcpp/publisher_options.hpp"
+#include "rclcpp/qos.hpp"
+#include "rclcpp/qos_overriding_options.hpp"
+#include "rcpputils/pointer_traits.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
 #include "tf2_ros/qos.hpp"
@@ -55,10 +63,15 @@ namespace tf2_ros
 class TransformBroadcaster
 {
 public:
-  /** \brief Node interface constructor */
-  template<class NodeT, class AllocatorT = std::allocator<void>>
+  using NodeParametersInterface = rclcpp::node_interfaces::NodeParametersInterface;
+  using NodeTopicsInterface = rclcpp::node_interfaces::NodeTopicsInterface;
+  using RequiredInterfaces = rclcpp::node_interfaces::NodeInterfaces<NodeParametersInterface,
+      NodeTopicsInterface>;
+
+  /** \brief Node interfaces constructor */
+  template<class AllocatorT = std::allocator<void>>
   TransformBroadcaster(
-    NodeT && node,
+    RequiredInterfaces node_interfaces,
     const rclcpp::QoS & qos = DynamicBroadcasterQoS(),
     const rclcpp::PublisherOptionsWithAllocator<AllocatorT> & options = [] () {
       rclcpp::PublisherOptionsWithAllocator<AllocatorT> options;
@@ -70,8 +83,11 @@ public:
       return options;
     } ())
   {
+    auto node_parameters = node_interfaces.get_node_parameters_interface();
+    auto node_topics = node_interfaces.get_node_topics_interface();
+
     publisher_ = rclcpp::create_publisher<tf2_msgs::msg::TFMessage>(
-      node, "/tf", qos, options);
+      node_parameters, node_topics, "/tf", qos, options);
   }
 
   /** \brief Send a TransformStamped message

@@ -33,10 +33,11 @@
 #ifndef TF2__TRANSFORM_STORAGE_HPP_
 #define TF2__TRANSFORM_STORAGE_HPP_
 
+#include "tf2/visibility_control.h"
+
 #include "tf2/LinearMath/Vector3.hpp"
 #include "tf2/LinearMath/Quaternion.hpp"
 #include "tf2/time.hpp"
-#include "tf2/visibility_control.h"
 
 namespace tf2
 {
@@ -54,43 +55,22 @@ public:
     CompactFrameID child_frame_id);
 
   TF2_PUBLIC
-  TransformStorage(const TransformStorage & rhs)
-  {
-    *this = rhs;
-  }
+  TransformStorage(const TransformStorage & rhs);
 
   TF2_PUBLIC
-  TransformStorage & operator=(const TransformStorage & rhs)
-  {
-    rotation_ = rhs.rotation_;
-    translation_ = rhs.translation_;
-    stamp_ = rhs.stamp_;
-    frame_id_ = rhs.frame_id_;
-    child_frame_id_ = rhs.child_frame_id_;
-    return *this;
-  }
+  TransformStorage & operator=(const TransformStorage & rhs);
 
   TF2_PUBLIC
-  bool operator==(const TransformStorage & rhs) const
-  {
-    return (this->rotation_ == rhs.rotation_) &&
-           (this->translation_ == rhs.translation_) &&
-           (this->stamp_ == rhs.stamp_) &&
-           (this->frame_id_ == rhs.frame_id_) &&
-           (this->child_frame_id_ == rhs.child_frame_id_);
-  }
+  bool operator==(const TransformStorage & rhs) const;
 
   TF2_PUBLIC
-  bool operator!=(const TransformStorage & rhs) const
-  {
-    return !(*this == rhs);
-  }
+  bool operator!=(const TransformStorage & rhs) const;
 
   tf2::Quaternion rotation_;
   tf2::Vector3 translation_;
   TimePoint stamp_;
-  CompactFrameID frame_id_;
-  CompactFrameID child_frame_id_;
+  CompactFrameID frame_id_{UINT32_MAX};
+  CompactFrameID child_frame_id_{UINT32_MAX};
 };
 }  // namespace tf2
 #endif  // TF2__TRANSFORM_STORAGE_HPP_

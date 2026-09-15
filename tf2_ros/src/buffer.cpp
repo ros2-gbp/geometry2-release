@@ -34,18 +34,39 @@
 
 #include <exception>
 #include <functional>
+#include <future>
 #include <memory>
 #include <mutex>
 #include <sstream>
 #include <string>
 
+#include "rclcpp/create_service.hpp"
+#include "rclcpp/logger.hpp"
+#include "rclcpp/utilities.hpp"
+
 namespace tf2_ros
 {
+inline
+tf2::Duration
+from_rclcpp(const rclcpp::Duration & rclcpp_duration)
+{
+  return tf2::Duration(std::chrono::nanoseconds(rclcpp_duration.nanoseconds()));
+}
+
+inline
+rclcpp::Duration
+to_rclcpp(const tf2::Duration & duration)
+{
+  return rclcpp::Duration(std::chrono::nanoseconds(duration));
+}
 
 Buffer::Buffer(
-  rclcpp::Clock::SharedPtr clock, tf2::Duration cache_time,
-  rclcpp::Node::SharedPtr node)
-: BufferCore(cache_time), clock_(clock), node_(node), timer_interface_(nullptr)
+  rclcpp::Clock::SharedPtr clock,
+  tf2::Duration cache_time,
+  RequiredInterfaces node_interfaces,
+  const rclcpp::QoS & qos)
+: BufferCore(cache_time), clock_(clock), node_interfaces_(std::move(node_interfaces)),
+  timer_interface_(nullptr)
 {
   if (nullptr == clock_) {
     throw std::invalid_argument("clock must be a valid instance");
@@ -63,26 +84,17 @@ Buffer::Buffer(
 
   jump_handler_ = clock_->create_jump_callback(nullptr, post_jump_cb, jump_threshold);
 
-  if (node_) {
-    frames_server_ = node_->create_service<tf2_msgs::srv::FrameGraph>(
-      "tf2_frames", std::bind(
+  if (node_interfaces.get<NodeBaseInterface>()) {
+    auto node_base = node_interfaces_.get_node_base_interface();
+    auto node_services = node_interfaces_.get_node_services_interface();
+
+    node_logging_interface_ = node_interfaces_.get_node_logging_interface();
+
+    frames_server_ = rclcpp::create_service<tf2_msgs::srv::FrameGraph>(
+      node_base, node_services, "tf2_frames", std::bind(
         &Buffer::getFrames, this, std::placeholders::_1,
-        std::placeholders::_2));
+        std::placeholders::_2), qos, nullptr);
   }
-}
-
-inline
-tf2::Duration
-from_rclcpp(const rclcpp::Duration & rclcpp_duration)
-{
-  return tf2::Duration(std::chrono::nanoseconds(rclcpp_duration.nanoseconds()));
-}
-
-inline
-rclcpp::Duration
-to_rclcpp(const tf2::Duration & duration)
-{
-  return rclcpp::Duration(std::chrono::nanoseconds(duration));
 }
 
 geometry_msgs::msg::TransformStamped
@@ -140,7 +152,7 @@ Buffer::canTransform(
   const std::string & target_frame, const std::string & source_frame,
   const tf2::TimePoint & time, const tf2::Duration timeout, std::string * errstr) const
 {
-  if (!checkAndErrorDedicatedThreadPresent(errstr)) {
+  if (timeout != tf2::durationFromSec(0.0) && !checkAndErrorDedicatedThreadPresent(errstr)) {
     return false;
   }
 
@@ -155,8 +167,11 @@ Buffer::canTransform(
     (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  // don't wait bag loop detected
     (rclcpp::ok()))  // Make sure we haven't been stopped (won't work for pytf)
   {
-    // TODO(sloretz) sleep using clock_->sleep_for when implemented
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    auto remaining_ns = ((start_time + rclcpp_timeout) - clock_->now()).nanoseconds();
+    if (remaining_ns > 0) {
+      clock_->sleep_for(std::chrono::nanoseconds(std::min(remaining_ns,
+          static_cast<int64_t>(10000000))));
+    }
   }
   bool retval = canTransform(target_frame, source_frame, time, errstr);
   rclcpp::Time current_time = clock_->now();
@@ -170,7 +185,7 @@ Buffer::canTransform(
   const std::string & source_frame, const tf2::TimePoint & source_time,
   const std::string & fixed_frame, const tf2::Duration timeout, std::string * errstr) const
 {
-  if (!checkAndErrorDedicatedThreadPresent(errstr)) {
+  if (timeout != tf2::durationFromSec(0.0) && !checkAndErrorDedicatedThreadPresent(errstr)) {
     return false;
   }
 
@@ -185,8 +200,11 @@ Buffer::canTransform(
     (clock_->now() + rclcpp::Duration(3, 0) >= start_time) &&  // don't wait bag loop detected
     (rclcpp::ok()))  // Make sure we haven't been stopped (won't work for pytf)
   {
-    // TODO(sloretz) sleep using clock_->sleep_for when implemented
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    auto remaining_ns = ((start_time + rclcpp_timeout) - clock_->now()).nanoseconds();
+    if (remaining_ns > 0) {
+      clock_->sleep_for(std::chrono::nanoseconds(std::min(remaining_ns,
+          static_cast<int64_t>(10000000))));
+    }
   }
   bool retval = canTransform(
     target_frame, target_time,
@@ -349,7 +367,69 @@ bool Buffer::checkAndErrorDedicatedThreadPresent(std::string * error_str) const
 
 rclcpp::Logger Buffer::getLogger() const
 {
-  return node_ ? node_->get_logger() : rclcpp::get_logger("tf2_buffer");
+  return node_logging_interface_ ? node_logging_interface_->get_logger() : rclcpp::get_logger(
+    "tf2_buffer");
+}
+
+geometry_msgs::msg::TransformStamped
+Buffer::lookupTransform(
+  const std::string & target_frame, const std::string & source_frame,
+  const rclcpp::Time & time, const rclcpp::Duration timeout) const
+{
+  return lookupTransform(target_frame, source_frame, fromRclcpp(time), fromRclcpp(timeout));
+}
+
+geometry_msgs::msg::TransformStamped
+Buffer::lookupTransform(
+  const std::string & target_frame, const rclcpp::Time & target_time,
+  const std::string & source_frame, const rclcpp::Time & source_time,
+  const std::string & fixed_frame, const rclcpp::Duration timeout) const
+{
+  return lookupTransform(
+    target_frame, fromRclcpp(target_time),
+    source_frame, fromRclcpp(source_time),
+    fixed_frame, fromRclcpp(timeout));
+}
+
+bool
+Buffer::canTransform(
+  const std::string & target_frame, const std::string & source_frame,
+  const rclcpp::Time & time, const rclcpp::Duration timeout,
+  std::string * errstr) const
+{
+  return canTransform(target_frame, source_frame, fromRclcpp(time), fromRclcpp(timeout), errstr);
+}
+
+bool
+Buffer::canTransform(
+  const std::string & target_frame, const rclcpp::Time & target_time,
+  const std::string & source_frame, const rclcpp::Time & source_time,
+  const std::string & fixed_frame, const rclcpp::Duration timeout,
+  std::string * errstr) const
+{
+  return canTransform(
+    target_frame, fromRclcpp(target_time),
+    source_frame, fromRclcpp(source_time),
+    fixed_frame, fromRclcpp(timeout),
+    errstr);
+}
+
+TransformStampedFuture
+Buffer::waitForTransform(
+  const std::string & target_frame, const std::string & source_frame,
+  const rclcpp::Time & time, const rclcpp::Duration & timeout,
+  TransformReadyCallback callback)
+{
+  return waitForTransform(
+    target_frame, source_frame,
+    fromRclcpp(time), fromRclcpp(timeout),
+    callback);
+}
+
+void
+Buffer::setCreateTimerInterface(CreateTimerInterface::SharedPtr create_timer_interface)
+{
+  timer_interface_ = create_timer_interface;
 }
 
 }  // namespace tf2_ros

@@ -27,13 +27,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <cstddef>
 #include <memory>
 #include <random>
 #include <stdexcept>
 #include <string>
 
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "rcl_interfaces/msg/parameter_descriptor.hpp"
+
+#include "tf2_ros/static_transform_broadcaster.hpp"
 #include "tf2_ros/static_transform_broadcaster_node.hpp"
-#include "rclcpp/rclcpp.hpp"
+
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node_options.hpp"
 
 namespace
 {
@@ -92,7 +99,7 @@ StaticTransformBroadcasterNode::StaticTransformBroadcasterNode(const rclcpp::Nod
     throw std::runtime_error("child_frame_id cannot equal frame_id");
   }
 
-  broadcaster_ = std::make_unique<tf2_ros::StaticTransformBroadcaster>(this);
+  broadcaster_ = std::make_unique<tf2_ros::StaticTransformBroadcaster>(*this);
 
   // send transform
   broadcaster_->sendTransform(tf_msg);

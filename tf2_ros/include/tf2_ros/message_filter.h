@@ -32,6 +32,14 @@
 #ifndef TF2_ROS__MESSAGE_FILTER_H_
 #define TF2_ROS__MESSAGE_FILTER_H_
 
+#define MESSAGE_FILTER_HEADER_DEPRECATION This header is obsolete, \
+  please include "tf2_ros/message_filter.hpp" instead
+#ifdef _MSC_VER
+  #pragma message(MESSAGE_FILTER_HEADER_DEPRECATION)
+#else
+  #warning MESSAGE_FILTER_HEADER_DEPRECATION
+#endif
+
 #include <tf2_ros/message_filter.hpp>
 
 #endif  // TF2_ROS__MESSAGE_FILTER_H_

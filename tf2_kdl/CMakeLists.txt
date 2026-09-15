@@ -1,10 +1,5 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2_kdl)
-
-# Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
@@ -13,7 +8,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(orocos_kdl_vendor REQUIRED)
+find_package(eigen3_cmake_module REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(orocos_kdl REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
@@ -23,8 +19,8 @@ ament_python_install_package(${PROJECT_NAME}
 
 add_library(tf2_kdl INTERFACE)
 target_link_libraries(tf2_kdl INTERFACE
-  ${builtin_interfaces_TARGETS}
-  ${geometry_msgs_TARGETS}
+  builtin_interfaces::builtin_interfaces
+  geometry_msgs::geometry_msgs
   orocos-kdl
   tf2::tf2
   tf2_ros::tf2_ros)
@@ -43,10 +39,13 @@ install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
+  find_package(ament_cmake_ros_core REQUIRED)
   find_package(rclcpp REQUIRED)
 
   ament_add_gtest(test_kdl test/test_tf2_kdl.cpp)
   target_link_libraries(test_kdl
+    ament_cmake_ros_core::ament_ros_defaults
+    Eigen3::Eigen
     tf2_kdl
     rclcpp::rclcpp
     # Used, but not linked to test tf2_kdl's exports:
@@ -61,6 +60,6 @@ ament_export_include_directories("include/${PROJECT_NAME}")
 # Export modern CMake targets
 ament_export_targets(export_tf2_kdl)
 
-ament_export_dependencies(builtin_interfaces geometry_msgs orocos_kdl_vendor orocos_kdl tf2 tf2_ros)
+ament_export_dependencies(builtin_interfaces geometry_msgs orocos_kdl tf2 tf2_ros)
 
 ament_package()

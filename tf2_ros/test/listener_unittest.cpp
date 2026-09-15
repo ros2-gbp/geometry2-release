@@ -28,17 +28,25 @@
  */
 
 #include <chrono>
-#include <functional>
 #include <memory>
 #include <thread>
 
 #include "gtest/gtest.h"
 
+#include "builtin_interfaces/msg/time.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+
+#include "tf2/buffer_core.hpp"
+#include "tf2/time.hpp"
+
 #include "tf2_ros/buffer.hpp"
 #include "tf2_ros/transform_listener.hpp"
 
-#include "rclcpp/rclcpp.hpp"
-#include "builtin_interfaces/msg/time.hpp"
+#include "rclcpp/clock.hpp"
+#include "rclcpp/executors/single_threaded_executor.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/time.hpp"
+#include "rclcpp/utilities.hpp"
 
 TEST(tf2_ros_test_listener, transform_listener)
 {
@@ -46,14 +54,15 @@ TEST(tf2_ros_test_listener, transform_listener)
 
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
 
-  tf2_ros::Buffer buffer(clock);
-  tf2_ros::TransformListener tfl(buffer, node, false);
+  tf2_ros::Buffer buffer(clock, tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME), *node);
+  tf2_ros::TransformListener tfl(buffer, *node, false);
 
   rclcpp::executors::SingleThreadedExecutor executor;
   executor.add_node(node);
   // Start spinning in a thread
-  std::thread spin_thread = std::thread(
-    std::bind(&rclcpp::executors::SingleThreadedExecutor::spin, &executor));
+  std::thread spin_thread = std::thread([&executor] () {
+        executor.spin();
+  });
 
   geometry_msgs::msg::TransformStamped ts;
   ts.transform.rotation.w = 1;
@@ -72,7 +81,7 @@ TEST(tf2_ros_test_listener, transform_listener)
 
   geometry_msgs::msg::TransformStamped out_rootc = buffer.lookupTransform(
     "a", "b",
-    builtin_interfaces::msg::Time());
+    rclcpp::Time());
 
   EXPECT_EQ(1, out_rootc.transform.translation.x);
   EXPECT_EQ(2, out_rootc.transform.translation.y);
@@ -91,5 +100,7 @@ int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
   rclcpp::init(argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }
