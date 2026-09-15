@@ -25,9 +25,9 @@ target_include_directories(tf2 PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 target_link_libraries(tf2 PUBLIC
-  geometry_msgs::geometry_msgs)
+  ${geometry_msgs_TARGETS})
 target_link_libraries(tf2 PRIVATE
-  builtin_interfaces::builtin_interfaces
+  ${builtin_interfaces_TARGETS}
   rcutils::rcutils)
 
 # Causes the visibility macros to use dllexport rather than dllimport,
@@ -104,10 +104,10 @@ if(BUILD_TESTING)
   ament_add_gtest(test_simple_tf2_core test/simple_tf2_core.cpp)
   if(TARGET test_simple_tf2_core)
     target_link_libraries(test_simple_tf2_core
-      builtin_interfaces::builtin_interfaces
+      ${builtin_interfaces_TARGETS}
       tf2
       # Used, but not linked to test tf2's exports:
-      #   geometry_msgs::geometry_msgs
+      #   ${geometry_msgs_TARGETS}
     )
   endif()
 
@@ -122,7 +122,7 @@ if(BUILD_TESTING)
   endif()
 endif()
 
-ament_export_dependencies(geometry_msgs rosidl_runtime_cpp)
+ament_export_dependencies(geometry_msgs rcutils rosidl_runtime_cpp)
 
 # Export old-style CMake variables
 ament_export_include_directories("include/${PROJECT_NAME}")

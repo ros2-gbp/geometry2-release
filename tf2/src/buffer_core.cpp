@@ -31,18 +31,14 @@
 #include <algorithm>
 #include <cassert>
 #include <chrono>
-#include <cmath>
-#include <ios>
 #include <map>
 #include <memory>
 #include <mutex>
-#include <ostream>
-#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "rcutils/logging_macros.h"
+#include <iostream>
 
 #include "tf2/buffer_core.hpp"
 #include "tf2/time_cache.hpp"
@@ -634,11 +630,6 @@ geometry_msgs::msg::VelocityStamped BufferCore::lookupVelocity(
     std::max(0.00001 + averaging_interval_seconds, end_time) - averaging_interval_seconds;
   // correct for the possibility that start time was truncated above.
   auto corrected_averaging_interval = end_time - start_time;
-
-  if (std::abs(corrected_averaging_interval) < 1e-9) {
-    throw tf2::TransformException(
-      "averaging_interval is too small to compute a valid velocity (would cause division by zero)");
-  }
 
   tf2::Transform start, end;
   TimePoint time_out;

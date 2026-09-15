@@ -42,8 +42,8 @@ target_include_directories(${PROJECT_NAME} INTERFACE
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
 )
 target_link_libraries(${PROJECT_NAME} INTERFACE
-  geometry_msgs::geometry_msgs
-  sensor_msgs::sensor_msgs
+  ${geometry_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
   tf2::tf2
   tf2_ros::tf2_ros
 )
@@ -61,6 +61,10 @@ if(BUILD_TESTING)
   find_package(rclcpp REQUIRED)
   find_package(tf2_geometry_msgs REQUIRED)
 
+  # TODO(ros2/geometry2#259) Remove once headers
+  # are renamed to .hpp
+  set(ament_cmake_uncrustify_ADDITIONAL_ARGS --language CPP)
+  set(ament_cmake_cppcheck_LANGUAGE c++)
   ament_lint_auto_find_test_dependencies()
 
   find_package(ament_cmake_pytest REQUIRED)
@@ -70,8 +74,8 @@ if(BUILD_TESTING)
   if(TARGET test_tf2_sensor_msgs_cpp)
     target_include_directories(test_tf2_sensor_msgs_cpp PUBLIC include)
     target_link_libraries(test_tf2_sensor_msgs_cpp
-      geometry_msgs::geometry_msgs
-      sensor_msgs::sensor_msgs
+      ${geometry_msgs_TARGETS}
+      ${sensor_msgs_TARGETS}
       rclcpp::rclcpp
       tf2::tf2
       tf2_ros::tf2_ros
@@ -87,9 +91,8 @@ if(BUILD_TESTING)
   ament_add_gtest(test_imu_transforms test/test_imu_transforms.cpp)
   target_include_directories(test_imu_transforms PUBLIC include)
   target_link_libraries(test_imu_transforms
-    geometry_msgs::geometry_msgs
-    sensor_msgs::sensor_msgs
-    Eigen3::Eigen
+    ${geometry_msgs_TARGETS}
+    ${sensor_msgs_TARGETS}
     tf2::tf2
     tf2_geometry_msgs::tf2_geometry_msgs
     tf2_ros::tf2_ros

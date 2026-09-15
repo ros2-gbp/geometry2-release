@@ -2,68 +2,41 @@
 Changelog for package tf2_geometry_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.10 (2026-09-15)
---------------------
-
-0.45.9 (2026-07-28)
+0.41.10 (2026-09-15)
 -------------------
 
-0.45.8 (2026-07-14)
+0.41.9 (2026-07-28)
 -------------------
 
-0.45.7 (2026-04-09)
+0.41.8 (2026-07-14)
 -------------------
-* fix typos (`#921 <https://github.com/ros2/geometry2/issues/921>`_)
-* fix: doTransform of VelocityStamped added input vector after transform (`#909 <https://github.com/ros2/geometry2/issues/909>`_)
-* Use new ROSIDL aggregate CMake target (`#907 <https://github.com/ros2/geometry2/issues/907>`_)
-* Contributors: Auguste Lalande, Emerson Knapp, cramke
+* fix typos (`#921 <https://github.com/ros2/geometry2/issues/921>`_) (`#922 <https://github.com/ros2/geometry2/issues/922>`_)
+* Contributors: mergify[bot]
 
-0.45.6 (2026-01-09)
--------------------
-* Copy child_frame_id from input (`#889 <https://github.com/ros2/geometry2/issues/889>`_)
-* Contributors: Yannik Meinken
-
-0.45.5 (2025-12-16)
--------------------
-* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_)
-* Modernize conf.py files to only include modified Copyright, eliminati… (`#865 <https://github.com/ros2/geometry2/issues/865>`_)
-* Contributors: R Kent James
-
-0.45.4 (2025-11-28)
+0.41.7 (2026-03-24)
 -------------------
 
-0.45.3 (2025-11-24)
+0.41.6 (2025-12-18)
+-------------------
+* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (manual kilted backport of `#856 <https://github.com/ros2/geometry2/issues/856>`_) (`#885 <https://github.com/ros2/geometry2/issues/885>`_)
+* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_) (`#875 <https://github.com/ros2/geometry2/issues/875>`_)
+* Contributors: R Kent James, mergify[bot]
+
+0.41.5 (2025-11-28)
 -------------------
 
-0.45.2 (2025-11-07)
+0.41.4 (2025-11-07)
 -------------------
 
-0.45.1 (2025-10-17)
--------------------
-* Removed orocos kdl vendor dependency (`#826 <https://github.com/ros2/geometry2/issues/826>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.45.0 (2025-08-27)
+0.41.3 (2025-10-17)
 -------------------
 
-0.44.0 (2025-07-29)
+0.41.2 (2025-07-24)
 -------------------
-
-0.43.1 (2025-07-18)
--------------------
-* Change tf2_ros C to C++ headers (`#805 <https://github.com/ros2/geometry2/issues/805>`_)
+* Change tf2_ros C to C++ headers (`#808 <https://github.com/ros2/geometry2/issues/808>`_)
 * Contributors: Gary Servin
 
-0.43.0 (2025-07-01)
--------------------
-
-0.42.2 (2025-06-19)
--------------------
-
-0.42.1 (2025-05-14)
--------------------
-
-0.42.0 (2025-04-25)
+0.41.1 (2025-06-23)
 -------------------
 
 0.41.0 (2025-04-25)

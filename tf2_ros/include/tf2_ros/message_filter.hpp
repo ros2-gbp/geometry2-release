@@ -36,7 +36,6 @@
 
 #include <algorithm>
 #include <chrono>
-#include <cstdint>
 #include <functional>
 #include <list>
 #include <memory>
@@ -60,9 +59,6 @@
 
 #include "builtin_interfaces/msg/time.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "rclcpp/node_interfaces/node_interfaces.hpp"
-#include "rclcpp/node_interfaces/get_node_logging_interface.hpp"
-#include "rclcpp/node_interfaces/get_node_clock_interface.hpp"
 
 #define TF2_ROS_MESSAGEFILTER_DEBUG(fmt, ...) \
   RCUTILS_LOG_DEBUG_NAMED( \
@@ -158,30 +154,24 @@ public:
   using MConstPtr = std::shared_ptr<M const>;
   typedef message_filters::MessageEvent<M const> MEvent;
 
-  using NodeLoggingInterface = rclcpp::node_interfaces::NodeLoggingInterface;
-  using NodeClockInterface = rclcpp::node_interfaces::NodeClockInterface;
-  using RequiredInterfaces = rclcpp::node_interfaces::NodeInterfaces<NodeLoggingInterface,
-      NodeClockInterface>;
-
   /**
    * \brief Constructor
    *
    * \param buffer The buffer this filter should use
    * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
    * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
-   * \param node_interfaces The ros2 NodeInterfaces to use for logging and clock operations
+   * \param node The ros2 node to use for logging and clock operations
    * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
    */
   template<typename TimeRepT = int64_t, typename TimeT = std::nano>
   MessageFilter(
     BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
-    RequiredInterfaces node_interfaces,
+    const rclcpp::Node::SharedPtr & node,
     std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
     std::chrono::duration<TimeRepT, TimeT>::max())
-  : node_interfaces_(std::move(node_interfaces)),
-    buffer_(buffer),
-    queue_size_(queue_size),
-    buffer_timeout_(buffer_timeout)
+  : MessageFilter(
+      buffer, target_frame, queue_size, node->get_node_logging_interface(),
+      node->get_node_clock_interface(), buffer_timeout)
   {
     static_assert(
       std::is_base_of<tf2::BufferCoreInterface, BufferT>::value,
@@ -189,7 +179,31 @@ public:
     static_assert(
       std::is_base_of<tf2_ros::AsyncBufferInterface, BufferT>::value,
       "Buffer type must implement tf2_ros::AsyncBufferInterface");
+  }
 
+  /**
+   * \brief Constructor
+   *
+   * \param buffer The buffer this filter should use
+   * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
+   * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
+   * \param node_logging The logging interface to use for any log messages
+   * \param node_clock The clock interface to use to get the node clock
+   * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
+   */
+  template<typename TimeRepT = int64_t, typename TimeT = std::nano>
+  MessageFilter(
+    BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
+    const rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr & node_logging,
+    const rclcpp::node_interfaces::NodeClockInterface::SharedPtr & node_clock,
+    std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
+    std::chrono::duration<TimeRepT, TimeT>::max())
+  : node_logging_(node_logging),
+    node_clock_(node_clock),
+    buffer_(buffer),
+    queue_size_(queue_size),
+    buffer_timeout_(buffer_timeout)
+  {
     init();
     setTargetFrame(target_frame);
   }
@@ -201,16 +215,41 @@ public:
    * \param buffer The buffer this filter should use
    * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
    * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
-   * \param node_interfaces The ros2 NodeInterfaces to use for logging and clock operations
+   * \param node The ros2 node to use for logging and clock operations
    * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
    */
   template<class F, typename TimeRepT = int64_t, typename TimeT = std::nano>
   MessageFilter(
     F & f, BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
-    RequiredInterfaces node_interfaces,
+    const rclcpp::Node::SharedPtr & node,
     std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
     std::chrono::duration<TimeRepT, TimeT>::max())
-  : node_interfaces_(std::move(node_interfaces)),
+  : MessageFilter(
+      f, buffer, target_frame, queue_size, node->get_node_logging_interface(),
+      node->get_node_clock_interface(), buffer_timeout)
+  {
+  }
+
+  /**
+   * \brief Constructor
+   *
+   * \param f The filter to connect this filter's input to.  Often will be a message_filters::Subscriber.
+   * \param buffer The buffer this filter should use
+   * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
+   * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
+   * \param node_logging The logging interface to use for any log messages
+   * \param node_clock The clock interface to use to get the node clock
+   * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
+   */
+  template<class F, typename TimeRepT = int64_t, typename TimeT = std::nano>
+  MessageFilter(
+    F & f, BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
+    const rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr & node_logging,
+    const rclcpp::node_interfaces::NodeClockInterface::SharedPtr & node_clock,
+    std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
+    std::chrono::duration<TimeRepT, TimeT>::max())
+  : node_logging_(node_logging),
+    node_clock_(node_clock),
     buffer_(buffer),
     queue_size_(queue_size),
     buffer_timeout_(buffer_timeout)
@@ -218,102 +257,6 @@ public:
     init();
     setTargetFrame(target_frame);
     connectInput(f);
-  }
-
-  /**
-   * \brief Constructor
-   *
-   * \param buffer The buffer this filter should use
-   * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
-   * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
-   * \param node The ros2 node to use for logging and clock operations
-   * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
-   */
-  template<typename TimeRepT = int64_t, typename TimeT = std::nano>
-  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of Node::SharedPtr&")]]
-  MessageFilter(
-    BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
-    const rclcpp::Node::SharedPtr & node,
-    std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
-    std::chrono::duration<TimeRepT, TimeT>::max())
-  : MessageFilter(
-      buffer, target_frame, queue_size,
-      RequiredInterfaces(node->get_node_logging_interface(), node->get_node_clock_interface()),
-      buffer_timeout)
-  {
-  }
-
-  /**
-   * \brief Constructor
-   *
-   * \param buffer The buffer this filter should use
-   * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
-   * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
-   * \param node_logging The logging interface to use for any log messages
-   * \param node_clock The clock interface to use to get the node clock
-   * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
-   */
-  template<typename TimeRepT = int64_t, typename TimeT = std::nano>
-  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of multiple interfaces")]]
-  MessageFilter(
-    BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
-    const NodeLoggingInterface::SharedPtr & node_logging,
-    const NodeClockInterface::SharedPtr & node_clock,
-    std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
-    std::chrono::duration<TimeRepT, TimeT>::max())
-  : MessageFilter(
-      buffer, target_frame, queue_size,
-      RequiredInterfaces(node_logging, node_clock), buffer_timeout)
-  {
-  }
-
-  /**
-   * \brief Constructor
-   *
-   * \param f The filter to connect this filter's input to.  Often will be a message_filters::Subscriber.
-   * \param buffer The buffer this filter should use
-   * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
-   * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
-   * \param node The ros2 node to use for logging and clock operations
-   * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
-   */
-  template<class F, typename TimeRepT = int64_t, typename TimeT = std::nano>
-  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of Node::SharedPtr&")]]
-  MessageFilter(
-    F & f, BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
-    const rclcpp::Node::SharedPtr & node,
-    std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
-    std::chrono::duration<TimeRepT, TimeT>::max())
-  : MessageFilter(
-      f, buffer, target_frame, queue_size,
-      RequiredInterfaces(node->get_node_logging_interface(), node->get_node_clock_interface()),
-      buffer_timeout)
-  {
-  }
-
-  /**
-   * \brief Constructor
-   *
-   * \param f The filter to connect this filter's input to.  Often will be a message_filters::Subscriber.
-   * \param buffer The buffer this filter should use
-   * \param target_frame The frame this filter should attempt to transform to.  To use multiple frames, pass an empty string here and use the setTargetFrames() function.
-   * \param queue_size The number of messages to queue up before throwing away old ones.  0 means infinite (dangerous).
-   * \param node_logging The logging interface to use for any log messages
-   * \param node_clock The clock interface to use to get the node clock
-   * \param buffer_timeout The timeout duration after requesting transforms from the buffer.
-   */
-  template<class F, typename TimeRepT = int64_t, typename TimeT = std::nano>
-  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of multiple interfaces")]]
-  MessageFilter(
-    F & f, BufferT & buffer, const std::string & target_frame, uint32_t queue_size,
-    const NodeLoggingInterface::SharedPtr & node_logging,
-    const NodeClockInterface::SharedPtr & node_clock,
-    std::chrono::duration<TimeRepT, TimeT> buffer_timeout =
-    std::chrono::duration<TimeRepT, TimeT>::max())
-  : MessageFilter(
-      f, buffer, target_frame, queue_size,
-      RequiredInterfaces(node_logging, node_clock), buffer_timeout)
-  {
   }
 
   /**
@@ -369,10 +312,7 @@ public:
 
     std::stringstream ss;
     for (V_string::iterator it = target_frames_.begin(); it != target_frames_.end(); ++it) {
-      ss << *it;
-      if (std::next(it) != target_frames_.end()) {
-        ss << ", ";
-      }
+      ss << *it << " ";
     }
     target_frames_string_ = ss.str();
   }
@@ -520,7 +460,7 @@ public:
    */
   void add(const MConstPtr & message)
   {
-    auto t = node_interfaces_.get_node_clock_interface()->get_clock()->now();
+    auto t = node_clock_->get_clock()->now();
     add(MEvent(message, t));
   }
 
@@ -670,11 +610,10 @@ private:
   void checkFailures()
   {
     if (!next_failure_warning_.nanoseconds()) {
-      next_failure_warning_ = node_interfaces_.get_node_clock_interface()->get_clock()->now() +
-        rclcpp::Duration(15, 0);
+      next_failure_warning_ = node_clock_->get_clock()->now() + rclcpp::Duration(15, 0);
     }
 
-    if (node_interfaces_.get_node_clock_interface()->get_clock()->now() >= next_failure_warning_) {
+    if (node_clock_->get_clock()->now() >= next_failure_warning_) {
       if (incoming_message_count_ - messages_.size() == 0) {
         return;
       }
@@ -687,8 +626,7 @@ private:
           "[tf2_ros_message_filter.message_notifier] rosconsole logger to DEBUG for more "
           "information.",
           dropped_pct * 100);
-        next_failure_warning_ = node_interfaces_.get_node_clock_interface()->get_clock()->now() +
-          rclcpp::Duration(60, 0);
+        next_failure_warning_ = node_clock_->get_clock()->now() + rclcpp::Duration(60, 0);
 
         if (static_cast<double>(failed_out_the_back_count_) /
           static_cast<double>(dropped_message_count_) > 0.5)
@@ -769,9 +707,9 @@ private:
     const MConstPtr & message = evt.getMessage();
     std::string frame_id = stripSlash(mt::FrameId<M>::value(*message));
     rclcpp::Time stamp = mt::TimeStamp<M>::value(*message);
-    auto clock = node_interfaces_.get_node_clock_interface()->get_clock();
+    auto clock = node_clock_->get_clock();
     RCLCPP_INFO_THROTTLE(
-      node_interfaces_.get_node_logging_interface()->get_logger(),
+      node_logging_->get_logger(),
       *clock,
       2500,
       "Message Filter dropping message: frame '%s' at time %.3f for reason '%s'",
@@ -789,8 +727,10 @@ private:
     return in;
   }
 
-  ///< The interfaces (logging and clock) to use to get the log messages and clock.
-  RequiredInterfaces node_interfaces_;
+  ///< The node logging interface to use for any log messages
+  const rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging_;
+  ///< The node clock interface to use to get the clock to use
+  const rclcpp::node_interfaces::NodeClockInterface::SharedPtr node_clock_;
   ///< The Transformer used to determine if transformation data is available
   BufferT & buffer_;
   ///< The frames we need to be able to transform to before a message is ready

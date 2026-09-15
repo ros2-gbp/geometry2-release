@@ -2,90 +2,49 @@
 Changelog for package tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.45.10 (2026-09-15)
---------------------
-* Fix ABBA deadlock between waitForTransform and testTransformableRequests (`#982 <https://github.com/ros2/geometry2/issues/982>`_) (`#987 <https://github.com/ros2/geometry2/issues/987>`_)
+0.41.10 (2026-09-15)
+-------------------
+* Fix ABBA deadlock between `waitForTransform` and `testTransformableRequests` (backport `#982 <https://github.com/ros2/geometry2/issues/982>`_) (`#988 <https://github.com/ros2/geometry2/issues/988>`_)
 * Contributors: mergify[bot]
 
-0.45.9 (2026-07-28)
+0.41.9 (2026-07-28)
 -------------------
 
-0.45.8 (2026-07-14)
+0.41.8 (2026-07-14)
 -------------------
-* Cleanup headers (`#928 <https://github.com/ros2/geometry2/issues/928>`_) (`#943 <https://github.com/ros2/geometry2/issues/943>`_)
+* Cleanup headers (backport `#928 <https://github.com/ros2/geometry2/issues/928>`_) (`#944 <https://github.com/ros2/geometry2/issues/944>`_)
+* fix typos (`#921 <https://github.com/ros2/geometry2/issues/921>`_) (`#922 <https://github.com/ros2/geometry2/issues/922>`_)
 * Contributors: mergify[bot]
 
-0.45.7 (2026-04-09)
+0.41.7 (2026-03-24)
 -------------------
-* Added tests for static cache (`#920 <https://github.com/ros2/geometry2/issues/920>`_)
-* Replacing with clean index-based iteration and avoid division by zero (`#901 <https://github.com/ros2/geometry2/issues/901>`_)
-* fix typos (`#921 <https://github.com/ros2/geometry2/issues/921>`_)
-* Fix StaticCache::getData() returning true on empty cache (`#908 <https://github.com/ros2/geometry2/issues/908>`_)
-* Use new ROSIDL aggregate CMake target (`#907 <https://github.com/ros2/geometry2/issues/907>`_)
-* Fix CPP style in tf2 (`#902 <https://github.com/ros2/geometry2/issues/902>`_)
-* local variable tf2 no longer shadows the tf2:: (`#903 <https://github.com/ros2/geometry2/issues/903>`_)
-* Replaced char* with std::string (`#904 <https://github.com/ros2/geometry2/issues/904>`_)
-* Fix misleading extrapolation time in buffer_core (`#832 <https://github.com/ros2/geometry2/issues/832>`_) (`#896 <https://github.com/ros2/geometry2/issues/896>`_)
-* Contributors: Alejandro Hernández Cordero, Auguste Lalande, Emerson Knapp, Pavel Guzenfeld, Selim Ağırman
+* local variable tf2 no longer shadows the tf2:: (`#903 <https://github.com/ros2/geometry2/issues/903>`_) (`#916 <https://github.com/ros2/geometry2/issues/916>`_)
+* Fix misleading extrapolation time in buffer_core (`#832 <https://github.com/ros2/geometry2/issues/832>`_) (`#896 <https://github.com/ros2/geometry2/issues/896>`_) (`#897 <https://github.com/ros2/geometry2/issues/897>`_)
+* Contributors: mergify[bot]
 
-0.45.6 (2026-01-09)
+0.41.6 (2025-12-18)
 -------------------
+* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (manual kilted backport of `#856 <https://github.com/ros2/geometry2/issues/856>`_) (`#885 <https://github.com/ros2/geometry2/issues/885>`_)
+* static function to crate quaternions directly from rotation added (`#881 <https://github.com/ros2/geometry2/issues/881>`_) (`#882 <https://github.com/ros2/geometry2/issues/882>`_)
+* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_) (`#875 <https://github.com/ros2/geometry2/issues/875>`_)
+* Contributors: R Kent James, mergify[bot]
 
-0.45.5 (2025-12-16)
+0.41.5 (2025-11-28)
 -------------------
-* static function to crate quaternions directly from rotation added (`#881 <https://github.com/ros2/geometry2/issues/881>`_)
-* Expose Doxygen output in tf2, showing former Doxygen front page also as README.md (`#871 <https://github.com/ros2/geometry2/issues/871>`_)
-* Move \author tags to \file \brief (`#870 <https://github.com/ros2/geometry2/issues/870>`_)
-* Modernize conf.py files to only include modified Copyright, eliminati… (`#865 <https://github.com/ros2/geometry2/issues/865>`_)
-* Contributors: Markus Bader, R Kent James
+* Fix various documentation errors in tf2 (backport `#857 <https://github.com/ros2/geometry2/issues/857>`_) (`#863 <https://github.com/ros2/geometry2/issues/863>`_)
+* Fix REP url locations (`#847 <https://github.com/ros2/geometry2/issues/847>`_) (`#848 <https://github.com/ros2/geometry2/issues/848>`_)
+* Contributors: mergify[bot]
 
-0.45.4 (2025-11-28)
--------------------
-* Fix various documentation errors in tf2 (`#857 <https://github.com/ros2/geometry2/issues/857>`_)
-* Contributors: R Kent James
-
-0.45.3 (2025-11-24)
--------------------
-* Disable TAGFILES in rosdoc2 to separate namespace tf2 documentation into packages (`#856 <https://github.com/ros2/geometry2/issues/856>`_)
-* Fix REP url locations (`#847 <https://github.com/ros2/geometry2/issues/847>`_)
-* Contributors: R Kent James, Tim Clephas
-
-0.45.2 (2025-11-07)
--------------------
-* Adding explicit handling for normalization of zero-quaternions (`#839 <https://github.com/ros2/geometry2/issues/839>`_)
-* Cleanup TF2 dependencies (`#843 <https://github.com/ros2/geometry2/issues/843>`_)
-* Contributors: Chris Lalancette, Simon Jusner
-
-0.45.1 (2025-10-17)
+0.41.4 (2025-11-07)
 -------------------
 
-0.45.0 (2025-08-27)
--------------------
-* Added tf2 documentation to docs.ros.org (`#671 <https://github.com/ros2/geometry2/issues/671>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.44.0 (2025-07-29)
--------------------
-* Add RPY quaternion constructor (`#806 <https://github.com/ros2/geometry2/issues/806>`_)
-* Contributors: Alireza Moayyedi
-
-0.43.1 (2025-07-18)
+0.41.3 (2025-10-17)
 -------------------
 
-0.43.0 (2025-07-01)
+0.41.2 (2025-07-24)
 -------------------
 
-0.42.2 (2025-06-19)
--------------------
-* Default initialize TransformStorage's frame_id\_ and child_frame_id\_ with UINT32_MAX (`#783 <https://github.com/ros2/geometry2/issues/783>`_)
-* Contributors: Andreas
-
-0.42.1 (2025-05-14)
--------------------
-* Removed deprecated headers tf2 (`#789 <https://github.com/ros2/geometry2/issues/789>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.42.0 (2025-04-25)
+0.41.1 (2025-06-23)
 -------------------
 
 0.41.0 (2025-04-25)
