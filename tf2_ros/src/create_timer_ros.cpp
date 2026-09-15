@@ -32,11 +32,11 @@
 #include <functional>
 #include <mutex>
 #include <stdexcept>
-#include <utility>
 
 #include "tf2/time.hpp"
 
 #include "rclcpp/create_timer.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 namespace tf2_ros
 {
@@ -48,6 +48,16 @@ CreateTimerROS::CreateTimerROS(
   rclcpp::CallbackGroup::SharedPtr callback_group)
 : node_interfaces_(std::move(node_interfaces)), next_timer_handle_index_(0),
   callback_group_(callback_group)
+{
+}
+
+CreateTimerROS::CreateTimerROS(
+  rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node_base,
+  rclcpp::node_interfaces::NodeTimersInterface::SharedPtr node_timers,
+  rclcpp::CallbackGroup::SharedPtr callback_group)
+: CreateTimerROS(rclcpp::node_interfaces::NodeInterfaces<
+      rclcpp::node_interfaces::NodeBaseInterface,
+      rclcpp::node_interfaces::NodeTimersInterface>(node_base, node_timers), callback_group)
 {
 }
 

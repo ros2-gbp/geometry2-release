@@ -27,6 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <chrono>
 #include <memory>
 
 #include "gtest/gtest.h"
@@ -36,13 +37,7 @@
 #include "tf2_ros/transform_listener.hpp"
 
 #include "builtin_interfaces/msg/time.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "rclcpp/clock.hpp"
-#include "rclcpp/executors/single_threaded_executor.hpp"
-#include "rclcpp/node.hpp"
-#include "rclcpp/rate.hpp"
-#include "rclcpp/time.hpp"
-#include "rclcpp/utilities.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "rosgraph_msgs/msg/clock.hpp"
 
 void spin_for_a_second(std::shared_ptr<rclcpp::Node> & node)
@@ -55,6 +50,85 @@ void spin_for_a_second(std::shared_ptr<rclcpp::Node> & node)
     r.sleep();
     executor.spin_some();
   }
+}
+
+TEST(tf2_ros_time_reset_test, time_backwards_deprecated)
+{
+  std::shared_ptr<rclcpp::Node> node_ = std::make_shared<rclcpp::Node>(
+    "transform_listener_backwards_reset");
+  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
+
+  #ifdef _MSC_VER
+  #pragma warning(push)
+  #pragma warning(disable : 4996)
+  #else
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+  #endif
+
+  tf2_ros::Buffer buffer(clock);
+  tf2_ros::TransformListener tfl(buffer, node_);
+  tf2_ros::TransformBroadcaster tfb(node_);
+
+  #ifdef _MSC_VER
+  #pragma warning(pop)
+  #else
+  #pragma GCC diagnostic pop
+  #endif
+
+  auto clock_pub = node_->create_publisher<rosgraph_msgs::msg::Clock>("/clock", 1);
+
+  // basic test
+  ASSERT_FALSE(buffer.canTransform("foo", "bar", rclcpp::Time(101, 0)));
+
+  // make sure endpoints have discovered each other
+  spin_for_a_second(node_);
+
+  rosgraph_msgs::msg::Clock c;
+  c.clock = rclcpp::Time(100, 0);
+  clock_pub->publish(c);
+
+  // set the transform
+  geometry_msgs::msg::TransformStamped msg;
+  msg.header.stamp = rclcpp::Time(100, 0);
+  msg.header.frame_id = "foo";
+  msg.child_frame_id = "bar";
+  msg.transform.rotation.w = 0.0;
+  msg.transform.rotation.x = 1.0;
+  msg.transform.rotation.y = 0.0;
+  msg.transform.rotation.z = 0.0;
+  tfb.sendTransform(msg);
+  msg.header.stamp = rclcpp::Time(102, 0);
+  tfb.sendTransform(msg);
+
+  // make sure it arrives
+  spin_for_a_second(node_);
+
+  // verify it's been set
+  ASSERT_TRUE(buffer.canTransform("foo", "bar", rclcpp::Time(101, 0)));
+
+  // TODO(ahcorde): review this
+  // c.clock.sec = 90;
+  // c.clock.nanosec = 0;
+  // clock_pub->publish(c);
+  //
+  // // make sure it arrives
+  // rclcpp::spin_some(node_);
+  // sleep(1);
+  //
+  // //Send anoterh message to trigger clock test on an unrelated frame
+  // msg.header.stamp.sec = 110;
+  // msg.header.stamp.nanosec = 0;
+  // msg.header.frame_id = "foo2";
+  // msg.child_frame_id = "bar2";
+  // tfb.sendTransform(msg);
+  //
+  // // make sure it arrives
+  // rclcpp::spin_some(node_);
+  // sleep(1);
+  //
+  // //verify the data's been cleared
+  // ASSERT_FALSE(buffer.canTransform("foo", "bar", tf2::timeFromSec(101)));
 }
 
 TEST(tf2_ros_time_reset_test, time_backwards)

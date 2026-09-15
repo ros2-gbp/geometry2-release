@@ -37,9 +37,7 @@
 #include "tf2_ros/visibility_control.hpp"
 #include "tf2/time.hpp"
 
-#include "rclcpp/callback_group.hpp"
-#include "rclcpp/clock.hpp"
-#include "rclcpp/timer.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "rclcpp/node_interfaces/node_interfaces.hpp"
 #include "rclcpp/node_interfaces/get_node_base_interface.hpp"
 #include "rclcpp/node_interfaces/get_node_timers_interface.hpp"
@@ -63,6 +61,13 @@ public:
   TF2_ROS_PUBLIC
   CreateTimerROS(
     RequiredInterfaces node_interfaces,
+    rclcpp::CallbackGroup::SharedPtr callback_group = nullptr);
+
+  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of multiple interfaces")]]
+  TF2_ROS_PUBLIC
+  CreateTimerROS(
+    NodeBaseInterface::SharedPtr node_base,
+    NodeTimersInterface::SharedPtr node_timers,
     rclcpp::CallbackGroup::SharedPtr callback_group = nullptr);
 
   virtual ~CreateTimerROS() = default;

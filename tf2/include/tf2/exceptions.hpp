@@ -66,7 +66,10 @@ class TransformException : public std::runtime_error
 {
 public:
   TF2_PUBLIC
-  explicit TransformException(const std::string errorDescription);
+  explicit TransformException(const std::string errorDescription)
+  : std::runtime_error(errorDescription)
+  {
+  }
 };
 
 
@@ -79,7 +82,10 @@ class ConnectivityException : public TransformException
 {
 public:
   TF2_PUBLIC
-  explicit ConnectivityException(const std::string errorDescription);
+  explicit ConnectivityException(const std::string errorDescription)
+  : tf2::TransformException(errorDescription)
+  {
+  }
 };
 
 
@@ -95,7 +101,10 @@ class LookupException : public TransformException
 {
 public:
   TF2_PUBLIC
-  explicit LookupException(const std::string errorDescription);
+  explicit LookupException(const std::string errorDescription)
+  : tf2::TransformException(errorDescription)
+  {
+  }
 };
 
 /** \brief An exception class to notify that the requested value would have required extrapolation beyond current limits.
@@ -105,7 +114,10 @@ class ExtrapolationException : public TransformException
 {
 public:
   TF2_PUBLIC
-  explicit ExtrapolationException(const std::string errorDescription);
+  explicit ExtrapolationException(const std::string errorDescription)
+  : tf2::TransformException(errorDescription)
+  {
+  }
 };
 
 /** \brief An exception class to notify that the requested value would have required extrapolation in the past.
@@ -115,7 +127,10 @@ class BackwardExtrapolationException : public ExtrapolationException
 {
 public:
   TF2_PUBLIC
-  explicit BackwardExtrapolationException(const std::string errorDescription);
+  explicit BackwardExtrapolationException(const std::string errorDescription)
+  : ExtrapolationException(errorDescription)
+  {
+  }
 };
 
 /** \brief An exception class to notify that the requested value would have required extrapolation in the future.
@@ -125,7 +140,10 @@ class ForwardExtrapolationException : public ExtrapolationException
 {
 public:
   TF2_PUBLIC
-  explicit ForwardExtrapolationException(const std::string errorDescription);
+  explicit ForwardExtrapolationException(const std::string errorDescription)
+  : ExtrapolationException(errorDescription)
+  {
+  }
 };
 
 /** \brief An exception class to notify that the requested value would have required extrapolation, but only zero or one data is available, so not enough for extrapolation.
@@ -135,7 +153,10 @@ class NoDataForExtrapolationException : public ExtrapolationException
 {
 public:
   TF2_PUBLIC
-  explicit NoDataForExtrapolationException(const std::string errorDescription);
+  explicit NoDataForExtrapolationException(const std::string errorDescription)
+  : ExtrapolationException(errorDescription)
+  {
+  }
 };
 
 /** \brief An exception class to notify that one of the arguments is invalid
@@ -147,7 +168,8 @@ class InvalidArgumentException : public TransformException
 {
 public:
   TF2_PUBLIC
-  explicit InvalidArgumentException(const std::string errorDescription);
+  explicit InvalidArgumentException(const std::string errorDescription)
+  : tf2::TransformException(errorDescription) {}
 };
 
 /** \brief An exception class to notify that a timeout has occurred
@@ -158,7 +180,10 @@ class TimeoutException : public TransformException
 {
 public:
   TF2_PUBLIC
-  explicit TimeoutException(const std::string errorDescription);
+  explicit TimeoutException(const std::string errorDescription)
+  : tf2::TransformException(errorDescription)
+  {
+  }
 };
 }  // namespace tf2
 #endif  // TF2__EXCEPTIONS_HPP_

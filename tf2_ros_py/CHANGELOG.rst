@@ -2,25 +2,19 @@
 Changelog for package tf2_ros_py
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.46.4 (2026-09-15)
--------------------
-* Enable RMW isolation for single process tests (`#983 <https://github.com/ros2/geometry2/issues/983>`_)
-* Contributors: yadunund
+0.45.10 (2026-09-15)
+--------------------
+* Enable RMW isolation for single process tests (backport `#983 <https://github.com/ros2/geometry2/issues/983>`_) (`#985 <https://github.com/ros2/geometry2/issues/985>`_)
+* Contributors: mergify[bot]
 
-0.46.3 (2026-07-28)
--------------------
-
-0.46.2 (2026-07-14)
+0.45.9 (2026-07-28)
 -------------------
 
-0.46.1 (2026-06-29)
+0.45.8 (2026-07-14)
 -------------------
-
-0.46.0 (2026-05-07)
--------------------
-* tf2_ros_py: Make node parameter optional in TransformListener (`#935 <https://github.com/ros2/geometry2/issues/935>`_)
-* tf2_ros_py: Ignore ExternalShutdownException in background thread (`#930 <https://github.com/ros2/geometry2/issues/930>`_)
-* Contributors: Martin Pecka
+* tf2_ros_py: Make node parameter optional in TransformListener (`#935 <https://github.com/ros2/geometry2/issues/935>`_) (`#936 <https://github.com/ros2/geometry2/issues/936>`_)
+* tf2_ros_py: Ignore ExternalShutdownException in background thread (`#930 <https://github.com/ros2/geometry2/issues/930>`_) (`#931 <https://github.com/ros2/geometry2/issues/931>`_)
+* Contributors: mergify[bot]
 
 0.45.7 (2026-04-09)
 -------------------

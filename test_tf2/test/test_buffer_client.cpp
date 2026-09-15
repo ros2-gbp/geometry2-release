@@ -36,10 +36,7 @@
 *********************************************************************/
 #include <gtest/gtest.h>
 
-#include <rclcpp/executors/single_threaded_executor.hpp>
-#include <rclcpp/logging.hpp>
-#include <rclcpp/node.hpp>
-#include <rclcpp/utilities.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <tf2_bullet/tf2_bullet.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <tf2_kdl/tf2_kdl.hpp>

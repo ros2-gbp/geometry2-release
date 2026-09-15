@@ -29,6 +29,7 @@
 /** \author Wim Meeussen */
 
 #include "tf2_bullet/tf2_bullet.hpp"
+#include "rclcpp/rclcpp.hpp"
 #include "gtest/gtest.h"
 #include "tf2/convert.hpp"
 

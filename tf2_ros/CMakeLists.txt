@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.20)
 project(tf2_ros)
 
+# Default to C++17
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
 endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_gen_version_h REQUIRED)
-find_package(ament_cmake_ros_core REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(message_filters REQUIRED)
@@ -16,22 +20,16 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rcpputils REQUIRED)
-find_package(rcutils REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_msgs REQUIRED)
 
 # tf2_ros library
 add_library(${PROJECT_NAME} SHARED
-  src/async_buffer_interface.cpp
   src/buffer.cpp
-  src/buffer_interface.cpp
-  src/create_timer_interface.cpp
   src/create_timer_ros.cpp
   src/transform_listener.cpp
   src/buffer_client.cpp
   src/buffer_server.cpp
-  src/message_filter.cpp
-  src/qos.cpp
   src/transform_broadcaster.cpp
   src/static_transform_broadcaster.cpp
 )
@@ -47,18 +45,14 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   rcpputils::rcpputils
   tf2::tf2
   tf2_msgs::tf2_msgs)
-target_link_libraries(${PROJECT_NAME} PRIVATE
-  ament_cmake_ros_core::ament_ros_defaults)
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE "TF2_ROS_BUILDING_DLL")
 
 # buffer_server executable
 add_executable(buffer_server src/buffer_server_main.cpp)
-target_link_libraries(buffer_server PRIVATE
-  ament_cmake_ros_core::ament_ros_defaults
+target_link_libraries(buffer_server
   ${PROJECT_NAME}
   rclcpp::rclcpp
-  tf2::tf2
 )
 
 add_library(static_transform_broadcaster_node SHARED
@@ -71,11 +65,9 @@ target_include_directories(static_transform_broadcaster_node PUBLIC
 target_link_libraries(static_transform_broadcaster_node PUBLIC
   ${PROJECT_NAME}
   geometry_msgs::geometry_msgs
-  rcl_interfaces::rcl_interfaces
   rclcpp::rclcpp
   tf2_msgs::tf2_msgs)
 target_link_libraries(static_transform_broadcaster_node PRIVATE
-  ament_cmake_ros_core::ament_ros_defaults
   rclcpp_components::component)
 rclcpp_components_register_nodes(static_transform_broadcaster_node "tf2_ros::StaticTransformBroadcasterNode")
 
@@ -83,11 +75,9 @@ rclcpp_components_register_nodes(static_transform_broadcaster_node "tf2_ros::Sta
 add_executable(static_transform_publisher
   src/static_transform_broadcaster_program.cpp
 )
-target_link_libraries(static_transform_publisher PRIVATE
-  ament_cmake_ros_core::ament_ros_defaults
+target_link_libraries(static_transform_publisher
   ${PROJECT_NAME}
   rclcpp::rclcpp
-  rcutils::rcutils
   static_transform_broadcaster_node
   tf2::tf2
 )
@@ -95,22 +85,17 @@ target_link_libraries(static_transform_publisher PRIVATE
 add_executable(tf2_echo
   src/tf2_echo.cpp
 )
-target_link_libraries(tf2_echo PRIVATE
-  ament_cmake_ros_core::ament_ros_defaults
+target_link_libraries(tf2_echo
   ${PROJECT_NAME}
-  geometry_msgs::geometry_msgs
   rclcpp::rclcpp
-  tf2::tf2
 )
 
 add_executable(tf2_monitor
   src/tf2_monitor.cpp
 )
-target_link_libraries(tf2_monitor PRIVATE
-  ament_cmake_ros_core::ament_ros_defaults
+target_link_libraries(tf2_monitor
   ${PROJECT_NAME}
   rclcpp::rclcpp
-  tf2::tf2
   tf2_msgs::tf2_msgs
 )
 
@@ -157,7 +142,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(test_buffer test/test_buffer.cpp)
   target_link_libraries(test_buffer
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   rclcpp::rclcpp
@@ -165,7 +149,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(test_buffer_server test/test_buffer_server.cpp)
   target_link_libraries(test_buffer_server
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   rclcpp::rclcpp
@@ -175,7 +158,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(test_buffer_client test/test_buffer_client.cpp)
   target_link_libraries(test_buffer_client
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   rclcpp::rclcpp
@@ -187,7 +169,6 @@ if(BUILD_TESTING)
   # multiple target frames and a non-zero time tolerance
   ament_add_ros_isolated_gtest(${PROJECT_NAME}_test_message_filter test/message_filter_test.cpp)
   target_link_libraries(${PROJECT_NAME}_test_message_filter
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   geometry_msgs::geometry_msgs
@@ -197,7 +178,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(${PROJECT_NAME}_test_transform_listener test/test_transform_listener.cpp)
   target_link_libraries(${PROJECT_NAME}_test_transform_listener
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   rclcpp::rclcpp
@@ -205,7 +185,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(${PROJECT_NAME}_test_static_transform_broadcaster test/test_static_transform_broadcaster.cpp)
   target_link_libraries(${PROJECT_NAME}_test_static_transform_broadcaster
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   rclcpp::rclcpp
@@ -213,7 +192,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(${PROJECT_NAME}_test_transform_broadcaster test/test_transform_broadcaster.cpp)
   target_link_libraries(${PROJECT_NAME}_test_transform_broadcaster
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   rclcpp::rclcpp
@@ -221,7 +199,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(${PROJECT_NAME}_test_time_reset test/time_reset_test.cpp)
   target_link_libraries(${PROJECT_NAME}_test_time_reset
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     rosgraph_msgs::rosgraph_msgs
     # Used, but not linked to test tf2_ros's exports:
@@ -231,7 +208,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(${PROJECT_NAME}_test_velocity test/velocity_test.cpp)
   target_link_libraries(${PROJECT_NAME}_test_velocity
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   builtin_interfaces::builtin_interfaces
@@ -240,7 +216,6 @@ if(BUILD_TESTING)
 
   ament_add_ros_isolated_gtest(${PROJECT_NAME}_test_listener test/listener_unittest.cpp)
   target_link_libraries(${PROJECT_NAME}_test_listener
-    ament_cmake_ros_core::ament_ros_defaults
     ${PROJECT_NAME}
     # Used, but not linked to test tf2_ros's exports:
     #   builtin_interfaces::builtin_interfaces

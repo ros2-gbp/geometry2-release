@@ -1,12 +1,17 @@
 cmake_minimum_required(VERSION 3.20)
 project(tf2)
 
+# Default to C++17
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
 endif()
 
 find_package(ament_cmake_ros REQUIRED)
-find_package(ament_cmake_ros_core REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(rcutils REQUIRED)
@@ -15,20 +20,13 @@ find_package(rosidl_runtime_cpp REQUIRED)
 # export user definitions
 
 #CPP Libraries
-add_library(tf2
-  src/cache.cpp
-  src/buffer_core.cpp
-  src/convert.cpp
-  src/exceptions.cpp
-  src/static_cache.cpp
-  src/time.cpp)
+add_library(tf2 src/cache.cpp src/buffer_core.cpp src/static_cache.cpp src/time.cpp)
 target_include_directories(tf2 PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 target_link_libraries(tf2 PUBLIC
   geometry_msgs::geometry_msgs)
 target_link_libraries(tf2 PRIVATE
-  ament_cmake_ros_core::ament_ros_defaults
   builtin_interfaces::builtin_interfaces
   rcutils::rcutils)
 
@@ -90,26 +88,22 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_cache_unittest test/cache_unittest.cpp)
   if(TARGET test_cache_unittest)
-    target_link_libraries(test_cache_unittest
-      ament_cmake_ros_core::ament_ros_defaults tf2)
+    target_link_libraries(test_cache_unittest tf2)
   endif()
 
   ament_add_google_benchmark(cache_benchmark test/cache_benchmark.cpp)
   if(TARGET cache_benchmark)
-    target_link_libraries(cache_benchmark
-      ament_cmake_ros_core::ament_ros_defaults tf2)
+    target_link_libraries(cache_benchmark tf2)
   endif()
 
   ament_add_gtest(test_static_cache_unittest test/static_cache_test.cpp)
   if(TARGET test_static_cache_unittest)
-    target_link_libraries(test_static_cache_unittest
-      ament_cmake_ros_core::ament_ros_defaults tf2)
+    target_link_libraries(test_static_cache_unittest tf2)
   endif()
 
   ament_add_gtest(test_simple_tf2_core test/simple_tf2_core.cpp)
   if(TARGET test_simple_tf2_core)
     target_link_libraries(test_simple_tf2_core
-      ament_cmake_ros_core::ament_ros_defaults
       builtin_interfaces::builtin_interfaces
       tf2
       # Used, but not linked to test tf2's exports:
@@ -119,14 +113,12 @@ if(BUILD_TESTING)
 
   ament_add_gtest(test_time test/test_time.cpp)
   if(TARGET test_time)
-    target_link_libraries(test_time
-      ament_cmake_ros_core::ament_ros_defaults tf2)
+    target_link_libraries(test_time tf2)
   endif()
 
   ament_add_gtest(test_storage test/test_storage.cpp)
   if(TARGET test_storage)
-    target_link_libraries(test_storage
-      ament_cmake_ros_core::ament_ros_defaults tf2)
+    target_link_libraries(test_storage tf2)
   endif()
 endif()
 

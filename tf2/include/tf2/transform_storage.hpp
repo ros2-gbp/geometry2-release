@@ -55,16 +55,37 @@ public:
     CompactFrameID child_frame_id);
 
   TF2_PUBLIC
-  TransformStorage(const TransformStorage & rhs);
+  TransformStorage(const TransformStorage & rhs)
+  {
+    *this = rhs;
+  }
 
   TF2_PUBLIC
-  TransformStorage & operator=(const TransformStorage & rhs);
+  TransformStorage & operator=(const TransformStorage & rhs)
+  {
+    rotation_ = rhs.rotation_;
+    translation_ = rhs.translation_;
+    stamp_ = rhs.stamp_;
+    frame_id_ = rhs.frame_id_;
+    child_frame_id_ = rhs.child_frame_id_;
+    return *this;
+  }
 
   TF2_PUBLIC
-  bool operator==(const TransformStorage & rhs) const;
+  bool operator==(const TransformStorage & rhs) const
+  {
+    return (this->rotation_ == rhs.rotation_) &&
+           (this->translation_ == rhs.translation_) &&
+           (this->stamp_ == rhs.stamp_) &&
+           (this->frame_id_ == rhs.frame_id_) &&
+           (this->child_frame_id_ == rhs.child_frame_id_);
+  }
 
   TF2_PUBLIC
-  bool operator!=(const TransformStorage & rhs) const;
+  bool operator!=(const TransformStorage & rhs) const
+  {
+    return !(*this == rhs);
+  }
 
   tf2::Quaternion rotation_;
   tf2::Vector3 translation_;

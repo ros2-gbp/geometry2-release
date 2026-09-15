@@ -58,17 +58,7 @@
 #include "rclcpp/node_interfaces/node_services_interface.hpp"
 #include "rclcpp/node_interfaces/node_logging_interface.hpp"
 #include "rclcpp/node_interfaces/node_interfaces.hpp"
-#include "rclcpp/clock.hpp"
-#include "rclcpp/duration.hpp"
-#include "rclcpp/logger.hpp"
-#include "rclcpp/qos.hpp"
-#include "rclcpp/service.hpp"
-#include "rclcpp/time.hpp"
-
-namespace rclcpp
-{
-class Node;
-}  // namespace rclcpp
+#include "rclcpp/rclcpp.hpp"
 
 namespace tf2_ros
 {
@@ -105,6 +95,24 @@ public:
     RequiredInterfaces node_interfaces = RequiredInterfaces(),
     const rclcpp::QoS & qos = rclcpp::ServicesQoS());
 
+  /** \brief  Constructor for a Buffer object
+   * \param clock A clock to use for time and sleeping
+   * \param cache_time How long to keep a history of transforms
+   * \param node If passed advertise the view_frames service that exposes debugging information from the buffer
+   * \param  qos If passed change the quality of service of the frames_server_ service
+   */
+  template<class NodeT = rclcpp::Node::SharedPtr, class AllocatorT = std::allocator<void>,
+    std::enable_if_t<rcpputils::is_pointer<NodeT>::value, bool> = true>
+  [[deprecated("Use rclcpp::node_interfaces::NodeInterfaces instead of NoteT")]]
+  Buffer(
+    rclcpp::Clock::SharedPtr clock,
+    tf2::Duration cache_time = tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME),
+    NodeT && node = NodeT(),
+    const rclcpp::QoS & qos = rclcpp::ServicesQoS())
+  : Buffer(clock, cache_time, *node, qos)
+  {
+  }
+
   /** \brief Get the transform between two frames by frame ID.
    * \param target_frame The frame to which data should be transformed
    * \param source_frame The frame where the data originated
@@ -130,7 +138,10 @@ public:
   lookupTransform(
     const std::string & target_frame, const std::string & source_frame,
     const rclcpp::Time & time,
-    const rclcpp::Duration timeout = rclcpp::Duration::from_nanoseconds(0)) const;
+    const rclcpp::Duration timeout = rclcpp::Duration::from_nanoseconds(0)) const
+  {
+    return lookupTransform(target_frame, source_frame, fromRclcpp(time), fromRclcpp(timeout));
+  }
 
   /** \brief Get the transform between two frames by frame ID assuming fixed frame.
    * \param target_frame The frame to which data should be transformed
@@ -162,7 +173,13 @@ public:
     const std::string & target_frame, const rclcpp::Time & target_time,
     const std::string & source_frame, const rclcpp::Time & source_time,
     const std::string & fixed_frame,
-    const rclcpp::Duration timeout = rclcpp::Duration::from_nanoseconds(0)) const;
+    const rclcpp::Duration timeout = rclcpp::Duration::from_nanoseconds(0)) const
+  {
+    return lookupTransform(
+      target_frame, fromRclcpp(target_time),
+      source_frame, fromRclcpp(source_time),
+      fixed_frame, fromRclcpp(timeout));
+  }
 
   /** \brief Test if a transform is possible
    * \param target_frame The frame into which to transform
@@ -189,7 +206,10 @@ public:
     const std::string & target_frame, const std::string & source_frame,
     const rclcpp::Time & time,
     const rclcpp::Duration timeout = rclcpp::Duration::from_nanoseconds(0),
-    std::string * errstr = NULL) const;
+    std::string * errstr = NULL) const
+  {
+    return canTransform(target_frame, source_frame, fromRclcpp(time), fromRclcpp(timeout), errstr);
+  }
 
   /** \brief Test if a transform is possible
    * \param target_frame The frame into which to transform
@@ -222,7 +242,14 @@ public:
     const std::string & source_frame, const rclcpp::Time & source_time,
     const std::string & fixed_frame,
     const rclcpp::Duration timeout = rclcpp::Duration::from_nanoseconds(0),
-    std::string * errstr = NULL) const;
+    std::string * errstr = NULL) const
+  {
+    return canTransform(
+      target_frame, fromRclcpp(target_time),
+      source_frame, fromRclcpp(source_time),
+      fixed_frame, fromRclcpp(timeout),
+      errstr);
+  }
 
   /** \brief Wait for a transform between two frames to become available.
    *
@@ -256,7 +283,13 @@ public:
   waitForTransform(
     const std::string & target_frame, const std::string & source_frame,
     const rclcpp::Time & time,
-    const rclcpp::Duration & timeout, TransformReadyCallback callback);
+    const rclcpp::Duration & timeout, TransformReadyCallback callback)
+  {
+    return waitForTransform(
+      target_frame, source_frame,
+      fromRclcpp(time), fromRclcpp(timeout),
+      callback);
+  }
 
   /**
    * \brief Cancel the future to make sure the callback of requested transform is clean.
@@ -267,8 +300,11 @@ public:
   cancel(const TransformStampedFuture & ts_future) override;
 
   TF2_ROS_PUBLIC
-  void
-  setCreateTimerInterface(CreateTimerInterface::SharedPtr create_timer_interface);
+  inline void
+  setCreateTimerInterface(CreateTimerInterface::SharedPtr create_timer_interface)
+  {
+    timer_interface_ = create_timer_interface;
+  }
 
 private:
   void timerCallback(

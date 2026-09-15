@@ -2,29 +2,17 @@
 Changelog for package test_tf2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.46.4 (2026-09-15)
--------------------
-* granular rclcpp/rclcpp.hpp and include what you use (`#984 <https://github.com/ros2/geometry2/issues/984>`_)
-* Enable RMW isolation for single process tests (`#983 <https://github.com/ros2/geometry2/issues/983>`_)
-* Contributors: Alejandro Hernández Cordero, yadunund
+0.45.10 (2026-09-15)
+--------------------
+* Enable RMW isolation for single process tests (backport `#983 <https://github.com/ros2/geometry2/issues/983>`_) (`#985 <https://github.com/ros2/geometry2/issues/985>`_)
+* Contributors: mergify[bot]
 
-0.46.3 (2026-07-28)
+0.45.9 (2026-07-28)
 -------------------
-* Removed redundant header in tf2_eigen (`#964 <https://github.com/ros2/geometry2/issues/964>`_)
-* Run RMW tests in isolation (`#960 <https://github.com/ros2/geometry2/issues/960>`_)
-* Contributors: Alejandro Hernández Cordero, yadunund
+* Run RMW tests in isolation (`#960 <https://github.com/ros2/geometry2/issues/960>`_) (`#961 <https://github.com/ros2/geometry2/issues/961>`_)
+* Contributors: mergify[bot]
 
-0.46.2 (2026-07-14)
--------------------
-* use C++ 20 in default. (`#953 <https://github.com/ros2/geometry2/issues/953>`_)
-* Contributors: Tomoya Fujita
-
-0.46.1 (2026-06-29)
--------------------
-* Optimize header includes (`#952 <https://github.com/ros2/geometry2/issues/952>`_)
-* Contributors: Alejandro Hernández Cordero
-
-0.46.0 (2026-05-07)
+0.45.8 (2026-07-14)
 -------------------
 
 0.45.7 (2026-04-09)

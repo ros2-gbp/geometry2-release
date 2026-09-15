@@ -39,10 +39,7 @@
 #include <builtin_interfaces/msg/time.hpp>
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
-#include <rclcpp/clock.hpp>
-#include <rclcpp/node.hpp>
-#include <rclcpp/time.hpp>
-#include <rclcpp/utilities.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <tf2/buffer_core.hpp>
 #include <tf2/LinearMath/Quaternion.hpp>
 #include <tf2/LinearMath/Vector3.hpp>

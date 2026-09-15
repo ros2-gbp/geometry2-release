@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>tf2_eigen_kdl</name>
-  <version>0.46.4</version>
+  <version>0.45.10</version>
   <description>
 
      Conversion functions between:
@@ -18,7 +18,6 @@
   <author>Stuart Glaser</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <buildtool_depend>ament_cmake_ros_core</buildtool_depend>
 
   <build_depend>eigen</build_depend>
   <build_depend>liborocos-kdl-dev</build_depend>

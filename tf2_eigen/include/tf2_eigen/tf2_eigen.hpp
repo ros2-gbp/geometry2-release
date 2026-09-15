@@ -42,6 +42,7 @@
 #include "geometry_msgs/msg/twist.hpp"
 
 #include "tf2/convert.hpp"
+#include "tf2_ros/buffer.hpp"
 #include "tf2_ros/buffer_interface.hpp"
 
 namespace tf2

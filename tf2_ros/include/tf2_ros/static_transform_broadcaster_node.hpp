@@ -35,8 +35,7 @@
 #include "tf2_ros/static_transform_broadcaster.hpp"
 #include "tf2_ros/static_transform_broadcaster_visibility_control.hpp"
 
-#include "rclcpp/node.hpp"
-#include "rclcpp/node_options.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 namespace tf2_ros
 {

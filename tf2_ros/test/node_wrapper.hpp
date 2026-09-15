@@ -33,12 +33,8 @@
 #include <memory>
 #include <string>
 
-#include "rclcpp/node.hpp"
-#include "rclcpp/node_interfaces/node_base_interface.hpp"
-#include "rclcpp/node_interfaces/node_logging_interface.hpp"
-#include "rclcpp/node_interfaces/node_parameters_interface.hpp"
-#include "rclcpp/node_interfaces/node_services_interface.hpp"
-#include "rclcpp/node_interfaces/node_topics_interface.hpp"
+#include "gtest/gtest.h"
+#include "rclcpp/rclcpp.hpp"
 
 class NodeWrapper
 {
