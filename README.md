@@ -1,3 +1,43 @@
+## geometry2 (jazzy) - 0.36.23-1
+
+The packages in the `geometry2` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release --rosdistro jazzy --track jazzy geometry2` on `Tue, 15 Sep 2026 08:57:57 -0000`
+
+These packages were released:
+- `examples_tf2_py`
+- `geometry2`
+- `tf2`
+- `tf2_bullet`
+- `tf2_eigen`
+- `tf2_eigen_kdl`
+- `tf2_geometry_msgs`
+- `tf2_kdl`
+- `tf2_msgs`
+- `tf2_py`
+- `tf2_ros`
+- `tf2_ros_py`
+- `tf2_sensor_msgs`
+- `tf2_tools`
+
+These packages were explicitly ignored:
+- `test_tf2`
+
+Version of package(s) in repository `geometry2`:
+
+- upstream repository: https://github.com/ros2/geometry2.git
+- release repository: https://github.com/ros2-gbp/geometry2-release.git
+- rosdistro version: `0.36.22-1`
+- old version: `0.36.22-1`
+- new version: `0.36.23-1`
+
+Versions of tools used:
+
+- bloom version: `0.14.4`
+- catkin_pkg version: `1.1.1`
+- rosdep version: `0.27.0`
+- rosdistro version: `1.1.0`
+- vcstools version: `0.1.42`
+
+
 ## geometry2 (kilted) - 0.41.10-1
 
 The packages in the `geometry2` repository were released into the `kilted` distro by running `/usr/bin/bloom-release --rosdistro kilted --track kilted geometry2` on `Tue, 15 Sep 2026 08:36:31 -0000`
