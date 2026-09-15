@@ -31,6 +31,7 @@
 #include <exception>
 #include <future>
 #include <memory>
+#include <thread>
 #include <unordered_map>
 
 #include "gtest/gtest.h"
@@ -336,6 +337,34 @@ TEST(test_buffer, can_transform_without_dedicated_thread)
   EXPECT_DOUBLE_EQ(transform.transform.translation.z, output_rclcpp.transform.translation.z);
 }
 
+// Regression test: timeout must be always respected regardless of duration
+TEST(test_buffer, can_transform_timeout_is_respected)
+{
+  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
+  tf2_ros::Buffer buffer(clock);
+  buffer.setUsingDedicatedThread(true);
+
+  struct TestCase
+  {
+    double timeout_s;
+    double max_s;
+  };
+  for (const auto & tc : std::vector<TestCase>{
+    {0.000, 0.001},    // zero: returns immediately, no sleep
+    {0.002, 0.004},    // sub-10ms: must not inflate to hardcoded 10ms sleep
+    {0.020, 0.040},    // above 10ms: loop runs multiple 10ms sleep iterations
+  })
+  {
+    const rclcpp::Time start = clock->now();
+    EXPECT_FALSE(buffer.canTransform(
+        "nonexistent_target", "nonexistent_source",
+        tf2::TimePointZero,
+        tf2::durationFromSec(tc.timeout_s)));
+    const rclcpp::Duration elapsed = clock->now() - start;
+    EXPECT_LT(elapsed, rclcpp::Duration::from_seconds(tc.max_s)) << "timeout=" << tc.timeout_s;
+  }
+}
+
 TEST(test_buffer, wait_for_transform_valid)
 {
   rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
@@ -545,6 +574,150 @@ TEST(test_buffer, timer_ros_wait_for_transform_race)
   EXPECT_FALSE(callback_timeout);
   rclcpp::shutdown();
 }
+
+// Regression test: setTransform arriving after addTransformableRequest registers cb but
+// before the timer handle is inserted into timer_to_request_map_ must not be silently
+// dropped. This is a race condition that does not always occur hence high number of iterations.
+// To reliably reproduce the race condition, add a short sleep before creating the timer
+// in buffer.cpp
+TEST(test_buffer, wait_for_transform_race_during_setup)
+{
+  constexpr int iterations = 100;
+  for (int i = 0; i < iterations; ++i) {
+    rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
+    tf2_ros::Buffer buffer(clock);
+    buffer.setUsingDedicatedThread(true);
+    auto mock_create_timer = std::make_shared<MockCreateTimer>();
+    buffer.setCreateTimerInterface(mock_create_timer);
+    rclcpp::Time rclcpp_time = clock->now();
+    tf2::TimePoint tf2_time(std::chrono::nanoseconds(rclcpp_time.nanoseconds()));
+    geometry_msgs::msg::TransformStamped transform;
+    transform.header.frame_id = "foo";
+    transform.header.stamp = builtin_interfaces::msg::Time(rclcpp_time);
+    transform.child_frame_id = "bar";
+    transform.transform.rotation.w = 1.0;
+    bool callback_timeout = false;
+    std::thread tf_thread([&]() {
+        buffer.setTransform(transform, "unittest");
+      });
+    auto future = buffer.waitForTransform(
+      "foo", "bar", tf2_time, tf2::durationFromSec(0.1),
+      [&callback_timeout](const tf2_ros::TransformStampedFuture & future) {
+        try {
+          future.get();
+        } catch (...) {
+          callback_timeout = true;
+        }
+      });
+    tf_thread.join();
+    const auto status = future.wait_for(std::chrono::milliseconds(200));
+    ASSERT_EQ(status, std::future_status::ready) << "Failed at iteration " << i;
+    ASSERT_FALSE(callback_timeout) << "Failed at iteration " << i;
+  }
+}
+
+
+// Reproduces the ABBA deadlock:
+//
+//   Thread A – waitForTransform:
+//     holds timer_to_request_map_mutex_
+//       -> BufferCore::addTransformableRequest
+//         -> waits for transformable_requests_mutex_
+//
+//   Thread B – setTransform -> testTransformableRequests:
+//     holds transformable_requests_mutex_
+//       -> waitForTransform ready-callback
+//         -> waits for timer_to_request_map_mutex_
+
+TEST(test_buffer, wait_for_transform_does_not_deadlock_with_set_transform)
+{
+  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
+  tf2_ros::Buffer buffer(clock);
+  buffer.setUsingDedicatedThread(true);
+  auto mock_create_timer = std::make_shared<MockCreateTimer>();
+  buffer.setCreateTimerInterface(mock_create_timer);
+
+  const tf2::TimePoint time_point = tf2::timeFromSec(1.0);
+  const std::string target_frame = "foo";
+  const std::string source_frame = "bar";
+
+  std::promise<void> in_transformable_callback;
+  std::promise<void> waiter_finished;
+  auto waiter_finished_future = waiter_finished.get_future();
+  std::thread waiter_thread;
+
+  // First request becomes ready together with the waitForTransform below. While
+  // testTransformableRequests still holds transformable_requests_mutex_,
+  // this callback starts a concurrent waitForTransform that takes
+  // timer_to_request_map_mutex_ and then blocks in addTransformableRequest.
+  auto gate_cb =
+    [&buffer, &in_transformable_callback, &waiter_thread, &waiter_finished, time_point,
+      target_frame](
+    tf2::TransformableRequestHandle, const std::string &, const std::string &,
+    tf2::TimePoint, tf2::TransformableResult)
+    {
+      waiter_thread = std::thread(
+        [&buffer, &in_transformable_callback, &waiter_finished, time_point, target_frame]()
+        {
+          // Wait until the gate callback is running so addTransformableRequest
+          // contends with testTransformableRequests.
+          in_transformable_callback.get_future().wait();
+          buffer.waitForTransform(
+            target_frame, "other", time_point, tf2::durationFromSec(1.0),
+            [](const tf2_ros::TransformStampedFuture &) {});
+          waiter_finished.set_value();
+        });
+      in_transformable_callback.set_value();
+      // Give the waiter time to enter waitForTransform.
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    };
+
+  ASSERT_NE(
+    buffer.addTransformableRequest(gate_cb, target_frame, source_frame, time_point),
+    0u);
+
+  bool wait_callback_called = false;
+  auto future = buffer.waitForTransform(
+    target_frame, source_frame, time_point, tf2::durationFromSec(1.0),
+    [&wait_callback_called](const tf2_ros::TransformStampedFuture &) {
+      wait_callback_called = true;
+    });
+
+  geometry_msgs::msg::TransformStamped transform;
+  transform.header.frame_id = target_frame;
+  transform.header.stamp.sec = 1;
+  transform.child_frame_id = source_frame;
+  transform.transform.rotation.w = 1.0;
+
+  std::promise<void> set_transform_done;
+  std::thread setter([&buffer, &transform, &set_transform_done]() {
+      EXPECT_TRUE(buffer.setTransform(transform, "unittest"));
+      set_transform_done.set_value();
+    });
+
+  const auto set_status = set_transform_done.get_future().wait_for(std::chrono::seconds(5));
+  EXPECT_EQ(set_status, std::future_status::ready) <<
+    "Deadlock between waitForTransform (timer_to_request_map_mutex_ -> "
+    "transformable_requests_mutex_) and testTransformableRequests "
+    "(transformable_requests_mutex_ -> timer_to_request_map_mutex_). ";
+  if (set_status != std::future_status::ready) {
+    // Threads still hold the two mutexes; abort so gtest does not hang on join.
+    std::_Exit(1);
+  }
+
+  setter.join();
+  ASSERT_TRUE(waiter_thread.joinable());
+  const auto waiter_status = waiter_finished_future.wait_for(std::chrono::seconds(1));
+  EXPECT_EQ(waiter_status, std::future_status::ready);
+  if (waiter_status != std::future_status::ready) {
+    std::_Exit(1);
+  }
+  waiter_thread.join();
+
+  EXPECT_TRUE(wait_callback_called);
+  EXPECT_EQ(future.wait_for(std::chrono::seconds(1)), std::future_status::ready);
+}
+
 
 int main(int argc, char ** argv)
 {
