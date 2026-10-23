@@ -1,10 +1,5 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(tf2_bullet)
-
-# Default to C14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual)
@@ -25,7 +20,7 @@ target_include_directories(tf2_bullet INTERFACE
 target_link_libraries(tf2_bullet INTERFACE
   tf2_bullet::Bullet
   tf2::tf2
-  ${geometry_msgs_TARGETS}
+  geometry_msgs::geometry_msgs
   tf2_ros::tf2_ros)
 
 install(TARGETS tf2_bullet EXPORT export_tf2_bullet)
@@ -42,8 +37,10 @@ if(BUILD_TESTING)
   ament_cppcheck(LANGUAGE c++)
 
   find_package(ament_cmake_gtest REQUIRED)
+  find_package(ament_cmake_ros_core REQUIRED)
   ament_add_gtest(test_bullet test/test_tf2_bullet.cpp)
-  target_link_libraries(test_bullet tf2_bullet)
+  target_link_libraries(test_bullet
+    ament_cmake_ros_core::ament_ros_defaults tf2_bullet)
 endif()
 
 ament_export_targets(export_tf2_bullet)

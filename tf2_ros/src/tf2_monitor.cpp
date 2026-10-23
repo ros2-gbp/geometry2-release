@@ -31,17 +31,34 @@
 /** \author Wim Meeussen */
 
 #include <algorithm>
+#include <chrono>
+#include <cstddef>
+#include <functional>
+#include <iostream>
 #include <map>
 #include <memory>
+#include <mutex>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <vector>
 
+#include "tf2/buffer_core.hpp"
+#include "tf2/exceptions.hpp"
+#include "tf2/time.hpp"
+
 #include "tf2_ros/buffer.hpp"
+#include "tf2_ros/buffer_interface.hpp"
 #include "tf2_ros/transform_listener.hpp"
 #include "tf2_ros/qos.hpp"
 
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/clock.hpp"
+#include "rclcpp/executors.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/subscription.hpp"
+#include "rclcpp/utilities.hpp"
+
 #include "tf2_msgs/msg/tf_message.hpp"
 
 class TFMonitor
@@ -126,7 +143,7 @@ public:
     using_specific_chain_(using_specific_chain),
     node_(node),
     clock_(node->get_clock()),
-    buffer_(clock_, tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME), node)
+    buffer_(clock_, tf2::Duration(tf2::BUFFER_CORE_DEFAULT_CACHE_TIME), *node)
   {
     tf_ = std::make_shared<tf2_ros::TransformListener>(buffer_);
 
@@ -139,7 +156,7 @@ public:
           node_->get_logger(), *clock_, 1000,
           "Waiting for transform %s ->  %s: %s", framea_.c_str(), frameb_.c_str(),
           warning_msg.c_str());
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        clock_->sleep_for(std::chrono::milliseconds(500));
       }
 
       try {
@@ -202,7 +219,7 @@ public:
           max_diff = diff;
         }
       }
-      std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      clock_->sleep_for(std::chrono::milliseconds(500));
       if (counter > 20) {
         counter = 0;
 

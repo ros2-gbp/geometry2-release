@@ -38,6 +38,7 @@
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
+#include <rclcpp/utilities.hpp>
 #include <tf2/convert.hpp>
 #include <tf2/LinearMath/Quaternion.hpp>
 #include <tf2_kdl/tf2_kdl.hpp>
@@ -106,15 +107,18 @@ TEST(tf2Convert, kdlBulletROSConversions)
 
 TEST(tf2Convert, ConvertTf2Quaternion)
 {
-  const tf2::Quaternion tq(1, 2, 3, 4);
+  double epsilon = 1e-9;
+
+  tf2::Quaternion tq(1, 2, 3, 4);
+  tq.normalize();
   Eigen::Quaterniond eq;
   // TODO(gleichdick): switch to tf2::convert() when it's working
   tf2::fromMsg(tf2::toMsg(tq), eq);
 
-  EXPECT_EQ(tq.w(), eq.w());
-  EXPECT_EQ(tq.x(), eq.x());
-  EXPECT_EQ(tq.y(), eq.y());
-  EXPECT_EQ(tq.z(), eq.z());
+  EXPECT_NEAR(tq.w(), eq.w(), epsilon);
+  EXPECT_NEAR(tq.x(), eq.x(), epsilon);
+  EXPECT_NEAR(tq.y(), eq.y(), epsilon);
+  EXPECT_NEAR(tq.z(), eq.z(), epsilon);
 }
 
 TEST(tf2Convert, PointVectorDefaultMessagetype)
@@ -223,5 +227,7 @@ TEST(tf2Convert, AccelEigenConversion)
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }

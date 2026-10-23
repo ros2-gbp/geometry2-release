@@ -34,9 +34,17 @@
 
 #include "gtest/gtest.h"
 
+#include "geometry_msgs/msg/transform.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+
 #include "tf2_msgs/action/lookup_transform.hpp"
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
+
+#include "rclcpp/executors/single_threaded_executor.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/utilities.hpp"
+#include "rclcpp_action/client.hpp"
+#include "rclcpp_action/client_goal_handle.hpp"
+#include "rclcpp_action/create_client.hpp"
 
 #include "tf2_ros/buffer.hpp"
 #include "tf2_ros/buffer_server.hpp"
@@ -238,5 +246,7 @@ TEST_F(TestBufferServer, lookup_transform_delayed)
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }

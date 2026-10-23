@@ -28,16 +28,26 @@
  */
 
 #include <chrono>
-#include <future>
+#include <functional>
 #include <memory>
 #include <string>
 #include <thread>
 
 #include "gtest/gtest.h"
 
+#include "geometry_msgs/msg/transform.hpp"
+
+#include "tf2/time.hpp"
+
 #include "tf2_msgs/action/lookup_transform.hpp"
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
+
+#include "rclcpp/executors/single_threaded_executor.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/utilities.hpp"
+#include "rclcpp_action/create_server.hpp"
+#include "rclcpp_action/server.hpp"
+#include "rclcpp_action/server_goal_handle.hpp"
+#include "rclcpp_action/types.hpp"
 
 #include "tf2_ros/buffer.hpp"
 #include "tf2_ros/buffer_client.hpp"
@@ -123,8 +133,9 @@ protected:
     executor_.add_node(mock_server_);
 
     // Start spinning in a thread
-    spin_thread_ = std::thread(
-      std::bind(&rclcpp::executors::SingleThreadedExecutor::spin, &executor_));
+    spin_thread_ = std::thread([this] () {
+          executor_.spin();
+    });
 
     // Wait for discovery
     ASSERT_TRUE(client_->waitForServer(std::chrono::seconds(10)));
@@ -194,5 +205,7 @@ TEST_F(TestBufferClient, can_transform_unavailable)
 int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }

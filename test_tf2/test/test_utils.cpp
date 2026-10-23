@@ -17,6 +17,7 @@
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/quaternion_stamped.hpp>
 #include <geometry_msgs/msg/transform.hpp>
+#include <rclcpp/utilities.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include <tf2/LinearMath/Quaternion.hpp>
 #include <tf2/utils.hpp>
@@ -25,7 +26,8 @@
 double epsilon = 1e-9;
 
 template<typename T>
-void yprTest(const T& t, double yaw1, double pitch1, double roll1) {
+void yprTest(const T & t, double yaw1, double pitch1, double roll1)
+{
   double yaw2, pitch2, roll2;
 
   tf2::getEulerYPR(t, yaw2, pitch2, roll2);
@@ -50,7 +52,7 @@ TEST(tf2Utils, yaw)
   {
     // geometry_msgs::msg::Quaternion
     geometry_msgs::msg::Quaternion q;
-    q.x = x; q.y =y; q.z = z; q.w = w;
+    q.x = x; q.y = y; q.z = z; q.w = w;
     yprTest(q, yaw1, pitch1, roll1);
 
     // geometry_msgs::msg::QuaternionStamped
@@ -96,8 +98,10 @@ TEST(tf2Utils, identity)
   EXPECT_EQ(t.rotation.w, 1);
 }
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto ret = RUN_ALL_TESTS();
+  rclcpp::shutdown();
+  return ret;
 }

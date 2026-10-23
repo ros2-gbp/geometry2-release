@@ -34,6 +34,7 @@
 
 #include <tf2/time_cache.hpp>
 
+
 void setIdentity(tf2::TransformStorage & stor)
 {
   stor.translation_.setValue(0.0, 0.0, 0.0);
@@ -77,6 +78,8 @@ TEST(StaticCache, DuplicateEntries)
   cache.getData(tf2::TimePoint(std::chrono::nanoseconds(1)), stor);
 
   // printf(" stor is %f\n", stor.transform.translation.x);
+  EXPECT_TRUE(!(stor.translation_.isnan()));
+  EXPECT_TRUE(!(stor.rotation_.isnan()));
   EXPECT_TRUE(!std::isnan(stor.translation_.x()));
   EXPECT_TRUE(!std::isnan(stor.translation_.y()));
   EXPECT_TRUE(!std::isnan(stor.translation_.z()));
@@ -84,6 +87,33 @@ TEST(StaticCache, DuplicateEntries)
   EXPECT_TRUE(!std::isnan(stor.rotation_.y()));
   EXPECT_TRUE(!std::isnan(stor.rotation_.z()));
   EXPECT_TRUE(!std::isnan(stor.rotation_.w()));
+}
+
+void resetStorage(tf2::TransformStorage & stor)
+{
+  stor.translation_.setValue(1.0, -1.0, 0.5);
+  stor.rotation_.setValue(0.707, 0.0, 0.707, 0.0);
+}
+
+TEST(StaticCache, EmptyCacheRetrieval)
+{
+  tf2::StaticCache cache;
+  tf2::TransformStorage stor;
+  resetStorage(stor);
+  EXPECT_FALSE(cache.getData(tf2::TimePoint(std::chrono::nanoseconds(99999)), stor));
+}
+
+TEST(StaticCache, ErrorHandlingForInvalidTimestamps)
+{
+  tf2::StaticCache cache;
+  tf2::TransformStorage stor;
+  resetStorage(stor);
+  stor.frame_id_ = tf2::CompactFrameID(10);
+  stor.stamp_ = tf2::TimePoint(std::chrono::nanoseconds(10));
+
+  cache.insertData(stor);
+  tf2::TransformStorage result;
+  EXPECT_TRUE(cache.getData(tf2::TimePoint(std::chrono::nanoseconds(9999)), result));
 }
 
 int main(int argc, char ** argv)
