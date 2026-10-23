@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>examples_tf2_py</name>
-  <version>0.46.4</version>
+  <version>0.46.5</version>
   <description>
     Has examples of using the tf2 Python API.
   </description>
@@ -10,7 +10,7 @@
   <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
   <maintainer email="clalancette@openrobotics.org">Chris Lalancette</maintainer>
 
-  <license>Apache License 2.0</license>
+  <license>Apache-2.0</license>
 
   <author email="sloretz@openrobotics.org">Shane Loretz</author>
   <author email="tfoote@osrfoundation.org">Tully Foote</author>
